@@ -26,13 +26,8 @@ export const AnnouncementTabs = [
 ];
 
 // TODO: NAVBAR TAB
-export const DepartmentAnnouncementsTabItems = [
+export const StudentAnnouncementsTabItems = [
   { value: "listAnnouncements", label: "Danh sách thông báo", route: "/" },
-  {
-    value: "createAnnouncement",
-    label: "Tạo thông báo",
-    route: "/create-announcement",
-  },
 ];
 
 export const DepartmentCoursesTabItems = [
@@ -74,7 +69,7 @@ export const DepartmentCourseTabItems = [
   },
   {
     value: "timeTable",
-    label: "Thời khóa biểu",
+    label: "Lịch biểu",
     route: "/time-table",
   },
   {
@@ -189,83 +184,6 @@ export const CourseItemMoreComponentItems = [
 ];
 
 // TODO: SIDEBAR
-export const sidebarDepartmentLinks: SidebarLink[] = [
-  {
-    id: "1",
-    imgURL: "/assets/icons/home.svg",
-    route: "/",
-    label: "Trang chủ",
-  },
-  {
-    id: "2",
-    imgURL: "/assets/icons/users.svg",
-    route: "/teachers",
-    label: "Giảng viên",
-  },
-  {
-    id: "3",
-    imgURL: "/assets/icons/star.svg",
-    route: "/students",
-    label: "Sinh viên",
-  },
-  {
-    id: "4",
-    imgURL: "/assets/icons/suitcase.svg",
-    route: "/subjects",
-    label: "Môn học",
-  },
-  {
-    id: "5",
-    imgURL: "/assets/icons/tag.svg",
-    route: "/courses",
-    label: "Lớp học",
-  },
-  {
-    id: "6",
-    imgURL: "/assets/icons/user.svg",
-    route: "/setting",
-    label: "Cài đặt",
-  },
-];
-
-export const sidebarTeacherLinks: SidebarLink[] = [
-  {
-    id: "1",
-    imgURL: "/assets/icons/home.svg",
-    route: "/",
-    label: "Trang chủ",
-  },
-  {
-    id: "2",
-    imgURL: "/assets/icons/users.svg",
-    route: "/courses",
-    label: "Lớp học",
-  },
-  {
-    id: "3",
-    imgURL: "/assets/icons/star.svg",
-    route: "/timetable",
-    label: "Lịch biểu",
-  },
-  {
-    id: "4",
-    imgURL: "/assets/icons/suitcase.svg",
-    route: "/messages",
-    label: "Tin nhắn",
-  },
-  {
-    id: "5",
-    imgURL: "/assets/icons/user.svg",
-    route: "/bookmarks",
-    label: "Dấu trang",
-  },
-  {
-    id: "6",
-    imgURL: "/assets/icons/user.svg",
-    route: "/setting",
-    label: "Cài đặt",
-  },
-];
 
 export const sidebarStudentLinks: SidebarLink[] = [
   {
@@ -284,7 +202,7 @@ export const sidebarStudentLinks: SidebarLink[] = [
     id: "3",
     imgURL: "/assets/icons/star.svg",
     route: "/timetable",
-    label: "Thời khóa biểu",
+    label: "Lịch biểu",
   },
   {
     id: "4",

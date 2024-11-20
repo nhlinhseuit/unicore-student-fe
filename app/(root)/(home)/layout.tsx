@@ -1,9 +1,9 @@
 "use client";
 
-import React from "react";
+import { StudentAnnouncementsTabItems } from "@/constants";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { DepartmentAnnouncementsTabItems } from "@/constants";
+import React from "react";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const pathName = usePathname();
@@ -19,7 +19,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         role="tablist"
         className="mb-4 flex text-center flex-wrap border-b border-gray-200 dark:border-gray-700"
       >
-        {DepartmentAnnouncementsTabItems.map((item) => {
+        {StudentAnnouncementsTabItems.map((item) => {
           let isActive =
             pathName === item.route || pathName.includes(`/${item.route}`);
           if (pathName.startsWith("/announcements") && item.route === "/") {

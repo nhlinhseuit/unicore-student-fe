@@ -1,16 +1,9 @@
-import {
-  ClerkProvider,
-  SignInButton,
-  SignedIn,
-  SignedOut,
-  UserButton,
-} from "@clerk/nextjs";
-import { Inter, Space_Grotesk } from "next/font/google";
 import { Metadata } from "next";
+import { Inter, Space_Grotesk } from "next/font/google";
 
-import "./globals.css";
-import "../styles/prism.css";
 import { ThemeProvider } from "@/context/ThemeProvider";
+import "../styles/prism.css";
+import "./globals.css";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -25,7 +18,7 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "Unicore",
+  title: "Unicore - Student",
   description: "A class management system",
   icons: "/assets/images/site-logo.svg",
 };

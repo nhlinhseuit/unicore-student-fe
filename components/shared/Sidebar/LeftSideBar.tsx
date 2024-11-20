@@ -1,11 +1,11 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { DepartmentCoursesTabItems, sidebarDepartmentLinks } from "@/constants";
+import { DepartmentCoursesTabItems, sidebarStudentLinks } from "@/constants";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React, { Fragment } from "react";
+import { Fragment } from "react";
 
 const LeftSideBar = () => {
   const pathName = usePathname();
@@ -79,7 +79,7 @@ const LeftSideBar = () => {
 
       <div className="flex flex-col h-full gap-4 px-6 mt-6 ">
         {/* ITEM */}
-        {sidebarDepartmentLinks.map((item, index) => {
+        {sidebarStudentLinks.map((item, index) => {
           let isActive;
           // TODO: handle cho tab HOME
           if (

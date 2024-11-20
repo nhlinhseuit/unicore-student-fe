@@ -5,7 +5,6 @@ import NavigateButton from "@/components/shared/Button/NavigateButton";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
-import ReportInfo from "../ReportInfo";
 import ReportSchedule from "../ReportSchedule";
 import {
   sCompletedReportSchedule,
@@ -136,7 +135,6 @@ const CreateReport = () => {
           )}
           {currentStep === 2 && (
             <div>
-              <ReportInfo />
               <div className="flex-center mt-12">
                 <NavigateButton
                   back
