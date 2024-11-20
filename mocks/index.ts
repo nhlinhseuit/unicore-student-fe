@@ -466,10 +466,10 @@ export const mockCourses = [
 export const mockPostDataCourseIdPage = [
   {
     id: "1",
-    isReportPost: true,
+    typePost: "report",
     creator: "Huỳnh Hồ Thị Mộng Trinh",
     createdAt: "29/8/2024 7:23AM",
-    title: "Báo cáo ngày 29/9/2024",
+    title: "Đăng ký thứ tự báo cáo đồ án / báo cáo thực hành. Mỗi nhóm có 15p bao gồm trình bày ứng dụng (10p) và hỏi đáp (5p)",
     fileName: "Requirements.docx",
     comments: [
       {
@@ -486,7 +486,7 @@ export const mockPostDataCourseIdPage = [
   },
   {
     id: "2",
-    isReportPost: false,
+    typePost: "exercise",
     creator: "Huỳnh Hồ Thị Mộng Trinh",
     createdAt: "29/8/2024 7:23AM",
     title: "Bài tập ngày 29/9/2024",
@@ -501,7 +501,7 @@ export const mockPostDataCourseIdPage = [
   },
   {
     id: "3",
-    isReportPost: false,
+    typePost: "exercise",
     creator: "Huỳnh Hồ Thị Mộng Trinh",
     createdAt: "29/8/2024 7:23AM",
     title: "Bài tập ngày 29/9/2024",
@@ -797,7 +797,7 @@ export const mockBigExercisesList = [
 export const mockPostDataWithReport = [
   {
     id: "1",
-    isReportPost: true,
+    typePost: "report",
     creator: "Huỳnh Hồ Thị Mộng Trinh",
     createdAt: "29/8/2024 7:23AM",
     title: "Báo cáo ngày 29/9/2024",
@@ -817,7 +817,7 @@ export const mockPostDataWithReport = [
   },
   {
     id: "2",
-    isReportPost: false,
+    typePost: "exercise",
     creator: "Huỳnh Hồ Thị Mộng Trinh",
     createdAt: "29/8/2024 7:23AM",
     title: "Bài tập ngày 29/9/2024",
@@ -832,7 +832,7 @@ export const mockPostDataWithReport = [
   },
   {
     id: "3",
-    isReportPost: false,
+    typePost: "exercise",
     creator: "Huỳnh Hồ Thị Mộng Trinh",
     createdAt: "29/8/2024 7:23AM",
     title: "Bài tập ngày 29/9/2024",
@@ -1547,7 +1547,6 @@ export const mockGradeColumnPercent = {
 //
 // TODO: Big Exercise Id Page
 //
-
 export const mockPostDataGradingDetail = [
   {
     id: "1",
@@ -1588,4 +1587,12 @@ export const mockPostDataGradingDetail = [
       "Tỉ lệ điểm": 34,
     },
   },
+];
+
+//
+// TODO: Steps create report
+//
+export const mockStepsCreateReport = [
+  { id: 1, title: "Bước 1", desc: "Thêm lịch báo cáo" },
+  { id: 2, title: "Bước 2", desc: "Thông tin báo cáo đồ án" },
 ];

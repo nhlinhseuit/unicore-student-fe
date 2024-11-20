@@ -119,6 +119,10 @@
     @apply text-[20px] font-semibold leading-[24.8px];
   }
 
+  .base-regular {
+    @apply text-[15px] font-normal leading-[25.2px];
+  }
+
   .base-medium {
     @apply text-[15px] font-medium leading-[25.2px];
   }

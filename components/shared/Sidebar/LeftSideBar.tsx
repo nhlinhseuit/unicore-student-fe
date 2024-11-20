@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { DepartmentCoursesTabItems, sidebarStudentLinks } from "@/constants";
+import { StudentCoursesTabItems, sidebarStudentLinks } from "@/constants";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -11,7 +11,9 @@ const LeftSideBar = () => {
   const pathName = usePathname();
 
   const isOriginalRoute = () => {
-    return DepartmentCoursesTabItems.find((item) => {
+    // TODO: MỚI SỬA CODE TỪ LUỒNG STUDENT
+    // TODO: XEM LẠI CHỖ NÀY
+    return StudentCoursesTabItems.find((item) => {
       if (item.route === "/courses") {
         return undefined;
       } else {
