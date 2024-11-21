@@ -1,8 +1,9 @@
 import React from "react";
 
 interface Props {
+  id?: number,
   text: string;
-  value: boolean;
+  checked: boolean;
   handleClick: () => void;
 }
 
@@ -13,7 +14,7 @@ const CheckboxComponent = (params: Props) => {
         id={params.text}
         name={params.text}
         type="checkbox"
-        checked={params.value}
+        checked={params.checked}
         onChange={params.handleClick}
         className="w-4 h-4 cursor-pointer"
       />

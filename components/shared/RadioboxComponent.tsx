@@ -3,7 +3,7 @@ import React from "react";
 interface Props {
   id: number;
   text: string;
-  value: number;
+  checked: boolean;
   handleClick: () => void;
 }
 
@@ -14,7 +14,7 @@ const RadioboxComponent = (params: Props) => {
         id={params.text}
         name={params.text}
         type="radio"
-        checked={params.value === params.id}
+        checked={params.checked}
         onChange={params.handleClick}
         className="w-4 h-4 cursor-pointer"
       />

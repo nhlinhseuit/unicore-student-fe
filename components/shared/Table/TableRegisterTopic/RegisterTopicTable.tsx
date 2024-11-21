@@ -341,7 +341,7 @@ const RegisterTopicTable = (params: DataTableParams) => {
                                     handleClick={() => {
                                       setSelectedTeacherOption(1);
                                     }}
-                                    value={selectedTeacherOption}
+                                    checked={selectedTeacherOption === 1}
                                     text="Chỉ định giảng viên được sinh viên đề xuất"
                                   />
                                 </div>
@@ -351,7 +351,7 @@ const RegisterTopicTable = (params: DataTableParams) => {
                                     handleClick={() => {
                                       setSelectedTeacherOption(2);
                                     }}
-                                    value={selectedTeacherOption}
+                                    checked={selectedTeacherOption === 2}
                                     text="Chọn giảng viên mới"
                                   />
 

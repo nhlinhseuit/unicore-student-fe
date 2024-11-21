@@ -1596,3 +1596,31 @@ export const mockStepsCreateReport = [
   { id: 1, title: "Bước 1", desc: "Thêm lịch báo cáo" },
   { id: 2, title: "Bước 2", desc: "Thông tin báo cáo đồ án" },
 ];
+
+//
+// TODO: Report Schedule Options
+//
+export const mockReportScheduleOptions = {
+  setting: {
+    multipleSelect: false,
+    updateOption: true,
+  },
+  data: [
+    {
+      id: 1,
+      value: "Ngày 3/10, 8h - 8h30",
+    },
+    {
+      id: 2,
+      value: "Ngày 3/10, 8h30 - 9h",
+    },
+    {
+      id: 3,
+      value: "Ngày 3/10, 9h30 - 10h",
+    },
+    {
+      id: 4,
+      value: "Ngày 3/10, 10h30 - 10h30",
+    },
+  ],
+};

@@ -276,6 +276,7 @@ const ReportSchedule = () => {
                 <div className="p-4 flex flex-col gap-10">
                   <div className="inline-flex">
                     <CheckboxComponent
+                     id={1}
                       handleClick={() => {
                         if (!selectedSettingOption.includes(1)) {
                           sSelectedSettingOption.set([
@@ -288,12 +289,13 @@ const ReportSchedule = () => {
                           );
                         }
                       }}
-                      value={selectedSettingOption.includes(1)}
+                      checked={selectedSettingOption.includes(1)}
                       text="Cho phép chọn nhiều phương án"
                     />
                   </div>
                   <div className="inline-flex">
                     <CheckboxComponent
+                    id={2}
                       handleClick={() => {
                         if (!selectedSettingOption.includes(2)) {
                           sSelectedSettingOption.set([
@@ -306,7 +308,7 @@ const ReportSchedule = () => {
                           );
                         }
                       }}
-                      value={selectedSettingOption.includes(2)}
+                      checked={selectedSettingOption.includes(2)}
                       text="Cho phép cập nhật lựa chọn"
                     />
                   </div>

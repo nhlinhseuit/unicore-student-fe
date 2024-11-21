@@ -284,7 +284,7 @@ const RegisterTopic = () => {
                       handleClick={() => {
                         setIsUseExistedGroup(1);
                       }}
-                      value={isUseExistedGroup}
+                      checked={isUseExistedGroup === 1}
                       text="Sử dụng nhóm chính"
                     />
                     {/* //! ERROR */}
@@ -302,7 +302,7 @@ const RegisterTopic = () => {
                       handleClick={() => {
                         setIsUseExistedGroup(2);
                       }}
-                      value={isUseExistedGroup}
+                      checked={isUseExistedGroup === 2}
                       text="Tạo nhóm mới"
                     />
                     <p className="text-[0.8rem] dark:text-slate-400 body-regular mt-4 text-light-500">
@@ -363,7 +363,7 @@ const RegisterTopic = () => {
                           handleClick={() => {
                             setSelectedLeaderOption(!selectedLeaderOption);
                           }}
-                          value={selectedLeaderOption}
+                          checked={selectedLeaderOption}
                           text="Nhóm có nhóm trưởng"
                         />
                       </div>

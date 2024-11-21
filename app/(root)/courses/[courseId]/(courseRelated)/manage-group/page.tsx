@@ -306,7 +306,7 @@ const CreateGroupRegister = () => {
               handleClick={() => {
                 setSelectedLeaderOption(!selectedLeaderOption);
               }}
-              value={selectedLeaderOption}
+              checked={selectedLeaderOption}
               text="Nhóm có nhóm trưởng"
             />
           </div>
