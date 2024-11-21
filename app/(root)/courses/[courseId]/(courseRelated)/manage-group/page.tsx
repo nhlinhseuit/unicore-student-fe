@@ -1,347 +1,245 @@
 "use client";
+
 import IconButton from "@/components/shared/Button/IconButton";
-import SubmitButton from "@/components/shared/Button/SubmitButton";
-import CheckboxComponent from "@/components/shared/CheckboxComponent";
 import RegisterGroupTable from "@/components/shared/Table/TableRegisterGroup/RegisterGroupTable";
-import ToggleTitle from "@/components/shared/ToggleTitle";
-import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
-import { Input } from "@/components/ui/input";
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { useToast } from "@/hooks/use-toast";
-import { mockDataStudentRegisterGroup } from "@/mocks";
-import { format } from "date-fns";
-import { vi } from "date-fns/locale";
-import { Calendar as CalendarIcon } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+  mockDataStudentRegisterGroup,
+  mockTopicRegisterGroupDataTable,
+} from "@/mocks";
+import { useRef, useState } from "react";
 
-// ! CẬP NHẬT
-const type: any = "create";
+import MiniButton from "@/components/shared/Button/MiniButton";
+import TopicRegisterGroupDataTable from "@/components/shared/Table/TableRegisterStudent/TopicRegisterGroupDataTable";
+import {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogHeader,
+} from "@/components/ui/alert-dialog";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 
-// TODO: Search debouce tìm kiếm lớp nếu cần
+import { toast } from "@/hooks/use-toast";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { AlertDialogTitle } from "@radix-ui/react-alert-dialog";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { Action } from "@/constants";
 
-const CreateGroupRegister = () => {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const router = useRouter();
+const ManageGroup = () => {
+  const [isAlreadyRegisteredGroup, setIsAlreadyRegisteredGroup] =
+    useState(false);
+  const [isShowDialog, setIsShowDialog] = useState(Action.none);
+  // ? API: Ban đầu mockTopicRegisterGroupDataTable là thông tin đki nhóm > khi đki thì gọi API và data local giữ nguyên
+  const [mockDataState, setMockDataState] = useState(
+    mockTopicRegisterGroupDataTable
+  );
 
-  const [minMember, setMinMember] = useState("");
-  const [maxMember, setMaxMember] = useState("");
-  const [selectedLeaderOption, setSelectedLeaderOption] = useState(false);
-  const [dateStart, setDateStart] = useState<Date>();
-  const [dateEnd, setDateEnd] = useState<Date>();
+  const mockDataRef = useRef(mockDataState);
 
-  const [isToggleCreateSchedule, setIsToggleCreateSchedule] = useState(true);
-  const [isToggleViewTable, setIsToggleViewTable] = useState(true);
-  const [errorList, setErrorList] = useState([
-    {
-      id: "1",
-      content:
-        "Bạn phải chọn ngày bắt đầu và ngày kết thúc. Ngày kết thúc phải sau ngày bắt đầu.",
-      value: false,
+  const updateMockDataRef = (newData: any) => {
+    mockDataRef.current = newData;
+  };
+
+  const AnnoucementSchema = z.object({
+    nameGroup: z
+      .string()
+      .min(1, { message: "Bạn phải điền tên nhóm" })
+      .max(100, { message: "Tên nhóm chứa tối đa 100 ký tự" }),
+  });
+
+  const form = useForm<z.infer<typeof AnnoucementSchema>>({
+    resolver: zodResolver(AnnoucementSchema),
+    defaultValues: {
+      nameGroup: "",
     },
-    {
-      id: "2",
-      content: "Phải nhập số lượng thành viên nhóm tối thiểu và tối đa.",
-      value: false,
-    },
-    { id: "3", content: "Số lượng thành viên phải là chữ số.", value: false },
-    {
-      id: "4",
-      content: "Số lượng tối thiểu phải nhỏ hơn số lượng tối đa và khác 0.",
-      value: false,
-    },
-  ]);
+  });
 
-  // 2. Define a submit handler.
-  async function handleSubmit() {
-    setIsSubmitting(true);
-    if (validate()) {
-      toast({
-        title: "Tạo lịch thất bại.",
-        description: `Vui lòng kiểm tra lại thông tin.`,
-        variant: "error",
-        duration: 3000,
-      });
-      return;
-    }
-
+  async function onSubmit(values: any) {
     try {
       console.log({
-        dateStart: dateStart,
-        dateEnd: dateEnd,
-        minMembers: minMember,
-        maxMembers: maxMember,
+        nameGroup: values.nameGroup,
+        dataRef: mockDataRef,
+        dataState: mockDataState,
       });
 
+      // ? Để có thể chỉnh sửa được
+      // setMockDataState(mockTopicRegisterGroupDataTable);
+      // updateMockDataRef(mockDataState);
+
       // naviate to home page
-      router.push("/");
+      // router.push("/");
 
       toast({
-        title: "Tạo lịch thành công.",
-        description: `Đăng ký nhóm sẽ diễn ra vào ngày ${format(
-          dateStart ?? "",
-          "dd/MM/yyyy"
-        )}`,
+        title:
+          isShowDialog === Action.create
+            ? "Đăng ký nhóm thành công."
+            : "Sửa thông tin nhóm thành công.",
         variant: "success",
         duration: 3000,
       });
+
+      setIsAlreadyRegisteredGroup(true);
+      setIsShowDialog(Action.none);
+
+      // ? không cần reset để lần sau có thể chỉnh sửa
+      // reset({
+      //   nameGroup: "",
+      // });
     } catch {
     } finally {
-      setIsSubmitting(false);
     }
   }
 
-  const validate = () => {
-    const newErrorList = [...errorList];
-    let isNotValid = false;
-
-    if (!dateStart || !dateEnd || dateEnd < dateStart) {
-      newErrorList[0].value = true; // Ngày bắt đầu và kết thúc không hợp lệ
-      isNotValid = true;
-    } else {
-      newErrorList[0].value = false; // Hợp lệ
-    }
-
-    if (minMember == "" || maxMember == "") {
-      newErrorList[1].value = true; // Số lượng thành viên không hợp lệ
-      isNotValid = true;
-    } else {
-      newErrorList[1].value = false;
-    }
-
-    if (isNaN(parseInt(minMember)) || isNaN(parseInt(maxMember))) {
-      newErrorList[2].value = true;
-      isNotValid = true;
-      return isNotValid;
-    } else {
-      newErrorList[2].value = false;
-    }
-
-    if (
-      parseInt(minMember) == 0 ||
-      parseInt(maxMember) == 0 ||
-      parseInt(minMember) > parseInt(maxMember)
-    ) {
-      newErrorList[3].value = true;
-      isNotValid = true;
-    } else {
-      newErrorList[2].value = false;
-    }
-    console.log("newErrorList", newErrorList);
-
-    setErrorList(newErrorList); // Cập nhật trạng thái errorList
-
-    return isNotValid;
-  };
-
-  const { toast } = useToast();
-
-  const handleClickCreateSchedule = () => {
-    setIsToggleCreateSchedule(!isToggleCreateSchedule);
-  };
-
-  const handleClickViewTable = () => {
-    setIsToggleViewTable(!isToggleViewTable);
-  };
-
-  const handleChangeMinMember = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setMinMember(e.target.value);
-  };
-
-  const handleChangeMaxMember = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setMaxMember(e.target.value);
-  };
+  const { reset } = form;
 
   return (
-    <div>
-      <ToggleTitle
-        text="Lịch đăng ký nhóm"
-        showStatus
-        showEditButton
-        handleClick={handleClickCreateSchedule}
-        value={isToggleCreateSchedule}
-      />
+    <div className="px-6">
+      <div className="flex items-center justify-end mb-3 gap-2">
+        <p className="italic text-sm text-red-500">
+          * Nhóm trưởng điền tên đầu tiên
+        </p>
 
-      {isToggleCreateSchedule ? (
-        <div className="flex px-6 gap-12">
-          <div className="flex w-full flex-col gap-10">
-            {/* //TODO: CUSTOM FORM FIELD */}
-            <div>
-              <label className="peer-disabled:cursor-not-allowed peer-disabled:opacity-70 dark:text-red-900 text-dark400_light800 text-[14px] font-semibold leading-[20.8px]">
-                Thời hạn <span className="text-red-600">*</span>
-              </label>
-
-              <div className="mt-3.5 flex gap-4 items-center">
-                <div className="w-1/4">
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <Button
-                        variant={"outline"}
-                        className={`w-full flex items-center text-center font-normal ${
-                          !dateStart && "text-muted-foreground"
-                        } hover:bg-transparent active:bg-transparent rounded-lg shadow-none`}
-                      >
-                        <span
-                          className={`flex-grow text-center ${
-                            !dateStart && "text-muted-foreground"
-                          }`}
-                        >
-                          {dateStart
-                            ? format(dateStart, "dd/MM/yyyy")
-                            : "Ngày bắt đầu"}
-                        </span>
-                        <CalendarIcon className="ml-2 h-4 w-4" />
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0">
-                      <Calendar
-                        mode="single"
-                        selected={dateStart}
-                        onSelect={setDateStart}
-                        initialFocus
-                        locale={vi}
-                      />
-                    </PopoverContent>
-                  </Popover>
-                </div>
-                <span> - </span>
-                <div className="w-1/4">
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <Button
-                        variant={"outline"}
-                        className={`w-full flex items-center text-center font-normal ${
-                          !dateEnd && "text-muted-foreground"
-                        } hover:bg-transparent active:bg-transparent rounded-lg shadow-none`}
-                      >
-                        <span
-                          className={`flex-grow text-center ${
-                            !dateEnd && "text-muted-foreground"
-                          }`}
-                        >
-                          {dateEnd
-                            ? format(dateEnd, "dd/MM/yyyy")
-                            : "Ngày kết thúc"}
-                        </span>
-                        <CalendarIcon className="ml-2 h-4 w-4" />
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0">
-                      <Calendar
-                        mode="single"
-                        selected={dateEnd}
-                        onSelect={setDateEnd}
-                        initialFocus
-                        locale={vi}
-                      />
-                    </PopoverContent>
-                  </Popover>
-                </div>
-              </div>
-
-              <p className="text-[0.8rem] dark:text-slate-400 body-regular mt-2.5 text-light-500">
-                Thời hạn sinh viên được phép đăng ký nhóm.
-              </p>
-
-              {/* //! ERROR */}
-              {errorList[0].value ? (
-                <p className="mt-3.5 text-[0.8rem] font-medium dark:text-red-900 text-red-500">
-                  {errorList[0].content}
-                </p>
-              ) : (
-                <></>
-              )}
-            </div>
-
-            <div>
-              <label className="peer-disabled:cursor-not-allowed peer-disabled:opacity-70 dark:text-red-900 text-dark400_light800 text-[14px] font-semibold leading-[20.8px]">
-                Số lượng thành viên nhóm <span className="text-red-600">*</span>
-              </label>
-
-              <div className="mt-3.5 flex gap-6">
-                <div className="flex gap-2 w-1/3 items-center">
-                  <span className="body-regular w-auto flex-shrink-0">
-                    Tối thiểu
-                  </span>
-                  <Input
-                    value={minMember}
-                    onChange={handleChangeMinMember}
-                    name="minMembers"
-                    placeholder="Nhập số lượng..."
-                    className="no-focus paragraph-regular background-light900_dark300 light-border-2 text-dark300_light700 min-h-[46px] border"
-                  />
-                </div>
-                <div className="flex gap-2 w-1/3 items-center">
-                  <p className="body-regular w-auto flex-shrink-0">Tối đa</p>
-                  <Input
-                    value={maxMember}
-                    onChange={handleChangeMaxMember}
-                    name="maxMembers"
-                    placeholder="Nhập số lượng..."
-                    className="no-focus paragraph-regular background-light900_dark300 light-border-2 text-dark300_light700 min-h-[46px] border"
-                  />
-                </div>
-              </div>
-
-              {/* //! ERROR */}
-              {errorList.map((item, index) => {
-                if (index != 0 && item.value)
-                  return (
-                    <p
-                      key={`${index}_${item.id}`}
-                      className="mt-3.5 text-[0.8rem] font-medium dark:text-red-900 text-red-500"
-                    >
-                      {item.content}
-                    </p>
-                  );
-              })}
-            </div>
-
-            <CheckboxComponent
-              handleClick={() => {
-                setSelectedLeaderOption(!selectedLeaderOption);
-              }}
-              checked={selectedLeaderOption}
-              text="Nhóm có nhóm trưởng"
-            />
-          </div>
-        </div>
-      ) : (
-        <></>
-      )}
-
-      <div className="mt-10">
-        <ToggleTitle
-          text="Danh sách nhóm"
-          handleClick={handleClickViewTable}
-          value={isToggleViewTable}
+        <IconButton
+          text={
+            isAlreadyRegisteredGroup ? "Sửa thông tin nhóm" : "Đăng ký nhóm"
+          }
+          yellow={isAlreadyRegisteredGroup ? true : false}
+          green={isAlreadyRegisteredGroup ? false : true}
+          iconLeft={
+            isAlreadyRegisteredGroup
+              ? "/assets/icons/edit.svg"
+              : "/assets/icons/add.svg"
+          }
+          iconWidth={16}
+          iconHeight={16}
+          onClick={
+            isAlreadyRegisteredGroup
+              ? () => setIsShowDialog(Action.edit)
+              : () => setIsShowDialog(Action.create)
+          }
         />
       </div>
 
-      {isToggleViewTable ? (
-        <div className="px-6">
-          <RegisterGroupTable
-            isEditTable={false}
-            isMultipleDelete={false}
-            dataTable={mockDataStudentRegisterGroup}
-          />
-        </div>
-      ) : (
-        <></>
-      )}
+      <RegisterGroupTable
+        isEditTable={false}
+        isMultipleDelete={false}
+        dataTable={mockDataStudentRegisterGroup}
+      />
 
-      <div className="flex mt-12 gap-2">
-        <SubmitButton text="Đăng" otherClasses="w-fit" onClick={handleSubmit} />
-        <IconButton text="Tạm lưu" temp otherClasses="w-fit" />
-        <IconButton text="Hủy" red otherClasses="w-fit" onClick={() => {}} />
-      </div>
+      <AlertDialog open={isShowDialog !== Action.none}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle className=" text-lg font-semibold text-center">
+              {isShowDialog === Action.create
+                ? "Đăng ký nhóm"
+                : "Sửa thông tin nhóm"}
+            </AlertDialogTitle>
+          </AlertDialogHeader>
+
+          <div className="flex flex-col gap-6">
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)}>
+                <FormField
+                  control={form.control}
+                  name="nameGroup"
+                  render={({ field }) => (
+                    <FormItem className="flex w-full flex-col">
+                      <FormLabel className="text-dark400_light800 text-[14px] font-semibold leading-[20.8px]">
+                        Tên nhóm <span className="text-red-600">*</span>
+                      </FormLabel>
+                      <FormControl className="mt-3.5 ">
+                        <Input
+                          {...field}
+                          placeholder="Nhập tên nhóm..."
+                          className="
+                                no-focus paragraph-regular background-light900_dark300 light-border-2 text-dark300_light700 min-h-[56px] border"
+                        />
+                      </FormControl>
+                      <FormMessage className="text-red-500" />
+                    </FormItem>
+                  )}
+                />
+
+                <div className="mt-6">
+                  <div>
+                    <label className="peer-disabled:cursor-not-allowed peer-disabled:opacity-70 dark:text-red-900 text-dark400_light800 text-[14px] font-semibold leading-[20.8px]">
+                      Danh sách thành viên nhóm
+                    </label>
+                    <p className="mb-4 text-[0.8rem] dark:text-slate-400 mt-2.5 body-regular text-light-500">
+                      Nhóm trưởng điền tên đầu tiên.
+                    </p>
+                  </div>
+                  <TopicRegisterGroupDataTable
+                    isEditTable={false}
+                    isMultipleDelete={false}
+                    dataTable={mockDataRef.current}
+                    onChangeTable={(newValue) => {
+                      updateMockDataRef(newValue);
+                    }}
+                  />
+                </div>
+
+                <div className="relative flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 mt-4">
+                  {/* mt-4 cho nên translate 7 */}
+                  <div className="absolute left-[50%] -translate-y-7">
+                    <MiniButton
+                      key={1}
+                      value={2}
+                      icon={"/assets/icons/add.svg"}
+                      bgColor="bg-primary-500"
+                      onClick={(value) => {
+                        // setSelectedMiniButton(value);
+
+                        const newEntry = {
+                          STT: (mockDataRef.current.length + 1).toString(),
+                          data: {
+                            MSSV: "",
+                            SĐT: "",
+                            "Họ và tên": "",
+                          },
+                        };
+
+                        // Cập nhật mockDataRef mà không re-render `TopicRegisterGroupDataTable`
+                        updateMockDataRef([...mockDataRef.current, newEntry]);
+
+                        // Cập nhật mockDataState để re-render những phần khác trong UI
+                        setMockDataState([...mockDataRef.current]);
+                      }}
+                      otherClasses={"w-[26px] h-[26px] mr-10"}
+                    />
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsShowDialog(Action.none);
+                      setMockDataState(mockTopicRegisterGroupDataTable);
+                    }}
+                    className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-slate-950 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 dark:focus-visible:ring-slate-300 border border-slate-200 bg-white shadow-sm hover:bg-slate-100 hover:text-slate-900 dark:border-slate-800 dark:bg-slate-950 dark:hover:bg-slate-800 dark:hover:text-slate-50 h-9 px-4 py-2 mt-2 sm:mt-0"
+                  >
+                    Hủy
+                  </button>
+                  <button
+                    type="submit"
+                    className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-slate-950 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 dark:focus-visible:ring-slate-300 bg-primary-500 text-slate-50 shadow hover:bg-primary-500/90 dark:bg-slate-50 dark:text-slate-900 dark:hover:bg-slate-50/90 h-9 px-4 py-2"
+                  >
+                    Đồng ý
+                  </button>
+                </div>
+              </form>
+            </Form>
+          </div>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
 
-export default CreateGroupRegister;
+export default ManageGroup;

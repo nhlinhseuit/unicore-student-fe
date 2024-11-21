@@ -48,7 +48,7 @@ export const DepartmentCourseTabItems = [
   },
   {
     value: "manageGroup",
-    label: "Quản lý nhóm",
+    label: "Đăng ký nhóm",
     route: "/manage-group",
   },
   {
@@ -107,6 +107,14 @@ export const BigExerciseTabItems = [
 ];
 
 // TODO: OTHERS
+
+export enum Action {
+  create,
+  edit,
+  editing,
+  none,
+}
+
 export const AnnouncementTypes = [
   { route: "/create-announcement", label: "Tạo thông báo" },
   { route: "/create-exercise", label: "Tạo bài tập" },
