@@ -167,7 +167,7 @@ export interface RegisterGroupDataItem {
 export interface RegisterTopicDataItem {
   STT: string;
   isDeleted: boolean;
-  data: RegisterTopicData;
+  data: RegisterTopicData; 
 }
 
 export interface TopicRegisterGroupDataItem {

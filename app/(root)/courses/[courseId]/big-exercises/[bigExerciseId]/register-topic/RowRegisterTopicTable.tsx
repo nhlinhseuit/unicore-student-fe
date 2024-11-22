@@ -8,23 +8,22 @@ import {
   TeacherData,
   TeacherDataItem,
   RegisterGroupDataItem,
+  RegisterTopicDataItem,
 } from "@/types";
-import IconButton from "../../Button/IconButton";
-import InputComponent from "../components/InputComponent";
-import MoreButtonComponent from "../components/MoreButtonComponent";
 import { RegisterTopicTableType } from "@/constants";
+import InputComponent from "@/components/shared/Table/components/InputComponent";
+import { sSelectedTopic } from "./(store)/createReportStore";
 
 interface RowParams {
   type: RegisterTopicTableType;
   isMemberOfAboveGroup: boolean;
-  dataItem: RegisterGroupDataItem;
+  dataItem: RegisterTopicDataItem;
   isEditTable?: boolean;
   isMultipleDelete?: boolean;
   isHasSubCourses?: boolean;
   onClickGetOut?: () => void;
   saveSingleRow?: (item: any) => void;
   deleteSingleRow?: (itemsSelected: string[]) => void;
-  onClickCheckBoxSelect?: (item: string) => void;
   onChangeRow?: (item: any) => void;
 }
 interface handleInputChangeParams {
@@ -43,6 +42,8 @@ const RowRegisterTopicTable = React.memo(
   (params: RowParams) => {
     const [isEdit, setIsEdit] = useState(false);
     const [editDataItem, setEditDataItem] = useState(params.dataItem);
+
+    const selectedTopic = sSelectedTopic.use();
 
     const refInput = useRef({});
 
@@ -93,7 +94,7 @@ const RowRegisterTopicTable = React.memo(
       params.onChangeRow && params.onChangeRow(updatedDataItem); // Gọi callback để truyền dữ liệu đã chỉnh sửa lên DataTable
     };
 
-    var valueUniqueInput = params.dataItem.data["Tên nhóm"];
+    var valueUniqueInput = params.dataItem.data["Tên đề tài"];
 
     return (
       <Table.Row
@@ -112,59 +113,19 @@ const RowRegisterTopicTable = React.memo(
               e.stopPropagation(); // Ngăn sự kiện lan truyền đến Table.RowRegisterTopicTable
             }}
           >
-            {params.isMultipleDelete ? (
-              <div className="flex items-center justify-center w-10 h-10">
-                <input
-                  id="apple"
-                  type="checkbox"
-                  name="filterOptions"
-                  value={valueUniqueInput}
-                  onChange={() => {
-                    {
-                      params.onClickCheckBoxSelect &&
-                        params.onClickCheckBoxSelect(valueUniqueInput);
-                    }
-                  }}
-                  className="w-4 h-4 bg-gray-100 border-gray-300 rounded cursor-pointer text-primary-600"
-                />
-              </div>
-            ) : isEdit ? (
-              <IconButton
-                text="Lưu"
-                onClick={() => {
-                  params.saveSingleRow &&
-                    params.saveSingleRow(refInput.current);
-                  setIsEdit(false);
-                }}
-              />
-            ) : params.type === RegisterTopicTableType.approveTopic ? (
-              params.isMemberOfAboveGroup ? (
-                <></>
-              ) : (
-                <input
-                  id="approveTopic"
-                  type="checkbox"
-                  name="approveTopic"
-                  value={valueUniqueInput}
-                  onChange={() => {
-                    {
-                      params.onClickCheckBoxSelect &&
-                        params.onClickCheckBoxSelect(valueUniqueInput);
-                    }
-                  }}
-                  className="w-4 h-4 bg-gray-100 border-gray-300 rounded cursor-pointer text-primary-600"
-                />
-              )
-            ) : (
-              <MoreButtonComponent
-                handleEdit={handleEdit}
-                onClickGetOut={params.onClickGetOut}
-                onClickDelete={() => {
-                  params.deleteSingleRow &&
-                    params.deleteSingleRow([valueUniqueInput]);
-                }}
-              />
-            )}
+            <input
+              id="approveTopic"
+              type="radio"
+              name="approveTopic"
+              checked={selectedTopic === params.dataItem.data["Tên đề tài"]}
+              value={valueUniqueInput}
+              onChange={() => {
+                {
+                  sSelectedTopic.set(valueUniqueInput);
+                }
+              }}
+              className="w-4 h-4 bg-gray-100 border-gray-300 rounded cursor-pointer text-primary-600"
+            />
           </div>
         </Table.Cell>
 
