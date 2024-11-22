@@ -502,7 +502,7 @@ export const mockPostDataCourseIdPage = [
   },
   {
     id: "3",
-    typePost: "exercise",
+    typePost: "announcement",
     creator: "Huỳnh Hồ Thị Mộng Trinh",
     createdAt: "29/8/2024 7:23AM",
     title: "Bài tập ngày 29/9/2024",

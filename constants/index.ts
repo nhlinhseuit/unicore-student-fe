@@ -31,6 +31,13 @@ export const ReviewTabs = [
   { value: "approvedReviews", label: "Phúc khảo đã duyệt" },
 ];
 
+export const BookmarksTabs = [
+  { value: "generalPost", label: "Chung" },
+  { value: "announcements", label: "Thông báo" },
+  { value: "exercises", label: "Bài tập" },
+  { value: "bigExercises", label: "Bài tập lớn" },
+];
+
 // TODO: NAVBAR TAB
 export const StudentAnnouncementsTabItems = [
   { value: "listAnnouncements", label: "Danh sách thông báo", route: "/" },
@@ -88,6 +95,30 @@ export const StudentCourseTabItems = [
     route: "/setting",
   },
 ];
+
+export const StudentBookmarksTabItems = [
+  {
+    value: "general",
+    label: "Chung",
+    route: "/",
+  },
+  {
+    value: "announcements",
+    label: "Thông báo",
+    route: "/announcements",
+  },
+  {
+    value: "exercises",
+    label: "Bài tập",
+    route: "/exercises",
+  },
+  {
+    value: "bigExercises",
+    label: "Bài tập lớn",
+    route: "/bigExercises",
+  },
+];
+
 export const BigExerciseTabItems = [
   { value: "generalPost", label: "Thông báo chung", route: "/" },
   {
