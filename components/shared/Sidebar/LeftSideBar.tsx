@@ -6,9 +6,17 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Fragment } from "react";
+import IconButton from "../Button/IconButton";
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+} from "@/components/ui/popover";
+import MyAccount from "@/components/shared/MyAccount";
 
 const LeftSideBar = () => {
   const pathName = usePathname();
+  const isLoggedIn = true;
 
   const isOriginalRoute = () => {
     // TODO: MỚI SỬA CODE TỪ LUỒNG STUDENT
@@ -169,65 +177,101 @@ const LeftSideBar = () => {
         })}
       </div>
 
-      <div className="flex flex-col gap-3 mx-6 mt-6 mb-6 ">
-        {/* <SignedOut>
+      {isLoggedIn ? (
+        <div className="flex gap-2">
+          <MyAccount textAvatar="HL" name="Nguyễn Hoàng Linh" />
+
+          <Popover>
+            <PopoverTrigger className="p-2">
+              <Image
+                src="/assets/icons/noti-white.svg"
+                width={20}
+                height={20}
+                alt="noti"
+                color="text-white"
+              />
+            </PopoverTrigger>
+
+            <PopoverContent
+              className="w-[300px] bg-white shadow-lg rounded-lg p-4"
+              side="right"
+              align="end"
+              sideOffset={10}
+            >
+              <div>
+                <p className="font-bold">
+                  Yêu cầu phúc khảo của bạn đã được duyệt
+                </p>
+                <p className="text-sm text-gray-600">
+                  Bấm vào thông báo này để xem bài tập của bạn sau khi được phúc
+                  khảo bởi GV Huỳnh Hồ Thị Mộng Trinh.
+                </p>
+                <button className="mt-4 btn btn-primary">Xem chi tiết</button>
+              </div>
+            </PopoverContent>
+          </Popover>
+        </div>
+      ) : (
+        <div className="flex flex-col gap-3 mx-6 mt-6 mb-6 ">
+          {/* <SignedOut>
         </SignedOut> */}
-        <Link
-          href="/sign-in"
-          className="flex rounded-lg background-light800_dark400 "
-        >
-          <Button
-            className="
+          <Link
+            href="/sign-in"
+            className="flex rounded-lg background-light800_dark400 "
+          >
+            <Button
+              className="
                         small-medium btn-secondary 
                         min-h-[41px] w-full rounded-lg
                         px-4 py-3 shadow-none
                         max-lg:hidden
                         "
-          >
-            <span className=" max-lg:hidden primary-text-gradient">
-              Đăng nhập
-            </span>
-          </Button>
-          <Image
-            src="/assets/icons/account.svg"
-            alt="login"
-            width={20}
-            height={20}
-            className="
+            >
+              <span className=" max-lg:hidden primary-text-gradient">
+                Đăng nhập
+              </span>
+            </Button>
+            <Image
+              src="/assets/icons/account.svg"
+              alt="login"
+              width={20}
+              height={20}
+              className="
                 invert-colors 
                 max-lg:w-[52px]
                 bg-transparent p-4
                 lg:hidden"
-          />
-        </Link>
+            />
+          </Link>
 
-        <Link
-          href="/sign-up"
-          className="flex rounded-lg background-light700_dark300"
-        >
-          <Button
-            className="
+          <Link
+            href="/sign-up"
+            className="flex rounded-lg background-light700_dark300"
+          >
+            <Button
+              className="
                         small-medium btn-tertiary light-border-2 
                         min-h-[41px] w-full rounded-lg
                         px-4 py-3 shadow-none text-dark400_light900
                         max-lg:hidden"
-          >
-            Đăng ký
-          </Button>
+            >
+              Đăng ký
+            </Button>
 
-          <Image
-            src="/assets/icons/sign-up.svg"
-            alt="signup"
-            width={20}
-            height={20}
-            className="
+            <Image
+              src="/assets/icons/sign-up.svg"
+              alt="signup"
+              width={20}
+              height={20}
+              className="
                 invert-colors 
                 max-lg:w-[52px]
                 bg-transparent p-4
                 lg:hidden"
-          />
-        </Link>
-      </div>
+            />
+          </Link>
+        </div>
+      )}
     </section>
   );
 };

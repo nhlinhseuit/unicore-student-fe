@@ -1,14 +1,14 @@
 import Image from "next/image";
 import React, { useState } from "react";
 
-interface FooterProps {
+interface MyFooterProps {
   currentPage: number;
   itemsPerPage: number;
   totalItems: number;
   onPageChange: (page: number) => void;
 }
 
-const Footer: React.FC<FooterProps> = ({
+const MyFooter: React.FC<MyFooterProps> = ({
   currentPage,
   itemsPerPage,
   totalItems,
@@ -22,8 +22,9 @@ const Footer: React.FC<FooterProps> = ({
     return [start, end];
   };
 
-  const [visibleRange, setVisibleRange] = useState<number[]>(getRangeForCurrentPage(currentPage));
-
+  const [visibleRange, setVisibleRange] = useState<number[]>(
+    getRangeForCurrentPage(currentPage)
+  );
 
   const handleNextRange = () => {
     const start = visibleRange[0] + 5;
@@ -166,4 +167,4 @@ const Footer: React.FC<FooterProps> = ({
   );
 };
 
-export default Footer;
+export default MyFooter;

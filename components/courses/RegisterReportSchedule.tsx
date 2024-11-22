@@ -39,8 +39,9 @@ const RegisterReportSchedule = (params: Props) => {
     <>
       <p className="paragraph-semibold underline ">Đăng ký thứ tự báo cáo</p>
       <BorderContainer otherClasses="mt-4 p-6 flex flex-col gap-4">
-        {mockReportScheduleOptions.data.map((item) => (
+        {mockReportScheduleOptions.data.map((item, index) => (
           <BoxComponent
+            key={index}
             id={item.id}
             handleClick={
               isEditing

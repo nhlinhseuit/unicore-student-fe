@@ -3,7 +3,7 @@ import {
   AlertDialogHeader,
 } from "@/components/ui/alert-dialog";
 import { itemsPerPageRegisterTable } from "@/constants";
-import { GradingExerciseDataItem, GradingReportDataItem } from "@/types";
+import { GradeColumnPercentDataItem, ScoreTranscriptDataItem } from "@/types";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -17,15 +17,17 @@ import { useMemo, useState } from "react";
 import NoResult from "../../Status/NoResult";
 import { tableTheme } from "../components/DataTable";
 import MyFooter from "../components/MyFooter";
-import RowGradingGroupTable from "./RowGradingGroupTable";
+import RowScoreTranscriptTable from "./RowScoreTranscriptTable";
 
 interface DataTableParams {
   isEditTable: boolean;
   isMultipleDelete: boolean;
-  dataTable: GradingExerciseDataItem[] | GradingReportDataItem[];
+  dataTable: ScoreTranscriptDataItem[];
+  dataGradeColumnPercent: GradeColumnPercentDataItem;
+  viewDetailGradeColumn: () => void;
 }
 
-const GradingGroupTable = (params: DataTableParams) => {
+const ScoreTranscriptTable = (params: DataTableParams) => {
   const dataTable = useMemo(() => {
     return params.dataTable.filter((dataItem) => dataItem.isDeleted !== true);
   }, [params.dataTable]);
@@ -44,11 +46,8 @@ const GradingGroupTable = (params: DataTableParams) => {
     );
   }, [dataTable, currentPage]);
 
-  const [filteredDataTable, setFilteredDataTable] = useState<
-    | GradingExerciseDataItem[]
-    | GradingReportDataItem[]
-    | (GradingExerciseDataItem | GradingReportDataItem)[]
-  >(currentItems);
+  const [filteredDataTable, setFilteredDataTable] =
+    useState<ScoreTranscriptDataItem[]>(currentItems);
 
   const applyFilter = () => {
     let filteredData;
@@ -96,97 +95,82 @@ const GradingGroupTable = (params: DataTableParams) => {
                 STT
               </Table.HeadCell>
 
-              {Object.keys(filteredDataTable[0]?.data || {}).map((key) => {
-                if (key === "Mã nhóm") return null;
-
-                return (
-                  <Table.HeadCell
-                    key={key}
-                    theme={tableTheme?.head?.cell}
-                    className={`px-2 py-4 border-r-[1px] uppercase whitespace-nowrap`}
-                  >
-                    {key}
-                  </Table.HeadCell>
-                );
-              })}
+              {Object.keys(filteredDataTable[0]?.data || {}).map(
+                (key, index) => {
+                  if (
+                    key === "Quá trình" ||
+                    key === "Giữa kỳ" ||
+                    key === "Cuối kỳ"
+                  ) {
+                    return (
+                      <Table.HeadCell
+                        key={`${key}_${index}`}
+                        theme={tableTheme?.head?.cell}
+                        className={`px-2 py-4 border-r-[1px] uppercase whitespace-nowrap`}
+                      >
+                        {`${key} (${params.dataGradeColumnPercent[`${key}`]}%)`}
+                      </Table.HeadCell>
+                    );
+                  }
+                  return (
+                    <Table.HeadCell
+                      key={`${key}_${index}`}
+                      theme={tableTheme?.head?.cell}
+                      className={`px-2 py-4 border-r-[1px] uppercase whitespace-nowrap`}
+                    >
+                      {key}
+                    </Table.HeadCell>
+                  );
+                }
+              )}
             </Table.Head>
 
             {/* BODY */}
             <Table.Body className="text-left divide-y">
               {filteredDataTable.map((dataItem, index) =>
-                dataItem.isDeleted ? (
-                  <></>
-                ) : (
-                  <>
-                    {/* //TODO: Main Row: Leader */}
-                    <RowGradingGroupTable
-                      key={dataItem.STT}
-                      isMemberOfAboveGroup={
-                        index === 0
-                          ? false
-                          : filteredDataTable[index - 1].data["Mã nhóm"] ===
-                            dataItem.data["Mã nhóm"]
-                      }
-                      dataItem={dataItem}
-                      isEditTable={params.isEditTable}
-                      isMultipleDelete={params.isMultipleDelete}
-                      onClickCheckBoxSelect={(item: string) => {
-                        //   setItemsSelected((prev) => {
-                        //   if (prev.includes(item)) {
-                        //     return prev.filter((i) => i !== item);
-                        //   } else {
-                        //     return [...prev, item];
-                        //   }
-                        // });
-                      }}
-                      onChangeRow={(updatedDataItem: any) => {
-                        //   setLocalDataTable((prevTable) =>
-                        //     prevTable.map((item) =>
-                        //       item.STT === updatedDataItem.STT
-                        //         ? updatedDataItem
-                        //         : item
-                        //     )
-                        //   );
-                      }}
-                      saveSingleRow={(updatedDataItem: any) => {
-                        const updatedDataTable = dataTable.map((item, index) =>
-                          item.STT === updatedDataItem.STT
-                            ? updatedDataItem
-                            : item
-                        );
+                dataItem.isDeleted ? null : (
+                  <RowScoreTranscriptTable
+                    key={dataItem.STT}
+                    dataItem={dataItem}
+                    isEditTable={params.isEditTable}
+                    isMultipleDelete={params.isMultipleDelete}
+                    onClickCheckBoxSelect={(item: string) => {
+                      //   setItemsSelected((prev) => {
+                      //   if (prev.includes(item)) {
+                      //     return prev.filter((i) => i !== item);
+                      //   } else {
+                      //     return [...prev, item];
+                      //   }
+                      // });
+                    }}
+                    onChangeRow={(updatedDataItem: any) => {
+                      //   setLocalDataTable((prevTable) =>
+                      //     prevTable.map((item) =>
+                      //       item.STT === updatedDataItem.STT
+                      //         ? updatedDataItem
+                      //         : item
+                      //     )
+                      //   );
+                    }}
+                    saveSingleRow={(updatedDataItem: any) => {
+                      const updatedDataTable = dataTable.map((item, index) =>
+                        item.STT === updatedDataItem.STT
+                          ? updatedDataItem
+                          : item
+                      );
 
-                        //   if (params.onSaveEditTable) {
-                        //     params.onSaveEditTable(updatedDataTable);
-                        //   }
-                      }}
-                      onClickGetOut={() => {
-                        // params.onClickGetOut
-                      }}
-                      deleteSingleRow={() => {
-                        //  params.onClickDelete
-                      }}
-                    />
-
-                    {/* //TODO: MEMBER */}
-                    {/* {dataItem.data.listStudent
-                      .filter((student) => !student.isLeader)
-                      .map((student, index) => (
-                        <RowGradingGroupTable
-                          key={`${dataItem.STT}-${index}`}
-                          dataItem={{
-                            ...dataItem,
-                            data: { ...dataItem.data, student },
-                          }}
-                          isEditTable={params.isEditTable}
-                          isMultipleDelete={params.isMultipleDelete}
-                          onClickCheckBoxSelect={() => {}}
-                          onChangeRow={() => {}}
-                          saveSingleRow={() => {}}
-                          onClickGetOut={() => {}}
-                          deleteSingleRow={() => {}}
-                        />
-                      ))} */}
-                  </>
+                      //   if (params.onSaveEditTable) {
+                      //     params.onSaveEditTable(updatedDataTable);
+                      //   }
+                    }}
+                    onClickGetOut={() => {
+                      // params.onClickGetOut
+                    }}
+                    deleteSingleRow={() => {
+                      //  params.onClickDelete
+                    }}
+                    viewDetailGradeColumn={params.viewDetailGradeColumn}
+                  />
                 )
               )}
             </Table.Body>
@@ -252,4 +236,4 @@ const GradingGroupTable = (params: DataTableParams) => {
   );
 };
 
-export default GradingGroupTable;
+export default ScoreTranscriptTable;

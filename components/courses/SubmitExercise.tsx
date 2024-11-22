@@ -57,23 +57,23 @@ const SubmitExercise = (params: Props) => {
           </div>
 
           <div className="flex flex-col gap-4">
-            <p className="body-semibold text-green-500">Đã nộp để chấm điểm</p>
+            <p className="body-medium text-green-500">Đã nộp để chấm điểm</p>
 
-            <p className="body-semibold text-green-500">
+            <p className="body-medium text-green-500">
               {params.score}{" "}
               <span className="text-black">/ {params.totalScore} điểm</span>
             </p>
 
-            <p className="body-semibold">{params.feedback}</p>
+            <p className="body-medium">{params.feedback}</p>
 
-            <p className="body-semibold text-red-500">{params.lateTime}</p>
+            <p className="body-medium text-red-500">{params.lateTime}</p>
 
-            <p className="body-semibold">{params.lastEdited}</p>
+            <p className="body-medium">{params.lastEdited}</p>
 
-            <p className="body-semibold">{params.submission}</p>
+            <p className="body-medium">{params.submission}</p>
 
             {params.review ? (
-              <p className="body-semibold">{params.review}</p>
+              <p className="body-medium">{params.review}</p>
             ) : null}
           </div>
         </div>

@@ -6,7 +6,7 @@ import RowRegisterTopicTable from "./RowRegisterTopicTable";
 import { itemsPerPageRegisterTable, RegisterTopicTableType } from "@/constants";
 import NoResult from "@/components/shared/Status/NoResult";
 import { tableTheme } from "@/components/shared/Table/components/DataTable";
-import Footer from "@/components/shared/Table/components/Footer";
+import MyFooter from "@/components/shared/Table/components/MyFooter";
 import { sSelectedTopic } from "./(store)/createReportStore";
 
 interface DataTableParams {
@@ -146,7 +146,7 @@ const RegisterTopicTable = (params: DataTableParams) => {
       {!isShowFooter || params.isEditTable || params.isMultipleDelete ? (
         <></>
       ) : (
-        <Footer
+        <MyFooter
           currentPage={currentPage}
           itemsPerPage={itemsPerPageRegisterTable}
           totalItems={totalItems}
