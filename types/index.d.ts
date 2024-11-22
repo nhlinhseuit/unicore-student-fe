@@ -112,6 +112,18 @@ export interface ScoreTranscriptData {
   "Cuối kỳ": number;
   "Điểm trung bình": number;
 }
+export interface ScoreTranscriptStudentData {
+  STT: string;
+  "Mã lớp": string;
+  "Môn học": string;
+  "Tín chỉ": number;
+  "Điểm quá trình": number;
+  "Điểm thực hành": number;
+  "Điểm giữa kỳ": number;
+  "Điểm cuối kỳ": number;
+  "Điểm tổng kết": number;
+  "Ghi chú": string;
+}
 export interface ScoreTranscriptDataCourse {
   "Quá trình": number;
   "Giữa kỳ": number;
@@ -173,7 +185,7 @@ export interface RegisterGroupDataItem {
 export interface RegisterTopicDataItem {
   STT: string;
   isDeleted: boolean;
-  data: RegisterTopicData; 
+  data: RegisterTopicData;
 }
 
 export interface TopicRegisterGroupDataItem {
@@ -221,6 +233,12 @@ export interface ScoreTranscriptDataItem {
   STT: string;
   isDeleted: boolean;
   data: ScoreTranscriptData;
+}
+export interface ScoreTranscriptStudentDataItem {
+  STT: string;
+  "Học kỳ": number;
+  "Năm học": string;
+  listCoursesScore: ScoreTranscriptStudentData[];
 }
 export interface GradeColumnPercentDataItem {
   "Quá trình": number;

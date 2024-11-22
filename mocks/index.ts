@@ -219,7 +219,7 @@ export const mockPostData = [
 export const mockDataGradingExercise = [
   {
     //
-    // TODO: Kh// cần stt của sv ở đây
+    // TODO: Kh// cần STT của sv ở đây
     // TODO: //Hiện tại chỉ dùng làm key
     // * FIX:// STT count ++ cho row leader
 
@@ -316,7 +316,7 @@ export const mockDataGradingExercise = [
 export const mockDataGradingReport = [
   {
     //
-    // TODO: Kh// cần stt của sv ở đây
+    // TODO: Kh// cần STT của sv ở đây
     // TODO: //Hiện tại chỉ dùng làm key
     // * FIX:// STT count ++ cho row leader
 
@@ -556,7 +556,7 @@ export const mockCoursesListScoreTranscript = [
 export const mockDataScoreTranscript = [
   {
     //
-    // TODO: Kh cần stt của sv ở đây
+    // TODO: Kh cần STT của sv ở đây
     // TODO: Hiện tại chỉ dùng làm key
     // * FIX:// STT count ++ cho row leader
 
@@ -647,7 +647,7 @@ export const mockDataScoreTranscriptCourse = {
   "Giữa kỳ": 8,
   "Cuối kỳ": 10,
   "Điểm trung bình": 8,
-}
+};
 
 //
 // TODO: Score Transcript
@@ -709,7 +709,7 @@ export const mockFileDataTable = [
 export const mockDataStudentRegisterGroup = [
   {
     //
-    // TODO: Kh// cần stt của sv ở đây
+    // TODO: Kh// cần STT của sv ở đây
     // TODO: //Hiện tại chỉ dùng làm key
     // * FIX:// STT count ++ cho row leader
 
@@ -1443,7 +1443,7 @@ export const mockTopicRegisterGroupDataTable = [
 //
 export const mockDataStudentRegisterTopic = [
   {
-    // TODO: Kh cần stt của sv ở đây
+    // TODO: Kh cần STT của sv ở đây
     // TODO: Hiện tại chỉ dùng làm key
     // * FIX: STT count ++ cho row leader
 
@@ -1673,5 +1673,480 @@ export const mockDataReviewGradeExercise = [
     "Bài nộp": "NguyenHoangLinh_BaiTap.docx",
     historyGrade: [6, 8],
     historyFeedback: ["Bài làm sai sót nhiều", "Bài làm khá ổn"],
+  },
+];
+
+//
+// TODO: Score Transcript Student - Semester - All courses
+//
+export const mockDataScoreTranscriptStudent = [
+  {
+    STT: "1",
+    "Học kỳ": 1,
+    "Năm học": "2024 - 2025",
+    listCoursesScore: [
+      {
+        STT: "1",
+        "Mã lớp": "SE114.N12.PMCL",
+        "Môn học": "Nhập môn ứng dụng di động",
+        "Tín chỉ": 4,
+        "Điểm quá trình": 8,
+        "Điểm thực hành": 8,
+        "Điểm giữa kỳ": 8,
+        "Điểm cuối kỳ": 8,
+        "Điểm tổng kết": 8,
+        "Ghi chú": "Đạt",
+      },
+      {
+        STT: "2",
+        "Mã lớp": "SE114.N13.DS",
+        "Môn học": "Cấu trúc dữ liệu",
+        "Tín chỉ": 3,
+        "Điểm quá trình": 9,
+        "Điểm thực hành": 8,
+        "Điểm giữa kỳ": 7,
+        "Điểm cuối kỳ": 8,
+        "Điểm tổng kết": 8.5,
+        "Ghi chú": "Đạt",
+      },
+      {
+        STT: "3",
+        "Mã lớp": "SE114.N14.ML",
+        "Môn học": "Máy học",
+        "Tín chỉ": 3,
+        "Điểm quá trình": 8,
+        "Điểm thực hành": 7,
+        "Điểm giữa kỳ": 9,
+        "Điểm cuối kỳ": 8,
+        "Điểm tổng kết": 8.2,
+        "Ghi chú": "Đạt",
+      },
+      {
+        STT: "4",
+        "Mã lớp": "SE114.N15.OOP",
+        "Môn học": "Lập trình hướng đối tượng",
+        "Tín chỉ": 4,
+        "Điểm quá trình": 7,
+        "Điểm thực hành": 7,
+        "Điểm giữa kỳ": 6,
+        "Điểm cuối kỳ": 7,
+        "Điểm tổng kết": 6.8,
+        "Ghi chú": "Đạt",
+      },
+      {
+        STT: "5",
+        "Mã lớp": "SE114.N16.DB",
+        "Môn học": "Cơ sở dữ liệu",
+        "Tín chỉ": 3,
+        "Điểm quá trình": 8,
+        "Điểm thực hành": 9,
+        "Điểm giữa kỳ": 7,
+        "Điểm cuối kỳ": 9,
+        "Điểm tổng kết": 8.5,
+        "Ghi chú": "Đạt",
+      },
+    ],
+  },
+  {
+    STT: "2",
+    "Học kỳ": 2,
+    "Năm học": "2023 - 2024",
+    listCoursesScore: [
+      {
+        STT: "1",
+        "Mã lớp": "SE114.N11.AI",
+        "Môn học": "Trí tuệ nhân tạo",
+        "Tín chỉ": 3,
+        "Điểm quá trình": 9,
+        "Điểm thực hành": 10,
+        "Điểm giữa kỳ": 8,
+        "Điểm cuối kỳ": 9,
+        "Điểm tổng kết": 9,
+        "Ghi chú": "Đạt",
+      },
+      {
+        STT: "2",
+        "Mã lớp": "SE114.N17.NLP",
+        "Môn học": "Xử lý ngôn ngữ tự nhiên",
+        "Tín chỉ": 4,
+        "Điểm quá trình": 8,
+        "Điểm thực hành": 8,
+        "Điểm giữa kỳ": 7,
+        "Điểm cuối kỳ": 8,
+        "Điểm tổng kết": 8,
+        "Ghi chú": "Đạt",
+      },
+      {
+        STT: "3",
+        "Mã lớp": "SE114.N18.CS",
+        "Môn học": "Lý thuyết điều khiển",
+        "Tín chỉ": 3,
+        "Điểm quá trình": 7,
+        "Điểm thực hành": 7,
+        "Điểm giữa kỳ": 7,
+        "Điểm cuối kỳ": 7,
+        "Điểm tổng kết": 7,
+        "Ghi chú": "Đạt",
+      },
+      {
+        STT: "4",
+        "Mã lớp": "SE114.N19.OS",
+        "Môn học": "Hệ điều hành",
+        "Tín chỉ": 3,
+        "Điểm quá trình": 9,
+        "Điểm thực hành": 8,
+        "Điểm giữa kỳ": 9,
+        "Điểm cuối kỳ": 9,
+        "Điểm tổng kết": 8.8,
+        "Ghi chú": "Đạt",
+      },
+      {
+        STT: "5",
+        "Mã lớp": "SE114.N20.NET",
+        "Môn học": "Lập trình mạng",
+        "Tín chỉ": 4,
+        "Điểm quá trình": 6,
+        "Điểm thực hành": 8,
+        "Điểm giữa kỳ": 7,
+        "Điểm cuối kỳ": 8,
+        "Điểm tổng kết": 7.2,
+        "Ghi chú": "Đạt",
+      },
+    ],
+  },
+  {
+    STT: "3",
+    "Học kỳ": 1,
+    "Năm học": "2023 - 2024",
+    listCoursesScore: [
+      {
+        STT: "1",
+        "Mã lớp": "SE114.N11.AI",
+        "Môn học": "Trí tuệ nhân tạo",
+        "Tín chỉ": 3,
+        "Điểm quá trình": 9,
+        "Điểm thực hành": 10,
+        "Điểm giữa kỳ": 8,
+        "Điểm cuối kỳ": 9,
+        "Điểm tổng kết": 9,
+        "Ghi chú": "Đạt",
+      },
+      {
+        STT: "2",
+        "Mã lớp": "SE114.N17.NLP",
+        "Môn học": "Xử lý ngôn ngữ tự nhiên",
+        "Tín chỉ": 4,
+        "Điểm quá trình": 8,
+        "Điểm thực hành": 8,
+        "Điểm giữa kỳ": 7,
+        "Điểm cuối kỳ": 8,
+        "Điểm tổng kết": 8,
+        "Ghi chú": "Đạt",
+      },
+      {
+        STT: "3",
+        "Mã lớp": "SE114.N18.CS",
+        "Môn học": "Lý thuyết điều khiển",
+        "Tín chỉ": 3,
+        "Điểm quá trình": 7,
+        "Điểm thực hành": 7,
+        "Điểm giữa kỳ": 7,
+        "Điểm cuối kỳ": 7,
+        "Điểm tổng kết": 7,
+        "Ghi chú": "Đạt",
+      },
+      {
+        STT: "4",
+        "Mã lớp": "SE114.N19.OS",
+        "Môn học": "Hệ điều hành",
+        "Tín chỉ": 3,
+        "Điểm quá trình": 9,
+        "Điểm thực hành": 8,
+        "Điểm giữa kỳ": 9,
+        "Điểm cuối kỳ": 9,
+        "Điểm tổng kết": 8.8,
+        "Ghi chú": "Đạt",
+      },
+      {
+        STT: "5",
+        "Mã lớp": "SE114.N20.NET",
+        "Môn học": "Lập trình mạng",
+        "Tín chỉ": 4,
+        "Điểm quá trình": 6,
+        "Điểm thực hành": 8,
+        "Điểm giữa kỳ": 7,
+        "Điểm cuối kỳ": 8,
+        "Điểm tổng kết": 7.2,
+        "Ghi chú": "Đạt",
+      },
+    ],
+  },
+  {
+    STT: "4",
+    "Học kỳ": 2,
+    "Năm học": "2022 - 2023",
+    listCoursesScore: [
+      {
+        STT: "1",
+        "Mã lớp": "SE114.N11.AI",
+        "Môn học": "Trí tuệ nhân tạo",
+        "Tín chỉ": 3,
+        "Điểm quá trình": 9,
+        "Điểm thực hành": 10,
+        "Điểm giữa kỳ": 8,
+        "Điểm cuối kỳ": 9,
+        "Điểm tổng kết": 9,
+        "Ghi chú": "Đạt",
+      },
+      {
+        STT: "2",
+        "Mã lớp": "SE114.N17.NLP",
+        "Môn học": "Xử lý ngôn ngữ tự nhiên",
+        "Tín chỉ": 4,
+        "Điểm quá trình": 8,
+        "Điểm thực hành": 8,
+        "Điểm giữa kỳ": 7,
+        "Điểm cuối kỳ": 8,
+        "Điểm tổng kết": 8,
+        "Ghi chú": "Đạt",
+      },
+      {
+        STT: "3",
+        "Mã lớp": "SE114.N18.CS",
+        "Môn học": "Lý thuyết điều khiển",
+        "Tín chỉ": 3,
+        "Điểm quá trình": 7,
+        "Điểm thực hành": 7,
+        "Điểm giữa kỳ": 7,
+        "Điểm cuối kỳ": 7,
+        "Điểm tổng kết": 7,
+        "Ghi chú": "Đạt",
+      },
+      {
+        STT: "4",
+        "Mã lớp": "SE114.N19.OS",
+        "Môn học": "Hệ điều hành",
+        "Tín chỉ": 3,
+        "Điểm quá trình": 9,
+        "Điểm thực hành": 8,
+        "Điểm giữa kỳ": 9,
+        "Điểm cuối kỳ": 9,
+        "Điểm tổng kết": 8.8,
+        "Ghi chú": "Đạt",
+      },
+      {
+        STT: "5",
+        "Mã lớp": "SE114.N20.NET",
+        "Môn học": "Lập trình mạng",
+        "Tín chỉ": 4,
+        "Điểm quá trình": 6,
+        "Điểm thực hành": 8,
+        "Điểm giữa kỳ": 7,
+        "Điểm cuối kỳ": 8,
+        "Điểm tổng kết": 7.2,
+        "Ghi chú": "Đạt",
+      },
+    ],
+  },
+  {
+    STT: "5",
+    "Học kỳ": 1,
+    "Năm học": "2022 - 2023",
+    listCoursesScore: [
+      {
+        STT: "1",
+        "Mã lớp": "SE114.N11.AI",
+        "Môn học": "Trí tuệ nhân tạo",
+        "Tín chỉ": 3,
+        "Điểm quá trình": 9,
+        "Điểm thực hành": 10,
+        "Điểm giữa kỳ": 8,
+        "Điểm cuối kỳ": 9,
+        "Điểm tổng kết": 9,
+        "Ghi chú": "Đạt",
+      },
+      {
+        STT: "2",
+        "Mã lớp": "SE114.N17.NLP",
+        "Môn học": "Xử lý ngôn ngữ tự nhiên",
+        "Tín chỉ": 4,
+        "Điểm quá trình": 8,
+        "Điểm thực hành": 8,
+        "Điểm giữa kỳ": 7,
+        "Điểm cuối kỳ": 8,
+        "Điểm tổng kết": 8,
+        "Ghi chú": "Đạt",
+      },
+      {
+        STT: "3",
+        "Mã lớp": "SE114.N18.CS",
+        "Môn học": "Lý thuyết điều khiển",
+        "Tín chỉ": 3,
+        "Điểm quá trình": 7,
+        "Điểm thực hành": 7,
+        "Điểm giữa kỳ": 7,
+        "Điểm cuối kỳ": 7,
+        "Điểm tổng kết": 7,
+        "Ghi chú": "Đạt",
+      },
+      {
+        STT: "4",
+        "Mã lớp": "SE114.N19.OS",
+        "Môn học": "Hệ điều hành",
+        "Tín chỉ": 3,
+        "Điểm quá trình": 9,
+        "Điểm thực hành": 8,
+        "Điểm giữa kỳ": 9,
+        "Điểm cuối kỳ": 9,
+        "Điểm tổng kết": 8.8,
+        "Ghi chú": "Đạt",
+      },
+      {
+        STT: "5",
+        "Mã lớp": "SE114.N20.NET",
+        "Môn học": "Lập trình mạng",
+        "Tín chỉ": 4,
+        "Điểm quá trình": 6,
+        "Điểm thực hành": 8,
+        "Điểm giữa kỳ": 7,
+        "Điểm cuối kỳ": 8,
+        "Điểm tổng kết": 7.2,
+        "Ghi chú": "Đạt",
+      },
+    ],
+  },
+  {
+    STT: "6",
+    "Học kỳ": 2,
+    "Năm học": "2021 - 2022",
+    listCoursesScore: [
+      {
+        STT: "1",
+        "Mã lớp": "SE114.N11.AI",
+        "Môn học": "Trí tuệ nhân tạo",
+        "Tín chỉ": 3,
+        "Điểm quá trình": 9,
+        "Điểm thực hành": 10,
+        "Điểm giữa kỳ": 8,
+        "Điểm cuối kỳ": 9,
+        "Điểm tổng kết": 9,
+        "Ghi chú": "Đạt",
+      },
+      {
+        STT: "2",
+        "Mã lớp": "SE114.N17.NLP",
+        "Môn học": "Xử lý ngôn ngữ tự nhiên",
+        "Tín chỉ": 4,
+        "Điểm quá trình": 8,
+        "Điểm thực hành": 8,
+        "Điểm giữa kỳ": 7,
+        "Điểm cuối kỳ": 8,
+        "Điểm tổng kết": 8,
+        "Ghi chú": "Đạt",
+      },
+      {
+        STT: "3",
+        "Mã lớp": "SE114.N18.CS",
+        "Môn học": "Lý thuyết điều khiển",
+        "Tín chỉ": 3,
+        "Điểm quá trình": 7,
+        "Điểm thực hành": 7,
+        "Điểm giữa kỳ": 7,
+        "Điểm cuối kỳ": 7,
+        "Điểm tổng kết": 7,
+        "Ghi chú": "Đạt",
+      },
+      {
+        STT: "4",
+        "Mã lớp": "SE114.N19.OS",
+        "Môn học": "Hệ điều hành",
+        "Tín chỉ": 3,
+        "Điểm quá trình": 9,
+        "Điểm thực hành": 8,
+        "Điểm giữa kỳ": 9,
+        "Điểm cuối kỳ": 9,
+        "Điểm tổng kết": 8.8,
+        "Ghi chú": "Đạt",
+      },
+      {
+        STT: "5",
+        "Mã lớp": "SE114.N20.NET",
+        "Môn học": "Lập trình mạng",
+        "Tín chỉ": 4,
+        "Điểm quá trình": 6,
+        "Điểm thực hành": 8,
+        "Điểm giữa kỳ": 7,
+        "Điểm cuối kỳ": 8,
+        "Điểm tổng kết": 7.2,
+        "Ghi chú": "Đạt",
+      },
+    ],
+  },
+  {
+    STT: "7",
+    "Học kỳ": 1,
+    "Năm học": "2021 - 2022",
+    listCoursesScore: [
+      {
+        STT: "1",
+        "Mã lớp": "SE114.N11.AI",
+        "Môn học": "Trí tuệ nhân tạo",
+        "Tín chỉ": 3,
+        "Điểm quá trình": 9,
+        "Điểm thực hành": 10,
+        "Điểm giữa kỳ": 8,
+        "Điểm cuối kỳ": 9,
+        "Điểm tổng kết": 9,
+        "Ghi chú": "Đạt",
+      },
+      {
+        STT: "2",
+        "Mã lớp": "SE114.N17.NLP",
+        "Môn học": "Xử lý ngôn ngữ tự nhiên",
+        "Tín chỉ": 4,
+        "Điểm quá trình": 8,
+        "Điểm thực hành": 8,
+        "Điểm giữa kỳ": 7,
+        "Điểm cuối kỳ": 8,
+        "Điểm tổng kết": 8,
+        "Ghi chú": "Đạt",
+      },
+      {
+        STT: "3",
+        "Mã lớp": "SE114.N18.CS",
+        "Môn học": "Lý thuyết điều khiển",
+        "Tín chỉ": 3,
+        "Điểm quá trình": 7,
+        "Điểm thực hành": 7,
+        "Điểm giữa kỳ": 7,
+        "Điểm cuối kỳ": 7,
+        "Điểm tổng kết": 7,
+        "Ghi chú": "Đạt",
+      },
+      {
+        STT: "4",
+        "Mã lớp": "SE114.N19.OS",
+        "Môn học": "Hệ điều hành",
+        "Tín chỉ": 3,
+        "Điểm quá trình": 9,
+        "Điểm thực hành": 8,
+        "Điểm giữa kỳ": 9,
+        "Điểm cuối kỳ": 9,
+        "Điểm tổng kết": 8.8,
+        "Ghi chú": "Đạt",
+      },
+      {
+        STT: "5",
+        "Mã lớp": "SE114.N20.NET",
+        "Môn học": "Lập trình mạng",
+        "Tín chỉ": 4,
+        "Điểm quá trình": 6,
+        "Điểm thực hành": 8,
+        "Điểm giữa kỳ": 7,
+        "Điểm cuối kỳ": 8,
+        "Điểm tổng kết": 7.2,
+        "Ghi chú": "Đạt",
+      },
+    ],
   },
 ];
