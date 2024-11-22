@@ -1539,7 +1539,7 @@ export const mockSubmissionPost = {
 export const mockSubmitExercisePost = {
   score: 9,
   totalScore: 10,
-  feedback: 'Bài làm tốt, nhưng cần lưu ý cách trình bày',
+  feedback: "Bài làm tốt, nhưng cần lưu ý cách trình bày",
   lateTime: "Quá hạn 2 ngày 12 tiếng",
   lastEdited: "Thứ Ba, 17 tháng 8 2024, 10:34 PM",
   submission: "NguyenHoangLinh_21522289.docx",
@@ -1635,3 +1635,33 @@ export const mockReportScheduleOptions = {
     },
   ],
 };
+
+//
+// TODO: Report Schedule Options
+//
+export const mockDataReviewGradeExercise = [
+  {
+    exerciseId: "1",
+    MSSV: "21522289",
+    "Họ và tên": "Nguyễn Hoàng Linh",
+    "Bài nộp": "NguyenHoangLinh_BaiTap.docx",
+    historyGrade: [6, 8],
+    historyFeedback: ["Bài làm sai sót nhiều", "Bài làm khá ổn"],
+  },
+  {
+    exerciseId: "2",
+    MSSV: "21522289",
+    "Họ và tên": "Nguyễn Hoàng Linh",
+    "Bài nộp": "NguyenHoangLinh_BaiTap.docx",
+    historyGrade: [6, 8],
+    historyFeedback: ["Bài làm sai sót nhiều", "Bài làm khá ổn"],
+  },
+  {
+    exerciseId: "3",
+    MSSV: "21522289",
+    "Họ và tên": "Nguyễn Hoàng Linh",
+    "Bài nộp": "NguyenHoangLinh_BaiTap.docx",
+    historyGrade: [6, 8],
+    historyFeedback: ["Bài làm sai sót nhiều", "Bài làm khá ổn"],
+  },
+];

@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
-import { DepartmentCourseTabItems } from "@/constants";
+import { StudentCourseTabItems } from "@/constants";
 import { Dropdown } from "flowbite-react";
 import Image from "next/image";
 
@@ -37,7 +37,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
           pr-[230px]
           "
       >
-        {DepartmentCourseTabItems.map((item) => {
+        {StudentCourseTabItems.map((item) => {
           let isActive;
 
           // TODO: handle cho COURSE ITEM

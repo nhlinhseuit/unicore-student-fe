@@ -2,7 +2,6 @@
 
 import BackToPrev from "@/components/shared/BackToPrev";
 import BigExerciseItem from "@/components/shared/BigExercise/BigExerciseItem";
-import CreateBigExercise from "@/components/shared/BigExercise/CreateBigExercise";
 import IconButton from "@/components/shared/Button/IconButton";
 import { mockBigExercisesList } from "@/mocks";
 import Link from "next/link";
@@ -24,8 +23,6 @@ const BigExercises = () => {
               setIsCreate(false);
             }}
           />
-
-          <CreateBigExercise />
         </>
       ) : (
         <>

@@ -25,6 +25,12 @@ export const AnnouncementTabs = [
   { value: "hidedAnnouncement", label: "Thông báo đã ẩn" },
 ];
 
+export const ReviewTabs = [
+  { value: "completedReviews", label: "Đã phúc khảo" },
+  { value: "waitingReviews", label: "Phúc khảo chờ duyệt" },
+  { value: "approvedReviews", label: "Phúc khảo đã duyệt" },
+];
+
 // TODO: NAVBAR TAB
 export const StudentAnnouncementsTabItems = [
   { value: "listAnnouncements", label: "Danh sách thông báo", route: "/" },
@@ -39,7 +45,7 @@ export const DepartmentSubjectsTabItems = [
   { value: "subjectTypes", label: "Loại môn học", route: "/subjects/types" },
 ];
 
-export const DepartmentCourseTabItems = [
+export const StudentCourseTabItems = [
   { value: "generalPost", label: "Thông báo chung", route: "/" },
   {
     value: "exercises",
@@ -72,6 +78,11 @@ export const DepartmentCourseTabItems = [
     route: "/files",
   },
   {
+    value: "reviews",
+    label: "Phúc khảo",
+    route: "/reviews",
+  },
+  {
     value: "setting",
     label: "Cài đặt",
     route: "/setting",
@@ -83,11 +94,6 @@ export const BigExerciseTabItems = [
     value: "happeningEvent",
     label: "Hoạt động đang diễn ra",
     route: "/happening-event",
-  },
-  {
-    value: "listTopic",
-    label: "Danh sách đề tài",
-    route: "/list-topic",
   },
   {
     value: "registerTopic",

@@ -110,6 +110,7 @@ const Exercises = () => {
         dataTable={mockDataGradingExercise}
       />
 
+          {/* // ! TEST CODE */}
       <p className="mt-10 mb-10 paragraph-semibold">
         [TEST CODE] Báo cáo ngày 29/08/2024
       </p>

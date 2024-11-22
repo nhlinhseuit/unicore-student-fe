@@ -39,41 +39,9 @@ const SubmitExercise = (params: Props) => {
   const [isShowDialogConfirmReview, setIsShowDialogConfirmReview] =
     useState(false);
 
-  // Tạo một reference để liên kết với thẻ input file
-  const fileRef = useRef<HTMLInputElement | null>(null);
-  const handleFileButtonClick = () => {
-    fileRef.current?.click();
-  };
-
-  const { toast } = useToast();
-
-  const handleChangeLinkSubmit = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setLinkSubmit(e.target.value);
-  };
-
-  const handleChooseFile = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files;
-    if (files) {
-      const validFiles = Array.from(files).filter((file) => {
-        if (file.size > MAX_FILE_SIZE) {
-          toast({
-            title: `Kích thước file vượt quá ${MAX_FILE_VALUE}MB.`,
-            description: "Vui lòng chọn file nhỏ hơn.",
-            variant: "error",
-            duration: 3000,
-          });
-          return false;
-        }
-        return true;
-      });
-
-      setSelectedFiles((prevFiles) => [...prevFiles, ...validFiles]);
-    }
-  };
-
   return (
     <>
-      <p className="paragraph-semibold underline ">Nộp bài</p>
+      <p className="paragraph-semibold underline ">Phúc khảo</p>
       <BorderContainer otherClasses="mt-4 p-6 flex flex-col gap-4">
         <div className="flex gap-10">
           <div className="flex flex-col gap-4">
@@ -118,36 +86,6 @@ const SubmitExercise = (params: Props) => {
               <span className="mr-4 text-dark400_light800 text-[14px] font-semibold leading-[20.8px]">
                 File đính kèm
               </span>
-              <>
-                <input
-                  ref={fileRef}
-                  type="file"
-                  accept=".docx, .pdf, .pptx, .xlsx, .xls, .txt, image/*"
-                  multiple
-                  onChange={handleChooseFile}
-                  style={{ display: "none" }}
-                />
-
-                <PickFileImageButton
-                  handleButtonClick={handleFileButtonClick}
-                  icon={"/assets/icons/attach_file.svg"}
-                  alt={"file"}
-                  text="Chọn file"
-                />
-                <span className="mx-4 text-dark400_light800 text-[14px] font-semibold leading-[20.8px]">
-                  /
-                </span>
-                <span className="mr-4 text-dark400_light800 text-[14px] font-semibold leading-[20.8px]">
-                  Điền link bài làm
-                </span>
-                <Input
-                  value={linkSubmit}
-                  onChange={handleChangeLinkSubmit}
-                  name="linkSubmits"
-                  placeholder=" Điền link bài làm..."
-                  className="w-[200px] no-focus paragraph-regular background-light900_dark300 light-border-2 text-dark300_light700 min-h-[46px] border"
-                />
-              </>
             </div>
             <div className="mt-2 flex flex-wrap gap-2">
               {selectedFiles.map((file, index) => (

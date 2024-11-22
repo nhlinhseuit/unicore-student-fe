@@ -82,6 +82,14 @@ export interface GradingExerciseData {
   Điểm: number;
   "Góp ý": string;
 }
+export interface ReviewGradeData {
+  exerciseId: string;
+  MSSV: string;
+  "Họ và tên": string;
+  "Bài nộp": string;
+  historyGrade: number[];
+  historyFeedback: string[];
+}
 
 export interface GradingReportData {
   "Điểm danh": boolean;
