@@ -75,9 +75,7 @@ const ReportPostItem = (params: Props) => {
 
         <Divider />
 
-        <RegisterReportSchedule
-         
-        />
+        <RegisterReportSchedule/>
 
         <Divider />
 

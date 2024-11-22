@@ -36,6 +36,7 @@ const ManageGroup = () => {
   const [isAlreadyRegisteredGroup, setIsAlreadyRegisteredGroup] =
     useState(false);
   const [isShowDialog, setIsShowDialog] = useState(Action.none);
+  
   // ? API: Ban đầu mockTopicRegisterGroupDataTable là thông tin đki nhóm > khi đki thì gọi API và data local giữ nguyên
   const [mockDataState, setMockDataState] = useState(
     mockTopicRegisterGroupDataTable
@@ -117,8 +118,8 @@ const ManageGroup = () => {
               ? "/assets/icons/edit.svg"
               : "/assets/icons/add.svg"
           }
-          iconWidth={16}
-          iconHeight={16}
+          iconWidth={22}
+          iconHeight={22}
           onClick={
             isAlreadyRegisteredGroup
               ? () => setIsShowDialog(Action.edit)

@@ -469,7 +469,8 @@ export const mockPostDataCourseIdPage = [
     typePost: "report",
     creator: "Huỳnh Hồ Thị Mộng Trinh",
     createdAt: "29/8/2024 7:23AM",
-    title: "Đăng ký thứ tự báo cáo đồ án / báo cáo thực hành. Mỗi nhóm có 15p bao gồm trình bày ứng dụng (10p) và hỏi đáp (5p)",
+    title:
+      "Đăng ký thứ tự báo cáo đồ án / báo cáo thực hành. Mỗi nhóm có 15p bao gồm trình bày ứng dụng (10p) và hỏi đáp (5p)",
     fileName: "Requirements.docx",
     comments: [
       {
@@ -1533,6 +1534,16 @@ export const mockSubmissionPost = {
   totalNumber: 62,
   lateTime: "2 ngày 12 tiếng",
   columnGrade: "Quá trình",
+};
+
+export const mockSubmitExercisePost = {
+  score: 9,
+  totalScore: 10,
+  feedback: 'Bài làm tốt, nhưng cần lưu ý cách trình bày',
+  lateTime: "Quá hạn 2 ngày 12 tiếng",
+  lastEdited: "Thứ Ba, 17 tháng 8 2024, 10:34 PM",
+  submission: "NguyenHoangLinh_21522289.docx",
+  review: "Đang phúc khảo",
 };
 
 //

@@ -65,7 +65,7 @@ const StatusButton = (params: StatusButtonProps) => {
     >
       <span
         title="text"
-        className={`flex-grow pl-2 pr-2 text-center ${
+        className={`flex-grow pl-2 text-center ${
           params.smallText ? "text-[12px]" : ""
         }`}
       >
@@ -80,7 +80,11 @@ const StatusButton = (params: StatusButtonProps) => {
           className="bg-[#1e1e1e] text-white text-[12px] py-1"
         >
           <Image
-            src="/assets/icons/info.svg"
+            src={
+              params.orange || params.green
+                ? "/assets/icons/info-white.svg"
+                : "/assets/icons/info.svg"
+            }
             alt="info"
             width={18}
             height={18}
