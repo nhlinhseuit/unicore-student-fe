@@ -209,23 +209,29 @@ export const sidebarStudentLinks: SidebarLink[] = [
   {
     id: "3",
     imgURL: "/assets/icons/star.svg",
+    route: "/score-transcript",
+    label: "Bảng điểm",
+  },
+  {
+    id: "4",
+    imgURL: "/assets/icons/star.svg",
     route: "/timetable",
     label: "Lịch biểu",
   },
   {
-    id: "4",
+    id: "5",
     imgURL: "/assets/icons/suitcase.svg",
     route: "/messages",
     label: "Tin nhắn",
   },
   {
-    id: "5",
+    id: "6",
     imgURL: "/assets/icons/user.svg",
     route: "/bookmarks",
     label: "Dấu trang",
   },
   {
-    id: "6",
+    id: "7",
     imgURL: "/assets/icons/user.svg",
     route: "/setting",
     label: "Cài đặt",

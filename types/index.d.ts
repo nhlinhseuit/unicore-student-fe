@@ -112,6 +112,12 @@ export interface ScoreTranscriptData {
   "Cuối kỳ": number;
   "Điểm trung bình": number;
 }
+export interface ScoreTranscriptDataCourse {
+  "Quá trình": number;
+  "Giữa kỳ": number;
+  "Cuối kỳ": number;
+  "Điểm trung bình": number;
+}
 
 export interface SubjectData {
   "Khoa QL": string;

@@ -640,6 +640,16 @@ export const mockDataScoreTranscript = [
 ];
 
 //
+// TODO: Score Transcript 1 Course
+//
+export const mockDataScoreTranscriptCourse = {
+  "Quá trình": 9,
+  "Giữa kỳ": 8,
+  "Cuối kỳ": 10,
+  "Điểm trung bình": 8,
+}
+
+//
 // TODO: Score Transcript
 //
 export const mockFileDataTable = [
