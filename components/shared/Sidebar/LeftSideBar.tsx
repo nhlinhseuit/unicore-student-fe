@@ -1,18 +1,21 @@
 "use client";
 
+import MyAccount from "@/components/shared/MyAccount";
 import { Button } from "@/components/ui/button";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { StudentCoursesTabItems, sidebarStudentLinks } from "@/constants";
+import { mockNotiLists } from "@/mocks";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Fragment } from "react";
-import IconButton from "../Button/IconButton";
-import {
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-} from "@/components/ui/popover";
-import MyAccount from "@/components/shared/MyAccount";
+import Divider from "../Divider";
+import NotiItem from "../NotiItem";
+import UnreadContainer from "../UnreadContainer";
 
 const LeftSideBar = () => {
   const pathName = usePathname();
@@ -66,11 +69,11 @@ const LeftSideBar = () => {
     shadow-light-300
     dark:shadow-none
     custom-scrollbar
-    
+
     "
     >
       {/* LOGO */}
-      <div className="px-6 mb-2 ml-2">
+      <div className="px-4 mb-2 ml-2">
         <Link href="/" className="flex items-center gap-1">
           <Image
             src={"/assets/images/site-logo.svg"}
@@ -87,7 +90,7 @@ const LeftSideBar = () => {
 
       {/* <div className="h-[1px] mx-4 bg-[#ECECEC]"></div> */}
 
-      <div className="flex flex-col h-full gap-4 px-6 mt-6 ">
+      <div className="flex flex-col h-full gap-4 px-4 mt-6 ">
         {/* ITEM */}
         {sidebarStudentLinks.map((item, index) => {
           let isActive;
@@ -128,7 +131,7 @@ const LeftSideBar = () => {
                       className={`${isActive ? "" : "invert-colors"}`}
                     />
                     <p
-                      className={`${isActive ? "base-bold" : "base-medium"} 
+                      className={`${isActive ? "normal-bold" : "normal-medium"} 
                       max-lg:hidden
                   `}
                     >
@@ -164,7 +167,7 @@ const LeftSideBar = () => {
                     className={`${isActive ? "" : "invert-colors"}`}
                   />
                   <p
-                    className={`${isActive ? "base-bold" : "base-medium"} 
+                    className={`${isActive ? "normal-bold" : "normal-medium"} 
                 max-lg:hidden
             `}
                   >
@@ -178,41 +181,64 @@ const LeftSideBar = () => {
       </div>
 
       {isLoggedIn ? (
-        <div className="flex gap-2">
+        <div className="mb-2 px-2 flex gap-2 items-center justify-between">
           <MyAccount textAvatar="HL" name="Nguyễn Hoàng Linh" />
 
           <Popover>
             <PopoverTrigger className="p-2">
-              <Image
-                src="/assets/icons/noti-white.svg"
-                width={20}
-                height={20}
-                alt="noti"
-                color="text-white"
-              />
+              <div className="relative bg-primary-500 rounded-full p-2 w-[30px] h-[30px] flex justify-center items-center">
+                <Image
+                  src="/assets/icons/noti-white.svg"
+                  width={14}
+                  height={14}
+                  alt="noti"
+                />
+
+                <UnreadContainer unread={1} />
+              </div>
             </PopoverTrigger>
 
             <PopoverContent
-              className="w-[300px] bg-white shadow-lg rounded-lg p-4"
+              className="
+                w-[calc((100vw-200px)*0.6)]
+                bg-white 
+                shadow-2xl
+                rounded-xl 
+                overflow-y-auto 
+                h-[calc(100vh-60px)]
+                scroll-container
+              "
               side="right"
               align="end"
-              sideOffset={10}
+              sideOffset={20}
             >
               <div>
-                <p className="font-bold">
-                  Yêu cầu phúc khảo của bạn đã được duyệt
+                <p className="small-regular cursor-pointer flex justify-end">
+                  Đánh dấu đã đọc tất cả
                 </p>
-                <p className="text-sm text-gray-600">
-                  Bấm vào thông báo này để xem bài tập của bạn sau khi được phúc
-                  khảo bởi GV Huỳnh Hồ Thị Mộng Trinh.
-                </p>
-                <button className="mt-4 btn btn-primary">Xem chi tiết</button>
+                <Divider otherClasses="mt-2 mb-4 !h-[1.3px] !bg-gray-200" />
+                {mockNotiLists.map((noti, index) => (
+                  <>
+                    <NotiItem
+                      key={noti._id}
+                      _id={noti._id}
+                      title={noti.title}
+                      description={noti.description}
+                      tags={noti.tags}
+                      createdAt={noti.createdAt}
+                    />
+
+                    {index !== mockNotiLists.length - 1 ? (
+                      <Divider otherClasses="mt-2 mb-2 !h-[1.3px] !bg-gray-200" />
+                    ) : null}
+                  </>
+                ))}
               </div>
             </PopoverContent>
           </Popover>
         </div>
       ) : (
-        <div className="flex flex-col gap-3 mx-6 mt-6 mb-6 ">
+        <div className="absolute bottom-0 flex flex-col gap-3 mx-6 mt-6 mb-6 ">
           {/* <SignedOut>
         </SignedOut> */}
           <Link

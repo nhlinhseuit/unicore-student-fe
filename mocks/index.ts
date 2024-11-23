@@ -2150,3 +2150,64 @@ export const mockDataScoreTranscriptStudent = [
     ],
   },
 ];
+
+//
+//// TODO: Annoucements List
+//
+export const mockNotiLists = [
+  {
+    _id: "1",
+    title: "Yêu cầu phúc khảo của bạn đã được duyệt",
+    description:
+      "Bấm vào thông báo này để xem bài tập của bạn sau khi được phúc khảo bởi GV Huỳnh Hồ Thị Mộng Trinh",
+    tags: [
+      { _id: "1", name: "Thông báo học vụ" },
+      { _id: "2", name: "Phúc khảo" },
+    ],
+    createdAt: "T2, 22/07/2024 - 09:45",
+  },
+  {
+    _id: "2",
+    title: "Yêu cầu phúc khảo của bạn đã được duyệt",
+    description:
+      "Bấm vào thông báo này để xem bài tập của bạn sau khi được phúc khảo bởi GV Huỳnh Hồ Thị Mộng Trinh",
+    tags: [
+      { _id: "1", name: "Thông báo học vụ" },
+      { _id: "2", name: "Phúc khảo" },
+    ],
+    createdAt: "T2, 22/07/2024 - 09:45",
+  },
+  {
+    _id: "3",
+    title: "Yêu cầu phúc khảo của bạn đã được duyệt",
+    description:
+      "Bấm vào thông báo này để xem bài tập của bạn sau khi được phúc khảo bởi GV Huỳnh Hồ Thị Mộng Trinh",
+    tags: [
+      { _id: "1", name: "Thông báo học vụ" },
+      { _id: "2", name: "Phúc khảo" },
+    ],
+    createdAt: "T2, 22/07/2024 - 09:45",
+  },
+  {
+    _id: "4",
+    title: "Yêu cầu phúc khảo của bạn đã được duyệt",
+    description:
+      "Bấm vào thông báo này để xem bài tập của bạn sau khi được phúc khảo bởi GV Huỳnh Hồ Thị Mộng Trinh",
+    tags: [
+      { _id: "1", name: "Thông báo học vụ" },
+      { _id: "2", name: "Phúc khảo" },
+    ],
+    createdAt: "T2, 22/07/2024 - 09:45",
+  },
+  {
+    _id: "5",
+    title: "Yêu cầu phúc khảo của bạn đã được duyệt",
+    description:
+      "Bấm vào thông báo này để xem bài tập của bạn sau khi được phúc khảo bởi GV Huỳnh Hồ Thị Mộng Trinh",
+    tags: [
+      { _id: "1", name: "Thông báo học vụ" },
+      { _id: "2", name: "Phúc khảo" },
+    ],
+    createdAt: "T2, 22/07/2024 - 09:45",
+  },
+];

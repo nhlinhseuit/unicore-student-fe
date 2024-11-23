@@ -6,12 +6,17 @@ interface Props {
   name: string;
 }
 
+const getLastTwoWords = (name: string) => {
+  const words = name.trim().split(" ");
+  return words.slice(-2).join(" ");
+};
+
 const MyAccount = (params: Props) => {
   return (
-    <div className="flex pl-2 gap-4 ">
+    <div className="flex pl-2 gap-4 items-center">
       <SmallAvatar text={params.textAvatar} />
       <div>
-        <p className="small-regular">{params.name}</p>
+        <p className="body-regular">{getLastTwoWords(params.name)}</p>
       </div>
     </div>
   );
