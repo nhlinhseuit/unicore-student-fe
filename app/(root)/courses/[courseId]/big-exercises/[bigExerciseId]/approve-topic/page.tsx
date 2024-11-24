@@ -1,9 +1,9 @@
 "use client";
 
 import React from "react";
-import RegisterTopicTable from "@/components/shared/Table/TableRegisterTopic/RegisterTopicTable";
 import IconButton from "@/components/shared/Button/IconButton";
 import { RegisterTopicTableType } from "@/constants";
+import RegisterTopicTable from "../register-topic/RegisterTopicTable";
 
 const ApproveTopic = () => {
   const mockDataStudentRegisterTopic = [
