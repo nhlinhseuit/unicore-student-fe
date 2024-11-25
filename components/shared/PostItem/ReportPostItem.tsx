@@ -8,6 +8,7 @@ import OtherComment from "../../courses/OtherComment";
 import RenderFile from "../Annoucements/RenderFile";
 import StatusButton from "../Button/StatusButton";
 import Divider from "../Divider";
+import CheckAttendance from "@/components/courses/CheckAttendance";
 
 interface Comment {
   id: string;
@@ -75,7 +76,12 @@ const ReportPostItem = (params: Props) => {
 
         <Divider />
 
+        <div className="mb-12">
+          <CheckAttendance />
+        </div>
+
         <RegisterReportSchedule />
+
 
         <Divider />
 

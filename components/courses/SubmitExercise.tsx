@@ -41,7 +41,7 @@ const SubmitExercise = (params: Props) => {
 
   return (
     <>
-      <p className="paragraph-semibold underline ">Phúc khảo</p>
+      <p className="paragraph-semibold underline ">Bài nộp</p>
       <BorderContainer otherClasses="mt-4 p-6 flex flex-col gap-4">
         <div className="flex gap-10">
           <div className="flex flex-col gap-4">

@@ -35,11 +35,19 @@ const RegisterReportSchedule = (params: Props) => {
     ? CheckboxComponent
     : RadioboxComponent;
 
+  const itemsToRender = isEditing
+    ? mockReportScheduleOptions.data // Hiển thị tất cả khi đang chỉnh sửa
+    : mockReportScheduleOptions.data.filter((item) =>
+        mockReportScheduleOptions.setting.multipleSelect
+          ? Array.isArray(selectedOption) && selectedOption.includes(item.id)
+          : selectedOption === item.id
+      ); // Hiển thị mục được chọn khi không chỉnh sửa
+
   return (
     <>
-      <p className="paragraph-semibold underline ">Đăng ký thứ tự báo cáo</p>
+      <p className="paragraph-semibold underline">Đăng ký thứ tự báo cáo</p>
       <BorderContainer otherClasses="mt-4 p-6 flex flex-col gap-4">
-        {mockReportScheduleOptions.data.map((item, index) => (
+        {itemsToRender.map((item, index) => (
           <BoxComponent
             key={index}
             id={item.id}

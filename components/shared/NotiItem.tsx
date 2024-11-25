@@ -18,25 +18,27 @@ interface Props {
 
 const NotiItem = ({ _id, title, description, tags, createdAt }: Props) => {
   return (
-    <div className="relative flex w-full gap-8 py-2 px-2 hover:bg-gray-100 rounded-md cursor-pointer">
+    <div className="relative flex w-full gap-12 py-2 px-2 hover:bg-gray-100 rounded-md cursor-pointer">
       {/* MORE */}
       <div className="z-50 cursor-pointer hover:bg-white absolute right-2 bg-transparent border border-gray-400 rounded-full p-2 w-[30px] h-[30px] flex justify-center items-center">
-        <MoreButtonComponent handleEdit={() => {}} />
+        <MoreButtonComponent handleEdit={() => { }} />
       </div>
 
       {/* IMAGE */}
-      <div className="w-[15%]">
+      <div className="w-[10%]">
         <Image
-          src={"/assets/images/uit-icon.svg"}
-          width={12}
-          height={12}
-          alt={"noti"}
-          className={`w-full object-contain`}
+          src="/assets/images/uit-icon.svg"
+          width={30} // Đặt kích thước cố định
+          height={30}
+          alt="noti"
+          layout="fixed"
+          className="ml-3 w-full object-contain"
         />
+
       </div>
 
       {/* CONTENT */}
-      <div className="w-[85%] flex items-start justify-between sm:flex-row">
+      <div className="w-[80%] flex items-start justify-between sm:flex-row">
         <div>
           <Link href={`/announcements/${_id}`}>
             <p className="normal-semibold text-[#1F86E8] line-clamp-1 underline flex-1">
