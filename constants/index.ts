@@ -1,6 +1,8 @@
 import { SidebarLink } from "@/types";
 
 export const itemsPerPage = 30;
+export const maxStudentPerGroup = 5;
+export const minStudentPerGroup = 2;
 export const itemsPerPageRegisterTable = 10;
 export const itemsPerPageTopicTable = 20;
 export const MAX_FILE_VALUE = 25; // 25MB
@@ -45,6 +47,10 @@ export const StudentAnnouncementsTabItems = [
 
 export const StudentCoursesTabItems = [
   { value: "listCourses", label: "Danh sách lớp học", route: "/courses" },
+];
+
+export const StudentSettingTabItems = [
+  { value: "settingNoti", label: "Tin tức - thông báo", route: "/setting" },
 ];
 
 export const DepartmentSubjectsTabItems = [
@@ -245,7 +251,7 @@ export const sidebarStudentLinks: SidebarLink[] = [
   },
   {
     id: "4",
-    imgURL: "/assets/icons/star.svg",
+    imgURL: "/assets/icons/user.svg",
     route: "/timetable",
     label: "Lịch biểu",
   },

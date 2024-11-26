@@ -180,35 +180,7 @@ const page = () => {
           </Dropdown>
         </div>
 
-        {/* Create announcement */}
-        <div>
-          <Dropdown
-            className="z-30 rounded-lg"
-            label=""
-            dismissOnClick={false}
-            renderTrigger={() => (
-              <div className="w-full">
-                <div>
-                  <IconButton
-                    text="Tạo thông báo"
-                    iconLeft="/assets/icons/add.svg"
-                  />
-                </div>
-              </div>
-            )}
-          >
-            <div className="w-full">
-              {AnnouncementTypes.map((item) => (
-                <Link
-                  key={`${pathName}${item.route}`}
-                  href={`${pathName}${item.route}`}
-                >
-                  <Dropdown.Item>{item.label}</Dropdown.Item>
-                </Link>
-              ))}
-            </div>
-          </Dropdown>
-        </div>
+        
       </div>
       {/* AnnouncementTabs */}
       <div className="flex gap-2">

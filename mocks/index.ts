@@ -150,7 +150,7 @@ export const mockAnnouncementDetailLists = [
 ];
 
 //
-//// TODO: Exercises
+//// TODO: CategoryList
 //
 export const mockCategoryList = [
   { id: 1, value: "Thông báo - tin tức" },
@@ -162,6 +162,18 @@ export const mockCategoryList = [
   { id: 7, value: "Thông báo - tin tức" },
   { id: 8, value: "Khoa học - Công nghệ" },
   { id: 9, value: "Sự kiện nổi bật" },
+];
+
+//
+//// TODO: NotiTypeList
+//
+export const mockNotiTypeList = [
+  { id: 1, value: "Phúc khảo" },
+  { id: 2, value: "Bài tập" },
+  { id: 3, value: "Báo cáo đồ án" },
+  { id: 4, value: "Điểm bài làm" },
+  { id: 5, value: "Duyệt đề tài" },
+  { id: 6, value: "Tin nhắn" },
 ];
 
 //
@@ -1432,7 +1444,6 @@ export const mockTopicRegisterGroupDataTable = [
     STT: "1",
     data: {
       MSSV: "",
-      SĐT: "",
       "Họ và tên": "",
     },
   },
