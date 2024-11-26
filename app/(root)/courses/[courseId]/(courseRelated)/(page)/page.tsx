@@ -49,9 +49,6 @@ const page = () => {
             title={item.title}
             fileName={item.fileName}
             comments={item.comments}
-            setGrading={() => {
-              // setIsGrading(true);
-            }}
           />
         );
       case "announcement":
