@@ -54,7 +54,6 @@ export interface RegisterTopicData {
 }
 export interface TopicRegisterGroupData {
   MSSV: string;
-  SĐT: string;
   "Họ và tên": string;
 }
 

@@ -1,14 +1,12 @@
-import { Table } from "flowbite-react";
-import React, { useEffect, useRef } from "react";
-import { useState } from "react";
 import {
   CourseData,
-  SubjectData,
-  StudentData,
-  TeacherData,
-  TeacherDataItem,
   RegisterGroupDataItem,
+  StudentData,
+  SubjectData,
+  TeacherData
 } from "@/types";
+import { Table } from "flowbite-react";
+import React, { useEffect, useRef, useState } from "react";
 import IconButton from "../../Button/IconButton";
 import InputComponent from "../components/InputComponent";
 import MoreButtonComponent from "../components/MoreButtonComponent";
