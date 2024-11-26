@@ -1,12 +1,8 @@
 import { useRef, useState } from "react";
-import BorderContainer from "../shared/BorderContainer";
-import IconButton from "../shared/Button/IconButton";
-import PickFileImageButton from "../shared/Annoucements/PickFileImageButton";
-import { useToast } from "@/hooks/use-toast";
-import { MAX_FILE_SIZE, MAX_FILE_VALUE } from "@/constants";
-import { Input } from "../ui/input";
 import ClosedButton from "../shared/Annoucements/ClosedButton";
 import RenderFile from "../shared/Annoucements/RenderFile";
+import BorderContainer from "../shared/BorderContainer";
+import IconButton from "../shared/Button/IconButton";
 
 import {
   AlertDialog,
@@ -18,9 +14,12 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { useToast } from "@/hooks/use-toast";
+import { MAX_FILE_SIZE, MAX_FILE_VALUE } from "@/constants";
+import PickFileImageButton from "../shared/Annoucements/PickFileImageButton";
+import { Input } from "../ui/input";
 
 interface Props {
-  onClickBack: () => void;
   score: number;
   totalScore: number;
   feedback: string;
@@ -34,10 +33,43 @@ const SubmitExercise = (params: Props) => {
   const [isAlreadySubmit, setIsAlreadySubmit] = useState(false);
   const [isEditting, setIsEditting] = useState(false);
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
-  const [linkSubmit, setLinkSubmit] = useState("");
 
   const [isShowDialogConfirmReview, setIsShowDialogConfirmReview] =
     useState(false);
+
+  const { toast } = useToast();
+
+  const fileRef = useRef<HTMLInputElement | null>(null);
+  const handleFileButtonClick = () => {
+    fileRef.current?.click();
+  };
+
+  const handleChooseFile = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (files) {
+      const validFiles = Array.from(files).filter((file) => {
+        if (file.size > MAX_FILE_SIZE) {
+          toast({
+            title: `Kích thước file vượt quá ${MAX_FILE_VALUE}MB.`,
+            description: "Vui lòng chọn file nhỏ hơn.",
+            variant: "error",
+            duration: 3000,
+          });
+          return false;
+        }
+        return true;
+      });
+
+      setSelectedFiles((prevFiles) => [...prevFiles, ...validFiles]);
+    }
+  };
+
+  const linkSubmit = useRef<HTMLInputElement>(null);
+  const updateStudentId = (value: string) => {
+    if (linkSubmit.current) {
+      linkSubmit.current.value = value;
+    }
+  };
 
   return (
     <>
@@ -83,9 +115,40 @@ const SubmitExercise = (params: Props) => {
         <>
           <BorderContainer otherClasses="mt-4 p-6 flex flex-col gap-4">
             <div className="flex items-center">
-              <span className="mr-4 text-dark400_light800 text-[14px] font-semibold leading-[20.8px]">
+              <span className="mr-4 text-dark400_light800 text-[14px] font-semibold leading-[20.8px] whitespace-nowrap">
                 File đính kèm
               </span>
+              <>
+                <input
+                  ref={fileRef}
+                  type="file"
+                  accept=".docx, .pdf, .pptx, .xlsx, .xls, .txt, image/*"
+                  multiple
+                  onChange={handleChooseFile}
+                  style={{ display: "none" }}
+                />
+
+                <PickFileImageButton
+                  handleButtonClick={handleFileButtonClick}
+                  icon={"/assets/icons/attach_file.svg"}
+                  alt={"file"}
+                  text="Chọn file"
+                />
+              </>
+              <span className="ml-6 mr-6 text-dark400_light800 text-[14px] font-semibold leading-[20.8px]">
+                /
+              </span>
+              <span className="mr-4 text-dark400_light800 text-[14px] font-semibold leading-[20.8px]">
+                Điền link drive
+              </span>
+              <div>
+                <Input
+                  ref={linkSubmit}
+                  name="linkSubmit"
+                  placeholder={"Điền link..."}
+                  className="no-focus paragraph-regular background-light900_dark300 light-border-2 text-dark300_light700 min-h-[46px] border"
+                />
+              </div>
             </div>
             <div className="mt-2 flex flex-wrap gap-2">
               {selectedFiles.map((file, index) => (

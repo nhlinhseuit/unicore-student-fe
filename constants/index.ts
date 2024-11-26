@@ -138,9 +138,9 @@ export const BigExerciseTabItems = [
     route: "/register-topic",
   },
   {
-    value: "approveTopic",
-    label: "Duyệt đề xuất đề tài",
-    route: "/approve-topic",
+    value: "reviews",
+    label: "Phúc khảo",
+    route: "/reviews",
   },
   {
     value: "files",

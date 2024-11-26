@@ -22,7 +22,7 @@ interface handleInputChangeParams {
   isCheckbox?: boolean;
 }
 
-const RowGradingGroupTable = React.memo(
+const RowScoreTranscriptTable = React.memo(
   (params: RowParams) => {
     const [isEdit, setIsEdit] = useState(false);
     const [editDataItem, setEditDataItem] = useState(params.dataItem);
@@ -105,7 +105,7 @@ const RowGradingGroupTable = React.memo(
     );
   },
   (prevProps, nextProps) => {
-    // Kiểm tra nếu `dataItem` của RowGradingGroupTable không thay đổi thì không cần re-render
+    // Kiểm tra nếu `dataItem` của RowScoreTranscriptTable không thay đổi thì không cần re-render
     return (
       prevProps.dataItem === nextProps.dataItem &&
       prevProps.isEditTable === nextProps.isEditTable &&
@@ -114,4 +114,4 @@ const RowGradingGroupTable = React.memo(
   }
 );
 
-export default RowGradingGroupTable;
+export default RowScoreTranscriptTable;

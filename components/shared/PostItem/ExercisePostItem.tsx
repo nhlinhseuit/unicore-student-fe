@@ -22,7 +22,6 @@ interface Props {
   title: string;
   fileName: string;
   comments: Comment[];
-  setGrading: () => void;
 }
 
 const ExercisePostItem = (params: Props) => {
@@ -76,7 +75,6 @@ const ExercisePostItem = (params: Props) => {
         <Divider />
 
         <SubmitExercise
-          onClickBack={params.setGrading}
           score={mockSubmitExercisePost.score}
           totalScore={mockSubmitExercisePost.totalScore}
           feedback={mockSubmitExercisePost.feedback}

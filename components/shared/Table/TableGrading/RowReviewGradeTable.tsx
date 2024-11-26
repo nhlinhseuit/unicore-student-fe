@@ -37,7 +37,7 @@ interface handleInputChangeParams {
   isCheckbox?: boolean;
 }
 
-const RowGradingGroupTable = React.memo(
+const RowReviewGradeTable = React.memo(
   (params: RowParams) => {
     const [isEdit, setIsEdit] = useState(false);
     const [editDataItem, setEditDataItem] = useState(params.dataItem);
@@ -152,7 +152,7 @@ const RowGradingGroupTable = React.memo(
         <Table.Cell className="w-10 border-r-[1px] z-100 ">
           <div
             onClick={(e) => {
-              e.stopPropagation(); // Ngăn sự kiện lan truyền đến Table.RowGradingGroupTable
+              e.stopPropagation(); // Ngăn sự kiện lan truyền đến Table.RowReviewGradeTable
             }}
           >
             {params.isMultipleDelete ? (
@@ -231,7 +231,7 @@ const RowGradingGroupTable = React.memo(
     );
   },
   (prevProps, nextProps) => {
-    // Kiểm tra nếu `dataItem` của RowGradingGroupTable không thay đổi thì không cần re-render
+    // Kiểm tra nếu `dataItem` của RowReviewGradeTable không thay đổi thì không cần re-render
     return (
       prevProps.dataItem === nextProps.dataItem &&
       prevProps.isEditTable === nextProps.isEditTable &&
@@ -240,4 +240,4 @@ const RowGradingGroupTable = React.memo(
   }
 );
 
-export default RowGradingGroupTable;
+export default RowReviewGradeTable;

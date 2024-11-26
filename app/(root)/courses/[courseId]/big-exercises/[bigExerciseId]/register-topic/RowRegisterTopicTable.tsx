@@ -129,12 +129,12 @@ const RowRegisterTopicTable = React.memo(
           </div>
         </Table.Cell>
 
-        {/* STT */}
+        {/* STT - Là STT của nhóm */}
         {params.isMemberOfAboveGroup ? (
           <Table.Cell className="w-10 border-r-[1px]  text-left"></Table.Cell>
         ) : (
           <Table.Cell className="w-10 border-r-[1px]  text-left">
-            <span>{params.dataItem.STT}</span>
+            <span>{params.dataItem.data["Mã nhóm"]}</span>
           </Table.Cell>
         )}
 
@@ -142,13 +142,12 @@ const RowRegisterTopicTable = React.memo(
         {Object.entries(params.dataItem.data).map(([key, value]) => {
           let keyId = params.dataItem.data["Tên nhóm"];
 
-          if (
-            params.isMemberOfAboveGroup &&
-            (key === "Mã nhóm" || key === "Tên nhóm")
-          )
+          if (params.isMemberOfAboveGroup && key === "Tên nhóm")
             return (
               <Table.Cell className="w-10 border-r-[1px]  text-left"></Table.Cell>
             );
+
+          if (key === "Mã nhóm") return null;
 
           return (
             <Table.Cell

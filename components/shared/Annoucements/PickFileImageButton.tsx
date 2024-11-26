@@ -13,7 +13,7 @@ const PickFilePhotoButton = (params: PickFilePhotoButtonProps) => {
   return (
     <Button
       onClick={params.handleButtonClick}
-      className="pr-4 no-focus paragraph-regular background-light900_dark300 light-border-2 text-dark300_light700 border"
+      className="pr-4 no-focus paragraph-regular background-light900_dark300 light-border-2 text-dark300_light700 border whitespace-nowrap"
     >
       <Image
         src={params.icon}
