@@ -257,18 +257,21 @@ const ManageGroup = () => {
                     )}
                   />
 
+                  {/* Danh sách thành viên nhóm */}
                   <FormField
                     control={form.control}
                     name="studentList"
                     render={({ field }) => (
                       <FormItem className="flex w-full flex-col">
                         <FormLabel className="text-dark400_light800 text-[14px] font-semibold leading-[20.8px]">
-                          Danh sách thành viên nhóm
+                          Danh sách thành viên nhóm <span className="text-red-600">*</span>
                         </FormLabel>
                         <FormDescription className="body-regular mt-2.5 text-light-500">
                           Nhóm trưởng điền tên đầu tiên. Thành viên nhóm phải là
                           sinh viên của lớp hiện tại.
                         </FormDescription>
+
+                        {/* //!: API setting của lớp học để hiển thị cái này */}
                         <FormDescription className="body-regular mt-2.5 text-light-500">
                           Hoặc thành viên nhóm có thể là sinh viên khác lớp,
                           nhưng phải cùng giảng viên giảng dạy và cùng môn học.

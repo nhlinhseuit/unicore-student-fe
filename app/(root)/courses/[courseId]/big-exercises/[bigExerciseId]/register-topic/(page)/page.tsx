@@ -3,13 +3,11 @@
 import IconButton from "@/components/shared/Button/IconButton";
 import {
   mockDataStudentRegisterTopic,
+  mockDbStudent,
   mockTeacherGradingList,
-  mockTopicRegisterGroupDataTable,
 } from "@/mocks";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
-import MiniButton from "@/components/shared/Button/MiniButton";
-import TopicRegisterGroupDataTable from "@/components/shared/Table/TableRegisterStudent/TopicRegisterGroupDataTable";
 import {
   AlertDialog,
   AlertDialogContent,
@@ -29,7 +27,12 @@ import { Dropdown } from "flowbite-react";
 
 import TableSearch from "@/components/shared/Search/TableSearch";
 import ErrorComponent from "@/components/shared/Status/ErrorComponent";
-import { Action, RegisterTopicTableType } from "@/constants";
+import {
+  Action,
+  maxStudentPerGroup,
+  minStudentPerGroup,
+  RegisterTopicTableType,
+} from "@/constants";
 import { toast } from "@/hooks/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AlertDialogTitle } from "@radix-ui/react-alert-dialog";
@@ -38,8 +41,106 @@ import { useForm, UseFormReturn } from "react-hook-form";
 import { z } from "zod";
 import { sSelectedTopic } from "../(store)/createReportStore";
 import RegisterTopicTable from "../RegisterTopicTable";
+import BorderContainer from "@/components/shared/BorderContainer";
+import StudentItem from "@/components/shared/StudentItem";
+import { usePathname } from "next/navigation";
+import Student from "@/types/entity/Student";
 
 const RegisterTopic = () => {
+  // Update biến: Danh sách thành viên nhóm
+
+  const pathName = usePathname();
+  const courseId = pathName.split("/")[2];
+
+  const [selectedStudents, setSelectedStudents] = useState<Student[]>([]);
+
+  const studentIdRef = useRef<HTMLInputElement>(null);
+  const updateStudentId = (value: string) => {
+    if (studentIdRef.current) {
+      studentIdRef.current.value = value;
+    }
+  };
+
+  const [suggestion, setSuggestion] = useState(false);
+  const [placeholder, setPlaceholder] = useState("Nhập mã số sinh viên");
+  const debounceRef = useRef<NodeJS.Timeout | null>(null);
+
+  const ref = useRef<HTMLDivElement>(null);
+
+  //!: API trả về có kq
+
+  const isHasStudentInDb = () => {
+    if (studentIdRef.current) {
+      return mockDbStudent.find(
+        (item) => item.id === studentIdRef.current!.value
+      );
+    }
+  };
+
+  //!: API check xem sinh viên có thỏa điều kiện sinh viên khác lớp, nhưng phải cùng giảng viên giảng dạy và cùng môn học?
+
+  const isStudentAbleToBeMemberGroup = () => {
+    for (const student of selectedStudents) {
+      if (student.class === "SE502.N25") return false;
+    }
+    return true;
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    updateStudentId(value);
+
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current);
+    }
+
+    debounceRef.current = setTimeout(() => {
+      if (isHasStudentInDb()) {
+        setSuggestion(true);
+      } else {
+        setSuggestion(false);
+      }
+    }, 300);
+  };
+
+  const handleSuggestionClick = () => {
+    if (studentIdRef.current) {
+      if (
+        selectedStudents.some((item) => item.id === studentIdRef.current!.value)
+      ) {
+        setSuggestion(false);
+        updateStudentId("");
+        return;
+      }
+    }
+
+    setSelectedStudents((prev) => [...prev, isHasStudentInDb()!]);
+    setSuggestion(false);
+    updateStudentId("");
+  };
+
+  const handleFocus = () => {
+    if (isHasStudentInDb()) {
+      setSuggestion(true); // Hiển thị gợi ý nếu khớp
+    } else {
+      setSuggestion(false); // Ẩn gợi ý nếu không khớp
+    }
+  };
+
+  const handleClickOutside = (e: MouseEvent) => {
+    if (ref.current && !ref.current.contains(e.target as Node)) {
+      setSuggestion(false); // Tắt suggestion khi click ra ngoài
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  //
   const [errorMessages, setErrorMessages] = useState<string[]>([
     "MSSV 21522289 - Nguyễn Hoàng Linh xuất hiện ở 2 nhóm STT 1 và STT 2",
   ]);
@@ -56,44 +157,61 @@ const RegisterTopic = () => {
 
   const selectedTopic = sSelectedTopic.use();
 
-  // ? API: Ban đầu mockTopicRegisterGroupDataTable là thông tin đki nhóm > khi đki thì gọi API và data local giữ nguyên
-  const [mockDataState, setMockDataState] = useState(
-    mockTopicRegisterGroupDataTable
-  );
-
-  const mockDataRef = useRef(mockDataState);
-
-  const updateMockDataRef = (newData: any) => {
-    mockDataRef.current = newData;
-  };
-
   const getRegisterdTopicName = () => {
     return mockDataStudentRegisterTopic.find(
       (item) => item.data["Tên đề tài"] === selectedTopic
     )?.data["Tên đề tài"];
   };
 
-  const RegisterTopicSchema = z.object({
-    nameGroup: z
-      .string()
-      .min(1, { message: "Bạn phải điền tên nhóm" })
-      .max(100, { message: "Tên nhóm chứa tối đa 100 ký tự" }),
-  });
+  const RegisterTopicSchema = z
+    .object({
+      nameGroup: z
+        .string()
+        .min(1, { message: "Bạn phải điền tên nhóm" })
+        .max(100, { message: "Tên nhóm chứa tối đa 100 ký tự" }),
+      studentList: z.string().optional(),
+    })
+    .refine(() => selectedStudents.length >= minStudentPerGroup, {
+      message: `Nhóm phải có ít nhất ${minStudentPerGroup} thành viên.`,
+      path: ["studentList"],
+    })
+    .refine(() => selectedStudents.length <= maxStudentPerGroup, {
+      message: `Nhóm chỉ được phép tối đa ${maxStudentPerGroup} thành viên.`,
+      path: ["studentList"],
+    })
+    .refine(() => isStudentAbleToBeMemberGroup(), {
+      message: `Thành viên nhóm có thể là sinh viên khác lớp, nhưng phải cùng giảng viên giảng dạy và cùng môn học.`,
+      path: ["studentList"],
+    });
 
-  const SuggestTopicSchema = z.object({
-    title: z
-      .string()
-      .min(5, { message: "Tên đề tài phải chứa ít nhất 5 ký tự" })
-      .max(130),
-    description: z
-      .string()
-      .min(20, { message: "Nội dung đề tài phải chứa ít nhất 20 ký tự" }),
-    nameGroup: z
-      .string()
-      .min(1, { message: "Bạn phải điền tên nhóm" })
-      .max(100, { message: "Tên nhóm chứa tối đa 100 ký tự" }),
-    teacherSuggest: z.any().optional(),
-  });
+  const SuggestTopicSchema = z
+    .object({
+      title: z
+        .string()
+        .min(5, { message: "Tên đề tài phải chứa ít nhất 5 ký tự" })
+        .max(130),
+      description: z
+        .string()
+        .min(20, { message: "Nội dung đề tài phải chứa ít nhất 20 ký tự" }),
+      nameGroup: z
+        .string()
+        .min(1, { message: "Bạn phải điền tên nhóm" })
+        .max(100, { message: "Tên nhóm chứa tối đa 100 ký tự" }),
+      teacherSuggest: z.any().optional(),
+      studentList: z.string().optional(),
+    })
+    .refine(() => selectedStudents.length >= minStudentPerGroup, {
+      message: `Nhóm phải có ít nhất ${minStudentPerGroup} thành viên.`,
+      path: ["studentList"],
+    })
+    .refine(() => selectedStudents.length <= maxStudentPerGroup, {
+      message: `Nhóm chỉ được phép tối đa ${maxStudentPerGroup} thành viên.`,
+      path: ["studentList"],
+    })
+    .refine(() => isStudentAbleToBeMemberGroup(), {
+      message: `Thành viên nhóm có thể là sinh viên khác lớp, nhưng phải cùng giảng viên giảng dạy và cùng môn học.`,
+      path: ["studentList"],
+    });
 
   const formRegisterTopic = useForm<z.infer<typeof RegisterTopicSchema>>({
     resolver: zodResolver(RegisterTopicSchema),
@@ -116,13 +234,7 @@ const RegisterTopic = () => {
     try {
       console.log({
         nameGroup: values.nameGroup,
-        dataRef: mockDataRef,
-        dataState: mockDataState,
       });
-
-      // ? Để có thể chỉnh sửa được
-      // setMockDataState(mockTopicRegisterGroupDataTable);
-      // updateMockDataRef(mockDataState);
 
       // naviate to home page
       // router.push("/");
@@ -137,7 +249,7 @@ const RegisterTopic = () => {
         duration: 3000,
       });
 
-      setIsAlreadyRegisteredGroup(true);
+      
 
       if (isShowDialogSuggestTopic) {
         resetSuggestTopicForm({
@@ -149,6 +261,7 @@ const RegisterTopic = () => {
       } else {
         console.log("setIsShowDialogRegisterTopic");
         setIsShowDialogRegisterTopic(Action.none);
+        setIsAlreadyRegisteredGroup(true);
       }
 
       // ? không cần reset để lần sau có thể chỉnh sửa khi đki thông tin đề tài
@@ -160,7 +273,6 @@ const RegisterTopic = () => {
     }
   }
 
-  const { reset: resetRegisterTopicForm } = formRegisterTopic;
   const { reset: resetSuggestTopicForm } = formSuggestTopic;
 
   const renderForm = isShowDialogSuggestTopic
@@ -268,7 +380,7 @@ const RegisterTopic = () => {
           <Form {...renderForm}>
             <form onSubmit={renderForm.handleSubmit(onSubmit)}>
               <div className="flex flex-col gap-6">
-                {isAlreadyRegisteredGroup ? (
+                {!isShowDialogSuggestTopic && isAlreadyRegisteredGroup ? (
                   <div className="flex gap-6 items-center ">
                     <label className="peer-disabled:cursor-not-allowed peer-disabled:opacity-70 dark:text-red-900 text-dark400_light800 text-[14px] font-semibold leading-[20.8px]">
                       Đề tài đã đăng ký:
@@ -280,6 +392,7 @@ const RegisterTopic = () => {
                       text={"Đổi đề tài"}
                       green
                       onClick={() => {
+                        setIsAlreadyRegisteredGroup(false);
                         setIsShowDialogRegisterTopic(Action.none);
                         sSelectedTopic.set("");
                       }}
@@ -458,63 +571,86 @@ const RegisterTopic = () => {
                 ) : null}
 
                 {/* Danh sách thành viên nhóm */}
-                <div className="mt-6">
-                  <div>
-                    <label className="peer-disabled:cursor-not-allowed peer-disabled:opacity-70 dark:text-red-900 text-dark400_light800 text-[14px] font-semibold leading-[20.8px]">
-                      Danh sách thành viên nhóm
-                    </label>
-                    <p className="mb-4 text-[0.8rem] dark:text-slate-400 mt-2.5 body-regular text-light-500">
-                      Nhóm trưởng điền tên đầu tiên.
-                    </p>
-                  </div>
-                  <TopicRegisterGroupDataTable
-                    isEditTable={false}
-                    isMultipleDelete={false}
-                    dataTable={mockDataRef.current}
-                    onChangeTable={(newValue) => {
-                      updateMockDataRef(newValue);
-                    }}
-                  />
-                </div>
+                <FormField
+                  control={renderForm.control}
+                  // @ts-ignore
+                  name="studentList"
+                  render={({ field }) => (
+                    <FormItem className="flex w-full flex-col">
+                      <FormLabel className="text-dark400_light800 text-[14px] font-semibold leading-[20.8px]">
+                        Danh sách thành viên nhóm <span className="text-red-600">*</span>
+                      </FormLabel>
+                      <FormDescription className="body-regular mt-2.5 text-light-500">
+                        Nhóm trưởng điền tên đầu tiên. Thành viên nhóm phải là
+                        sinh viên của lớp hiện tại.
+                      </FormDescription>
 
-                <div className="relative flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 mt-4">
-                  {/* mt-4 cho nên translate 7 */}
-                  <div className="absolute left-[50%] -translate-y-7">
-                    <MiniButton
-                      key={1}
-                      value={2}
-                      icon={"/assets/icons/add.svg"}
-                      bgColor="bg-primary-500"
-                      onClick={(value) => {
-                        // setSelectedMiniButton(value);
+                      {/* //!: API setting của lớp học để hiển thị cái này */}
+                      <FormDescription className="body-regular mt-2.5 text-light-500">
+                        Hoặc thành viên nhóm có thể là sinh viên khác lớp, nhưng
+                        phải cùng giảng viên giảng dạy và cùng môn học.
+                      </FormDescription>
+                      <FormControl className="mt-3.5 ">
+                        <div className="mt-6">
+                          <div>
+                            <div className="relative" ref={ref}>
+                              <Input
+                                ref={studentIdRef}
+                                onChange={handleChange}
+                                name="studentIdRef"
+                                placeholder={placeholder}
+                                onFocus={handleFocus}
+                                className="no-focus paragraph-regular background-light900_dark300 light-border-2 text-dark300_light700 min-h-[46px] border"
+                              />
+                              {suggestion && (
+                                <div
+                                  className="absolute left-0 z-50 w-full mt-1 bg-white cursor-pointer p-2 rounded-md border normal-regular no-focus text-dark300_light700 min-h-[46px] shadow-lg"
+                                  onClick={handleSuggestionClick}
+                                >
+                                  {isHasStudentInDb()?.id} -{" "}
+                                  {isHasStudentInDb()?.name} -{" "}
+                                  {isHasStudentInDb()?.class}
+                                </div>
+                              )}
+                            </div>
+                            {selectedStudents.length > 0 ? (
+                              <BorderContainer otherClasses="mt-3">
+                                <div className="my-4 ml-4">
+                                  {selectedStudents && (
+                                    <div className="flex flex-col gap-4">
+                                      {selectedStudents.map((item, index) => (
+                                        <div key={item.id}>
+                                          <StudentItem
+                                            item={item}
+                                            index={index}
+                                            courseId={courseId}
+                                            selectedStudents={selectedStudents}
+                                            setSelectedStudents={
+                                              setSelectedStudents
+                                            }
+                                          />
+                                        </div>
+                                      ))}
+                                    </div>
+                                  )}
+                                </div>
+                              </BorderContainer>
+                            ) : null}
+                          </div>
+                        </div>
+                      </FormControl>
+                      <FormMessage className="text-red-500" />
+                    </FormItem>
+                  )}
+                />
 
-                        const newEntry = {
-                          STT: (mockDataRef.current.length + 1).toString(),
-                          data: {
-                            MSSV: "",
-                            SĐT: "",
-                            "Họ và tên": "",
-                          },
-                        };
-
-                        // Cập nhật mockDataRef mà không re-render `TopicRegisterGroupDataTable`
-                        updateMockDataRef([...mockDataRef.current, newEntry]);
-
-                        // Cập nhật mockDataState để re-render những phần khác trong UI
-                        setMockDataState([...mockDataRef.current]);
-                      }}
-                      otherClasses={"w-[26px] h-[26px] mr-10"}
-                    />
-                  </div>
-
+                <div className="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 mt-4">
                   <button
                     type="button"
                     onClick={() => {
                       if (isShowDialogSuggestTopic)
                         setIsShowDialogSuggestTopic(false);
                       else setIsShowDialogRegisterTopic(Action.none);
-
-                      setMockDataState(mockTopicRegisterGroupDataTable);
                     }}
                     className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-slate-950 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 dark:focus-visible:ring-slate-300 border border-slate-200 bg-white shadow-sm hover:bg-slate-100 hover:text-slate-900 dark:border-slate-800 dark:bg-slate-950 dark:hover:bg-slate-800 dark:hover:text-slate-50 h-9 px-4 py-2 mt-2 sm:mt-0"
                   >
