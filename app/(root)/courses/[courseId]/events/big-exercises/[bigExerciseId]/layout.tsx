@@ -18,7 +18,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   const linkToBigExercises =
     indexOfBigExercises !== -1
-      ? "/" + pathArray.slice(1, indexOfBigExercises + 1).join("/")
+      ? "/" + pathArray.slice(1, indexOfBigExercises).join("/")
       : "/"; // Nếu không tìm thấy, quay về "/"
 
   const params = useParams() as { bigExerciseId: string };
@@ -52,7 +52,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           let isActive = false;
 
           if (item.route === "/") {
-            if (`${linkToBigExercises}/${bigExerciseId}` === pathName)
+            if (`${linkToBigExercises}/big-exercises/${bigExerciseId}` === pathName)
               isActive = true;
           } else {
             isActive = pathName.includes(item.route);
@@ -70,8 +70,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
           return (
             <Link
-              key={`${linkToBigExercises}/${bigExerciseId}${item.route}`}
-              href={`${linkToBigExercises}/${bigExerciseId}${item.route}`}
+              key={`${linkToBigExercises}/big-exercises/${bigExerciseId}${item.route}`}
+              href={`${linkToBigExercises}/big-exercises/${bigExerciseId}${item.route}`}
             >
               <button
                 type="button"
