@@ -38,7 +38,7 @@ const ExercisePostItem = (params: Props) => {
             green
             text="BÀI TẬP"
             smallText
-            otherClasses="rounded-md"
+            otherClasses="rounded-md ml-4"
             infoComponent={
               <ul className="text-white text-[12px] text-left">
                 <li role="menuitem">

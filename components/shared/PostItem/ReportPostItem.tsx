@@ -40,7 +40,7 @@ const ReportPostItem = (params: Props) => {
             orange
             text="BÁO CÁO"
             smallText
-            otherClasses="rounded-md"
+            otherClasses="rounded-md ml-4"
             infoComponent={
               <ul className="text-white text-[12px] text-left">
                 <li role="menuitem">
@@ -81,7 +81,6 @@ const ReportPostItem = (params: Props) => {
         </div>
 
         <RegisterReportSchedule />
-
 
         <Divider />
 
