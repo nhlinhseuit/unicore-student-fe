@@ -39,11 +39,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           h-[54px]
           mb-4
           flex
+          gap-2
+          items-center
           text-center
           whitespace-nowrap
           overflow-x-auto
           flex-nowrap
-          mt-2 items-center gap-2
+          mt-2 border-b border-gray
           pl-[200px]
           "
       >
@@ -51,7 +53,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           let isActive = false;
 
           if (item.route === "/") {
-            if (`${linkToBigExercises}/big-exercises/${bigExerciseId}` === pathName)
+            if (
+              `${linkToBigExercises}/big-exercises/${bigExerciseId}` ===
+              pathName
+            )
               isActive = true;
           } else {
             isActive = pathName.includes(item.route);

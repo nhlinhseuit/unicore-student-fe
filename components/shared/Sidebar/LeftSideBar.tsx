@@ -47,6 +47,26 @@ const LeftSideBar = () => {
     }
   };
 
+  let getCoursesStyle = (isActive: boolean) => {
+    return `${
+      isActive
+        ? "primary-gradient rounded-lg text-light-900"
+        : "text-dark300_light900"
+    }  flex items-center justify-start gap-4
+                    max-lg:w-[52px]
+                    bg-transparent px-4 py-3`;
+  };
+
+  let getStyle = (isActive: boolean) => {
+    return `${
+      isActive
+        ? "primary-gradient text-light-900"
+        : "text-dark300_light900 hover:bg-[#ECF2FFFF] hover:!text-[#5D87FFFF]"
+    }  flex items-center justify-start gap-4
+    group rounded-lg max-lg:w-[52px]
+    bg-transparent px-4 py-3`;
+  };
+
   return (
     <section
       className="
@@ -54,8 +74,8 @@ const LeftSideBar = () => {
     flex-col
     justify-between
     background-light900_dark200
-    min-w-[200px]
-    max-w-[200px]
+    min-w-[250px]
+    max-w-[250px]
     max-lg:min-w-fit
 
     max-h-screen
@@ -113,16 +133,7 @@ const LeftSideBar = () => {
 
               return (
                 <Fragment key={`${index}_${item.route}`}>
-                  <Link
-                    href={item.route}
-                    className={`${
-                      isActive
-                        ? "primary-gradient rounded-lg text-light-900"
-                        : "text-dark300_light900"
-                    }  flex items-center justify-start gap-4
-                    max-lg:w-[52px]
-                    bg-transparent px-4 py-2`}
-                  >
+                  <Link href={item.route} className={getCoursesStyle(isActive)}>
                     <Image
                       src={item.imgURL}
                       alt={item.label}
@@ -151,13 +162,7 @@ const LeftSideBar = () => {
                 <Link
                   key={item.route}
                   href={item.route}
-                  className={`${
-                    isActive
-                      ? "primary-gradient rounded-lg text-light-900"
-                      : "text-dark300_light900"
-                  }  flex items-center justify-start gap-4
-                  max-lg:w-[52px]
-                  bg-transparent px-4 py-2`}
+                  className={getStyle(isActive)}
                 >
                   <Image
                     src={item.imgURL}
