@@ -257,7 +257,7 @@ export const sidebarStudentLinks: SidebarLink[] = [
   },
   {
     id: "5",
-    imgURL: "/assets/icons/messages.svg",
+    imgURL: "/assets/icons/messageIc.svg",
     route: "/messages",
     label: "Tin nhắn",
   },
