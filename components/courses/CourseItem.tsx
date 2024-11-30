@@ -1,5 +1,3 @@
-import React, { useState } from "react";
-import MoreButtonCourseItem from "./MoreButtonCourseItem";
 
 interface Props {
   id: string;
