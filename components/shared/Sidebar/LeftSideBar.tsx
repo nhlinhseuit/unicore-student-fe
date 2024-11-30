@@ -69,31 +69,23 @@ const LeftSideBar = () => {
 
   return (
     <section
-      className="
-    flex
-    flex-col
-    justify-between
-    background-light900_dark200
-    min-w-[250px]
-    max-w-[250px]
-    max-lg:min-w-fit
-
-    max-h-screen
-    z-50
-    max-sm:hidden
-    overflow-y-auto
-    left-
-    top-0
-    border-r
-    pt-4
-    shadow-light-300
-    dark:shadow-none
-    custom-scrollbar
-
-    "
+    className="
+      flex flex-col
+      background-light900_dark200
+      min-w-[250px]
+      max-w-[250px]
+      max-lg:min-w-fit
+      max-h-screen
+      z-50
+      max-sm:hidden
+      pt-4
+      border-r
+      shadow-light-300
+      dark:shadow-none
+  "
     >
       {/* LOGO */}
-      <div className="px-4 mb-2 ml-2">
+      <div className="px-4 mb-2 ml-2 flex-shrink-0">
         <Link href="/" className="flex items-center gap-1">
           <Image
             src={"/assets/images/site-logo.svg"}
@@ -108,9 +100,16 @@ const LeftSideBar = () => {
         </Link>
       </div>
 
-      {/* <div className="h-[1px] mx-4 bg-[#ECECEC]"></div> */}
-
-      <div className="flex flex-col h-full gap-4 px-4 mt-6 ">
+      {/* NỘI DUNG CUỘN */}
+      <div className="
+      flex flex-col
+      gap-4
+      px-6
+      mt-6
+      overflow-y-auto
+      flex-grow
+      custom-scrollbar
+    ">
         {/* ITEM */}
         {sidebarStudentLinks.map((item, index) => {
           let isActive;
@@ -186,7 +185,7 @@ const LeftSideBar = () => {
       </div>
 
       {isLoggedIn ? (
-        <div className="mb-2 px-2 flex gap-2 items-center justify-between">
+        <div className="mb-2 px-2 flex gap-2 items-center justify-between flex-shrink-0">
           <MyAccount textAvatar="HL" name="Nguyễn Hoàng Linh" />
 
           <Popover>
