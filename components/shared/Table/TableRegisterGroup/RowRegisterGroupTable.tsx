@@ -89,7 +89,7 @@ const RowRegisterGroupTable = React.memo(
       params.onChangeRow && params.onChangeRow(updatedDataItem); // Gọi callback để truyền dữ liệu đã chỉnh sửa lên DataTable
     };
 
-    var valueUniqueInput = params.dataItem.data["Tên nhóm"];
+    var valueUniqueInput = params.dataItem.data["Mã nhóm"];
 
     return (
       <Table.Row
@@ -157,12 +157,7 @@ const RowRegisterGroupTable = React.memo(
 
         {/* Các giá trị khác */}
         {Object.entries(params.dataItem.data).map(([key, value]) => {
-          let keyId = params.dataItem.data["Tên nhóm"];
-
-          if (params.isMemberOfAboveGroup && key === "Tên nhóm")
-            return (
-              <Table.Cell className="w-10 border-r-[1px]  text-left"></Table.Cell>
-            );
+          let keyId = params.dataItem.data["Mã nhóm"];
 
           if (key === "Mã nhóm") return null;
 

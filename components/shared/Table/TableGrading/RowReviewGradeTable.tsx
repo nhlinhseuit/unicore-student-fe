@@ -96,7 +96,7 @@ const RowReviewGradeTable = React.memo(
       params.onChangeRow && params.onChangeRow(updatedDataItem); // Gọi callback để truyền dữ liệu đã chỉnh sửa lên DataTable
     };
 
-    var valueUniqueInput = params.dataItem.data["Tên nhóm"];
+    var valueUniqueInput = params.dataItem.data["Mã nhóm"];
 
     const renderTableCellValue = (
       keyId: string,
@@ -204,7 +204,7 @@ const RowReviewGradeTable = React.memo(
 
         {/* Các giá trị khác */}
         {Object.entries(params.dataItem.data).map(([key, value]) => {
-          let keyId = params.dataItem.data["Tên nhóm"];
+          let keyId = params.dataItem.data["Mã nhóm"];
 
           if (key === "Mã nhóm") return null;
           return (
