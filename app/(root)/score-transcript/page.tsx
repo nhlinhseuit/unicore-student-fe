@@ -1,16 +1,11 @@
 "use client";
 
-import IconButton from "@/components/shared/Button/IconButton";
 import ScoreColumnDetailPage from "@/components/shared/ScoreTranscript/ScoreColumnDetailPage";
-import TableSearch from "@/components/shared/Search/TableSearch";
 import ScoreTranscriptTable from "@/components/shared/Table/TableScoreTranscript/ScoreTranscriptTable";
 import {
-  mockCoursesListScoreTranscript,
   mockDataScoreTranscriptStudent,
   mockGradeColumnPercent,
 } from "@/mocks";
-import { Dropdown } from "flowbite-react";
-import Image from "next/image";
 import { useState } from "react";
 
 const ScoreTranscript = () => {
