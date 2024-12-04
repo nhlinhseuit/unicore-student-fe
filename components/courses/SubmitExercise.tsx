@@ -14,10 +14,27 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { useToast } from "@/hooks/use-toast";
 import { MAX_FILE_SIZE, MAX_FILE_VALUE } from "@/constants";
+import { useToast } from "@/hooks/use-toast";
 import PickFileImageButton from "../shared/Annoucements/PickFileImageButton";
 import { Input } from "../ui/input";
+
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+
+import SubmitButton from "../shared/Button/SubmitButton";
+
+import { Form } from "@/components/ui/form";
+import React from "react";
+import CancelButtonForm from "../shared/CancelButtonForm";
 
 interface Props {
   score: number;
@@ -70,6 +87,40 @@ const SubmitExercise = (params: Props) => {
       linkSubmit.current.value = value;
     }
   };
+
+  const AnnoucementSchema = z.object({
+    description: z.string().optional(),
+  });
+
+  const form = useForm<z.infer<typeof AnnoucementSchema>>({
+    resolver: zodResolver(AnnoucementSchema),
+    defaultValues: {
+      description: "",
+    },
+  });
+
+  const { reset } = form;
+
+  async function onSubmit(values: any) {
+    try {
+      console.log({
+        description: values.description,
+      });
+
+      // naviate to home page
+      // router.push("/");
+
+      setIsShowDialogConfirmReview(false);
+
+      toast({
+        title: "Đăng ký phúc khảo thành công.",
+        variant: "success",
+        duration: 3000,
+      });
+    } catch {
+    } finally {
+    }
+  }
 
   return (
     <>
@@ -218,30 +269,66 @@ const SubmitExercise = (params: Props) => {
         <AlertDialog open={isShowDialogConfirmReview}>
           <AlertDialogContent>
             <AlertDialogHeader>
-              <AlertDialogTitle>Xác nhận đăng ký phúc khảo?</AlertDialogTitle>
-              <AlertDialogDescription>
+              <AlertDialogTitle className="text-center">
+                Xác nhận đăng ký phúc khảo?
+              </AlertDialogTitle>
+              <AlertDialogDescription className="text-center text-light-500">
                 Bài làm sẽ được gửi đến giảng viên để yêu cầu phúc khảo.
               </AlertDialogDescription>
             </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel
-                onClick={() => {
-                  setIsShowDialogConfirmReview(false);
-                  // params.onClickGetOut && params.onClickGetOut();
-                }}
-              >
-                Hủy
-              </AlertDialogCancel>
-              <AlertDialogAction
-                onClick={() => {
-                  setIsShowDialogConfirmReview(false);
-                  // params.onClickDelete && params.onClickDelete();
-                }}
-                className="bg-primary-500 hover:bg-primary-500/90"
-              >
-                Đồng ý
-              </AlertDialogAction>
-            </AlertDialogFooter>
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)}>
+                <div>
+                  <FormField
+                    control={form.control}
+                    name="description"
+                    render={({ field }) => (
+                      <FormItem className="flex w-full flex-col">
+                        <FormLabel className="text-dark400_light800 text-[14px] font-semibold leading-[20.8px]">
+                          Lí do phúc khảo{" "}
+                          <span className="text-red-600">*</span>
+                        </FormLabel>
+                        <FormControl className="mt-3.5 ">
+                          <textarea
+                            {...field}
+                            placeholder="Nhập lí do phúc khảo..."
+                            className="
+                          no-focus
+                          paragraph-regular
+                          background-light900_dark300
+                          light-border-2
+                          text-dark300_light700
+                          min-h-[200px]
+                          rounded-md
+                          border
+                          resize-none
+                          w-full
+                          px-3
+                          py-4
+                          focus:outline-none
+                          focus:ring-0
+                          active:outline-none
+                          focus:border-inherit
+                          text-sm"
+                          />
+                        </FormControl>
+                        <FormMessage className="text-red-500" />
+                      </FormItem>
+                    )}
+                  />
+
+                  <div className="mt-2 flex gap-2 justify-end">
+                    <CancelButtonForm
+                      onClick={() => {
+                        setIsShowDialogConfirmReview(false);
+                        // params.onClickGetOut && params.onClickGetOut();
+                      }}
+                    />
+                    <SubmitButton text="Đồng ý" otherClasses="w-fit" />
+                  </div>
+                </div>
+              </form>
+            </Form>
           </AlertDialogContent>
         </AlertDialog>
       ) : (
