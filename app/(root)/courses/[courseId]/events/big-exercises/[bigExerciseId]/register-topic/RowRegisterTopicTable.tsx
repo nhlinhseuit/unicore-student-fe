@@ -1,22 +1,18 @@
-import { Table } from "flowbite-react";
-import React, { useEffect, useRef } from "react";
-import { useState } from "react";
+import InputComponent from "@/components/shared/Table/components/InputComponent";
+import { RegisterTopicTableType } from "@/constants";
 import {
   CourseData,
-  SubjectData,
-  StudentData,
-  TeacherData,
-  TeacherDataItem,
-  RegisterGroupDataItem,
   RegisterTopicDataItem,
+  StudentData,
+  SubjectData,
+  TeacherData,
 } from "@/types";
-import { RegisterTopicTableType } from "@/constants";
-import InputComponent from "@/components/shared/Table/components/InputComponent";
+import { Table } from "flowbite-react";
+import React, { useEffect, useRef, useState } from "react";
 import { sSelectedTopic } from "./(store)/createReportStore";
 
 interface RowParams {
   type: RegisterTopicTableType;
-  isMemberOfAboveGroup: boolean;
   dataItem: RegisterTopicDataItem;
   isEditTable?: boolean;
   isMultipleDelete?: boolean;
@@ -67,7 +63,7 @@ const RowRegisterTopicTable = React.memo(
       isCheckbox,
     }: handleInputChangeParams) => {
       //@ts-ignore
-      const updatedDataItem: RegisterGroupDataItem = {
+      const updatedDataItem: RegisterTopicDataItem = {
         ...editDataItem,
         data: {
           ...editDataItem.data,
@@ -95,6 +91,121 @@ const RowRegisterTopicTable = React.memo(
     };
 
     var valueUniqueInput = params.dataItem.data["Tên đề tài"];
+
+    const renderCellValue = ({
+      key,
+      value,
+      keyId,
+      params,
+      isEdit,
+    }: {
+      key: string;
+      value: string | number | Array<string | number>;
+      keyId: string | number;
+      params: any;
+      isEdit: boolean;
+    }) => {
+      switch (key) {
+        case "MSSV":
+        case "Họ và tên":
+        case "SĐT":
+          return isEdit || params.isEditTable ? (
+            Array.isArray(value) ? (
+              <div className="flex flex-col gap-1">
+                {value.map((item, index) => (
+                  <InputComponent
+                    key={`${keyId}_${item}_${index}`}
+                    value={item}
+                    placeholder={item as string | number}
+                    onChange={(newValue) => {
+                      // handleInputChange({
+                      //   key,
+                      //   newValue,
+                      //   isMultipleInput: true,
+                      //   currentIndex: index,
+                      // })
+                    }}
+                  />
+                ))}
+              </div>
+            ) : (
+              <InputComponent
+                key={`${keyId}_input_${value}`}
+                value={value as string | number}
+                placeholder={value as string | number}
+                onChange={(newValue) => {
+                  // handleInputChange({ key, newValue });
+                }}
+              />
+            )
+          ) : Array.isArray(value) ? (
+            value.map((item, index) => (
+              <React.Fragment key={index}>
+                {item}
+                {index < value.length - 1 && <br />}
+              </React.Fragment>
+            ))
+          ) : (
+            value
+          );
+
+        default:
+          return isEdit || params.isEditTable ? (
+            <InputComponent
+              key={`${keyId}_input_${key}_${value}`}
+              value={value as string | number}
+              placeholder={value as string | number}
+              //@ts-ignore
+              onChange={
+                (newValue) => {}
+                //@ts-ignore
+                // handleInputChange({ key: key, newValue: newValue })
+              }
+              //! NOTE: Đặt w-full cho ô input Mô tả
+              isDescription={key === "Mô tả"}
+            />
+          ) : (
+            value
+          );
+      }
+    };
+
+    const renderCell = ({
+      key,
+      value,
+      keyId,
+      params,
+      isEdit,
+    }: {
+      key: string;
+      value: string | number | Array<string | number>;
+      keyId: string | number;
+      params: any;
+      isEdit: boolean;
+    }) => {
+      if (key === "Mã nhóm") return null;
+
+      return (
+        <Table.Cell
+          key={`${keyId}_${key}_${value}`}
+          theme={{
+            base: `group-first/body:group-first/row:first:rounded-tl-lg
+          group-first/body:group-first/row:last:rounded-tr-lg
+          group-last/body:group-last/row:first:rounded-bl-lg
+          group-last/body:group-last/row:last:rounded-br-lg
+          px-4 py-4 text-center text-secondary-900`,
+          }}
+          // !: NOTE: Giới hạn ô mô tả không quá dài bằng !w-[800px] line-clamp-6
+          className={`border-r-[1px] px-2 py-4 normal-case text-left min-h-[64px] ${
+            key === "Mô tả"
+              ? "!w-[800px] line-clamp-6 flex items-center"
+              : "whitespace-nowrap"
+          }`}
+        >
+          {renderCellValue({ key, value, keyId, params, isEdit })}
+        </Table.Cell>
+      );
+    };
 
     return (
       <Table.Row
@@ -129,54 +240,21 @@ const RowRegisterTopicTable = React.memo(
           </div>
         </Table.Cell>
 
-        {/* STT - Là STT của nhóm */}
-        {params.isMemberOfAboveGroup ? (
-          <Table.Cell className="w-10 border-r-[1px]  text-left"></Table.Cell>
-        ) : (
-          <Table.Cell className="w-10 border-r-[1px]  text-left">
-            <span>{params.dataItem.data["Mã nhóm"]}</span>
-          </Table.Cell>
-        )}
+        <Table.Cell className="w-10 border-r-[1px]  text-left">
+          <span>{params.dataItem.data["Mã nhóm"]}</span>
+        </Table.Cell>
 
         {/* Các giá trị khác */}
         {Object.entries(params.dataItem.data).map(([key, value]) => {
-          let keyId = params.dataItem.data["Mã nhóm"];
+          let keyId = params.dataItem.data["Tên nhóm"];
 
-          if (key === "Mã nhóm") return null;
-
-          return (
-            <Table.Cell
-              key={`${keyId}_${key}_${value}`}
-              theme={{
-                base: `group-first/body:group-first/row:first:rounded-tl-lg
-      group-first/body:group-first/row:last:rounded-tr-lg
-      group-last/body:group-last/row:first:rounded-bl-lg
-      group-last/body:group-last/row:last:rounded-br-lg
-      px-4 py-4 text-center text-secondary-900`,
-              }}
-              // !: NOTE: Giới hạn ô mô tả không quá dài bằng !w-[800px] line-clamp-6
-              className={`border-r-[1px] px-2 py-4 normal-case text-left  min-h-[64px] ${
-                key === "Mô tả"
-                  ? "!w-[800px] line-clamp-6 flex items-center"
-                  : "whitespace-nowrap"
-              }`}
-            >
-              {isEdit || params.isEditTable ? (
-                <InputComponent
-                  key={`${keyId}_input_${key}_${value}`}
-                  value={value as string | number}
-                  placeholder={value as string | number}
-                  //@ts-ignore
-                  onChange={(newValue) =>
-                    //@ts-ignore
-                    handleInputChange({ key: key, newValue: newValue })
-                  }
-                />
-              ) : (
-                value
-              )}
-            </Table.Cell>
-          );
+          return renderCell({
+            key,
+            value,
+            keyId,
+            params,
+            isEdit,
+          });
         })}
       </Table.Row>
     );

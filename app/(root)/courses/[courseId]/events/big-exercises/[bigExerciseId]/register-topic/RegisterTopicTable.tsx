@@ -3,10 +3,10 @@ import { Table } from "flowbite-react";
 import { useMemo, useState } from "react";
 import RowRegisterTopicTable from "./RowRegisterTopicTable";
 
-import { itemsPerPageRegisterTable, RegisterTopicTableType } from "@/constants";
 import NoResult from "@/components/shared/Status/NoResult";
 import { tableTheme } from "@/components/shared/Table/components/DataTable";
 import MyFooter from "@/components/shared/Table/components/MyFooter";
+import { itemsPerPageRegisterTable, RegisterTopicTableType } from "@/constants";
 import { sSelectedTopic } from "./(store)/createReportStore";
 
 interface DataTableParams {
@@ -100,12 +100,6 @@ const RegisterTopicTable = (params: DataTableParams) => {
                     <RowRegisterTopicTable
                       type={params.type}
                       key={dataItem.STT}
-                      isMemberOfAboveGroup={
-                        index === 0
-                          ? false
-                          : filteredDataTable[index - 1].data["Mã nhóm"] ===
-                            dataItem.data["Mã nhóm"]
-                      }
                       dataItem={dataItem}
                       isEditTable={params.isEditTable}
                       isMultipleDelete={params.isMultipleDelete}

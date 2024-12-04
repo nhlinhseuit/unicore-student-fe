@@ -44,11 +44,10 @@ export interface RegisterGroupData {
 export interface RegisterTopicData {
   "Tên đề tài": string;
   "Mô tả": string;
-  "GV phụ trách": string;
   "Mã nhóm": string;
-  MSSV: string;
-  SĐT: string;
-  "Họ và tên": string;
+  MSSV: string[];
+  SĐT: string[];
+  "Họ và tên": string[];
 }
 export interface TopicRegisterGroupData {
   MSSV: string;

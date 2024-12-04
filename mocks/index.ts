@@ -1266,89 +1266,53 @@ export const mockTopicDataTable = [
 //
 export const mockDataStudentRegisterTopic = [
   {
-    // TODO: Kh cần STT của sv ở đây
-    // TODO: Hiện tại chỉ dùng làm key
-    // * FIX: STT count ++ cho row leader
-
     STT: "1",
     isDeleted: false,
     data: {
+      "Mã nhóm": "1",
       "Tên đề tài": "Ứng dụng hẹn hò",
       "Mô tả":
         "Kết nối người dùng với những người có sở thích tương tự Nơi người dùng có thể đăng tải và chia sẻ hình ảnh Một ứng dụng áp dụng phiếu giảm giá tự động để đảm bảo cung cấp phiếu giảm giá và giảm giá cho khách hàng",
-      "GV phụ trách": "Huỳnh Hồ Thị Mộng Trinh",
-      "Mã nhóm": "1",
-      MSSV: "21522289",
-      "Họ và tên": "Nguyễn Hoàng Linh",
-      SĐT: "0378060972",
+      MSSV: ["21522289"],
+      "Họ và tên": ["Nguyễn Hoàng Linh"],
+      SĐT: ["0378060972"],
     },
   },
   {
     STT: "2",
     isDeleted: false,
     data: {
+      "Mã nhóm": "2",
       "Tên đề tài": "Ứng dụng chia sẻ hình ảnh",
       "Mô tả":
         "Nơi người dùng có thể đăng tải và chia sẻ hình ảnh Nơi người dùng có thể đăng tải và chia sẻ hình ảnh Nơi người dùng có thể đăng tải và chia sẻ hình ảnh Nơi người dùng có thể đăng tải và chia sẻ hình ảnh Nơi người dùng có thể đăng tải và chia sẻ hình ảnh Nơi người dùng có thể đăng tải và chia sẻ hình ảnh Nơi người dùng có thể đăng tải và chia sẻ hình ảnh Nơi người dùng có thể đăng tải và chia sẻ hình ảnh Nơi người dùng có thể đăng tải và chia sẻ hình ảnh Nơi người dùng có thể đăng tải và chia sẻ hình ảnh Nơi người dùng có thể đăng tải và chia sẻ hình ảnh",
-      "GV phụ trách": "Huỳnh Tuấn Anh",
-      "Mã nhóm": "2",
-      MSSV: "21522289",
-      "Họ và tên": "Lê Thành Lộc",
-      SĐT: "0378060972",
+      MSSV: ["21522289", "21522289"],
+      "Họ và tên": ["Lê Thành Lộc", "Huỳnh Hồ Thị Mộng Trinh"],
+      SĐT: ["0378060972", "0378060972"],
     },
   },
   {
     STT: "3",
     isDeleted: false,
     data: {
-      "Tên đề tài": "Ứng dụng đặt hàng và giao đồ ăn",
-      "Mô tả":
-        "Một ứng dụng áp dụng phiếu giảm giá tự động để đảm bảo cung cấp phiếu giảm giá và giảm giá cho khách hàng",
-      "GV phụ trách": "Nguyễn Thị Thanh Trúc",
-      "Mã nhóm": "2",
-      MSSV: "21522289",
-      "Họ và tên": "Huỳnh Hồ Thị Mộng Trinh",
-      SĐT: "0378060972",
+      "Mã nhóm": "3",
+      "Tên đề tài": "Ứng dụng nhà thông minh",
+      "Mô tả": "Giúp người dùng xây dựng một ngôi nhà thông minh và tiện lợi",
+      MSSV: ["21522289", "21522289"],
+      "Họ và tên": ["Nguyễn Tiến Vĩ", "Nguyễn Vĩ"],
+      SĐT: ["0378060972", "0378060972"],
     },
   },
   {
     STT: "4",
     isDeleted: false,
     data: {
-      "Tên đề tài": "Ứng dụng nhà thông minh",
-      "Mô tả": "Giúp người dùng xây dựng một ngôi nhà thông minh và tiện lợi",
-      "GV phụ trách": "Huỳnh Hồ Thị Mộng Trinh",
-      "Mã nhóm": "3",
-      MSSV: "21522289",
-      "Họ và tên": "Nguyễn Tiến Vĩ",
-      SĐT: "0378060972",
-    },
-  },
-  {
-    STT: "5",
-    isDeleted: false,
-    data: {
-      "Tên đề tài": "Ứng dụng học ngôn ngữ",
-      "Mô tả":
-        "Một nền tảng giúp người dùng học các ngôn ngữ mới thông qua bài tập và trò chơi",
-      "GV phụ trách": "Huỳnh Tuấn Anh",
-      "Mã nhóm": "3",
-      MSSV: "21522289",
-      "Họ và tên": "Nguyễn Thị Thanh Tuyền",
-      SĐT: "0378060972",
-    },
-  },
-  {
-    STT: "6",
-    isDeleted: false,
-    data: {
+      "Mã nhóm": "4",
       "Tên đề tài": "Ứng dụng ghi chú",
       "Mô tả": "Giúp người dùng ghi lại và tổ chức các ghi chú của mình",
-      "GV phụ trách": "Nguyễn Thị Thanh Trúc",
-      "Mã nhóm": "4",
-      MSSV: "21522289",
-      "Họ và tên": "Võ Hữu Xike",
-      SĐT: "0378060972",
+      MSSV: ["21522289"],
+      "Họ và tên": ["Võ Hữu Xike"],
+      SĐT: ["0378060972"],
     },
   },
 ];
