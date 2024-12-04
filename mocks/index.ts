@@ -592,6 +592,21 @@ export const mockDataStudentRegisterGroup = [
   },
 ];
 
+
+//
+// TODO: Check Attendace Answer
+//
+export const mockCheckAttendaceAnswer = {
+  question: "Bài tập hôm nay thế nào?",
+  answer: [
+    { id: 1, text: "Tuyệt vời" },
+    { id: 2, text: "Hay" },
+    { id: 3, text: "Xuất sắc" },
+    { id: 4, text: "10 điểm" },
+  ],
+};
+
+
 //
 // TODO: Centralized exam
 //
