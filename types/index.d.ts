@@ -57,7 +57,6 @@ export interface TopicRegisterGroupData {
 export interface TopicData {
   "Tên đề tài": string;
   "Mô tả": string;
-  "GV phụ trách": string;
 }
 export interface FileData {
   "Tên file": string;

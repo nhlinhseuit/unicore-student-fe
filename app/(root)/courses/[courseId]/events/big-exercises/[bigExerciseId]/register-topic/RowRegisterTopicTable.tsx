@@ -246,7 +246,7 @@ const RowRegisterTopicTable = React.memo(
 
         {/* Các giá trị khác */}
         {Object.entries(params.dataItem.data).map(([key, value]) => {
-          let keyId = params.dataItem.data["Tên nhóm"];
+          const keyId = params.dataItem.data["Mã nhóm"];
 
           return renderCell({
             key,
