@@ -74,9 +74,8 @@ const InputComponent = (params: InputParams) => {
             paragraph-regular no-focus placeholder
             background-light800_darkgradient
             shadow-none outline-none border-none truncate
-            w-[200px] 
-            ${params.otherClassess && ""}
-            ${params.isDescription && "w-full"}
+            w-[200px]
+            ${params.otherClassess || ""}
           `}
         />
       )}
