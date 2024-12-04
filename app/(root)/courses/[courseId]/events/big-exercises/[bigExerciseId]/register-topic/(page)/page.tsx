@@ -4,7 +4,7 @@ import IconButton from "@/components/shared/Button/IconButton";
 import {
   mockDataStudentRegisterTopic,
   mockDbStudent,
-  mockTeacherGradingList,
+  mockTeacherList,
 } from "@/mocks";
 import { useEffect, useRef, useState } from "react";
 
@@ -248,8 +248,6 @@ const RegisterTopic = () => {
         variant: "success",
         duration: 3000,
       });
-
-      
 
       if (isShowDialogSuggestTopic) {
         resetSuggestTopicForm({
@@ -507,7 +505,7 @@ const RegisterTopic = () => {
                                   <IconButton
                                     text={` ${
                                       selectedTeacherSuggest !== -1
-                                        ? mockTeacherGradingList[
+                                        ? mockTeacherList[
                                             selectedTeacherSuggest - 1
                                           ].value
                                         : "Chọn giảng viên"
@@ -522,40 +520,37 @@ const RegisterTopic = () => {
                               )}
                             >
                               <div className="scroll-container scroll-container-dropdown-content">
-                                {mockTeacherGradingList.map(
-                                  (teacher, index) => (
-                                    <Dropdown.Item
-                                      key={`${teacher.id}_${index}`}
-                                      onClick={() => {
-                                        if (
-                                          selectedTeacherSuggest === teacher.id
-                                        ) {
-                                          setSelectedTeacherSuggest(-1);
-                                        } else {
-                                          setSelectedTeacherSuggest(teacher.id);
-                                        }
-                                      }}
-                                    >
-                                      <div className="flex justify-between w-full">
-                                        <p className="w-[80%] text-left line-clamp-1">
-                                          {teacher.value}
-                                        </p>
-                                        {selectedTeacherSuggest ===
-                                        teacher.id ? (
-                                          <Image
-                                            src="/assets/icons/check.svg"
-                                            alt="search"
-                                            width={21}
-                                            height={21}
-                                            className="cursor-pointer mr-2"
-                                          />
-                                        ) : (
-                                          <></>
-                                        )}
-                                      </div>
-                                    </Dropdown.Item>
-                                  )
-                                )}
+                                {mockTeacherList.map((teacher, index) => (
+                                  <Dropdown.Item
+                                    key={`${teacher.id}_${index}`}
+                                    onClick={() => {
+                                      if (
+                                        selectedTeacherSuggest === teacher.id
+                                      ) {
+                                        setSelectedTeacherSuggest(-1);
+                                      } else {
+                                        setSelectedTeacherSuggest(teacher.id);
+                                      }
+                                    }}
+                                  >
+                                    <div className="flex justify-between w-full">
+                                      <p className="w-[80%] text-left line-clamp-1">
+                                        {teacher.value}
+                                      </p>
+                                      {selectedTeacherSuggest === teacher.id ? (
+                                        <Image
+                                          src="/assets/icons/check.svg"
+                                          alt="search"
+                                          width={21}
+                                          height={21}
+                                          className="cursor-pointer mr-2"
+                                        />
+                                      ) : (
+                                        <></>
+                                      )}
+                                    </div>
+                                  </Dropdown.Item>
+                                ))}
                               </div>
                             </Dropdown>
                           </FormControl>
@@ -578,7 +573,8 @@ const RegisterTopic = () => {
                   render={({ field }) => (
                     <FormItem className="flex w-full flex-col">
                       <FormLabel className="text-dark400_light800 text-[14px] font-semibold leading-[20.8px]">
-                        Danh sách thành viên nhóm <span className="text-red-600">*</span>
+                        Danh sách thành viên nhóm{" "}
+                        <span className="text-red-600">*</span>
                       </FormLabel>
                       <FormDescription className="body-regular mt-2.5 text-light-500">
                         Nhóm trưởng điền tên đầu tiên. Thành viên nhóm phải là
