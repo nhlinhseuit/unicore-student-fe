@@ -10,7 +10,7 @@ export const MAX_FILE_SIZE = MAX_FILE_VALUE * 1024 * 1024; // 25MB
 export const ALLOWED_FILE_TYPES = [
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document", // .docx
   "application/pdf", // .pdf
-"application/vnd.openxmlformats-officedocument.presentationml.presentation", // .pptx
+  "application/vnd.openxmlformats-officedocument.presentationml.presentation", // .pptx
   "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", // .xlsx
   "application/vnd.ms-excel", // .xls
   "text/plain", // .txt
@@ -20,11 +20,24 @@ export const ALLOWED_FILE_TYPES = [
 ];
 export const MAX_CATEGORIES = 5; // Số danh mục tối đa chọn khi đăng thông báo
 
-// TODO: BORDER CONTAINER TAB
-export const AnnouncementTabs = [
-  { value: "postedAnnouncement", label: "Thông báo đã đăng" },
-  { value: "createdAnnouncement", label: "Thông báo đã tạo" },
-  { value: "hidedAnnouncement", label: "Thông báo đã ẩn" },
+
+//
+// TODO: Review
+//
+export const mockReviewOptions = [
+  { id: 1, value: "Tất cả" },
+  { id: 2, value: "Đã phúc khảo" },
+  { id: 3, value: "Chưa phúc khảo" },
+];
+
+//
+// TODO: Bookmark
+//
+export const mockBookmarkOptions = [
+  { id: 1, value: "Tất cả" },
+  { id: 2, value: "Thông báo" },
+  { id: 3, value: "Bài tập" },
+  { id: 4, value: "Bài tập lớn" },
 ];
 
 export const ReviewTabs = [
@@ -157,12 +170,6 @@ export enum Action {
   editing,
   none,
 }
-
-export const AnnouncementTypes = [
-  { route: "/create-announcement", label: "Tạo thông báo" },
-  { route: "/create-exercise", label: "Tạo bài tập" },
-  { route: "/create-report", label: "Tạo báo cáo đồ án" },
-];
 
 export enum RegisterTopicTableType {
   registerTopic,
