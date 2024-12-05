@@ -1,4 +1,3 @@
-
 interface Props {
   id: string;
   name: string;
@@ -8,12 +7,11 @@ interface Props {
 }
 
 const CourseItem = (params: Props) => {
-
   return (
     <div
       className="w-[250px] h-[140px] rounded-lg cursor-pointer
               shadow-md text-black p-4 flex flex-col justify-between"
-              style={{ backgroundColor: params.color}}
+      style={{ backgroundColor: params.color }}
     >
       <div>
         <h4 className="body-bold">{params.id}</h4>
@@ -23,7 +21,7 @@ const CourseItem = (params: Props) => {
         </p>
       </div>
 
-      <p className="small-regular text-center">{params.teachers}</p>
+      <p className="small-regular text-center">GV: {params.teachers}</p>
     </div>
   );
 };
