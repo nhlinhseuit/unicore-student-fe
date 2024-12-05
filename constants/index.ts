@@ -10,7 +10,7 @@ export const MAX_FILE_SIZE = MAX_FILE_VALUE * 1024 * 1024; // 25MB
 export const ALLOWED_FILE_TYPES = [
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document", // .docx
   "application/pdf", // .pdf
-  "application/vnd.openxmlformats-officedocument.presentationml.presentation", // .pptx
+"application/vnd.openxmlformats-officedocument.presentationml.presentation", // .pptx
   "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", // .xlsx
   "application/vnd.ms-excel", // .xls
   "text/plain", // .txt
@@ -184,6 +184,18 @@ export enum FilterType {
   DetailFilter,
   None,
 }
+
+export enum CourseType {
+  RegularCourseWithProject = "regularCourseWithProject",
+  InternCourse = "internCourse",
+  ThesisCourse = "thesisCourse",
+}
+
+export const ListCourseColors = [
+  { type: CourseType.RegularCourseWithProject, color: "#e8f7ff" },
+  { type: CourseType.InternCourse, color: "#fef5e5" },
+  { type: CourseType.ThesisCourse, color: "#ecf2ff" },
+];
 
 export enum DetailFilter {
   Semester,

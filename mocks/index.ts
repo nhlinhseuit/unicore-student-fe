@@ -235,6 +235,7 @@ export const mockPostData = [
 export const mockCourses = [
   {
     id: "SE114.N21.PMCL",
+    type: "regularCourseWithProject",
     name: "Nhập môn ứng dụng di động",
     semester: "HK1/2024",
     teachers: "Trịnh Văn A, Nguyễn Văn H, +1",
@@ -255,6 +256,7 @@ export const mockCourses = [
   },
   {
     id: "SE100.N23.PMCL",
+    type: "regularCourseWithProject",
     name: "Phương pháp phát triển phần mềm hướng đối tượng",
     semester: "HK2/2024",
     teachers: "Nguyễn Hoàng Linh, Nguyễn Văn H",
@@ -271,6 +273,15 @@ export const mockCourses = [
   },
   {
     id: "SE502.N21",
+    type: "internCourse",
+    name: "Thực tập doanh nghiệp",
+    semester: "HK1/2024",
+    teachers: "Nguyễn Ngọc Quí",
+    subCourses: [],
+  },
+  {
+    id: "SE502.N21",
+    type: "thesisCourse",
     name: "Đồ án 1",
     semester: "HK1/2024",
     teachers: "Nguyễn Hoàng Linh, Lê Thành Lộc",

@@ -36,7 +36,7 @@ const ExercisePostItem = (params: Props) => {
           </p>
           <StatusButton
             green
-            text="BÀI TẬP"
+            text="Bài tập"
             smallText
             otherClasses="rounded-md ml-4"
             infoComponent={
