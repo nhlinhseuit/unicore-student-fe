@@ -20,7 +20,6 @@ export const ALLOWED_FILE_TYPES = [
 ];
 export const MAX_CATEGORIES = 5; // Số danh mục tối đa chọn khi đăng thông báo
 
-
 //
 // TODO: Review
 //
@@ -38,19 +37,6 @@ export const mockBookmarkOptions = [
   { id: 2, value: "Thông báo" },
   { id: 3, value: "Bài tập" },
   { id: 4, value: "Bài tập lớn" },
-];
-
-export const ReviewTabs = [
-  { value: "completedReviews", label: "Đã phúc khảo" },
-  { value: "waitingReviews", label: "Phúc khảo chờ duyệt" },
-  { value: "approvedReviews", label: "Phúc khảo đã duyệt" },
-];
-
-export const BookmarksTabs = [
-  { value: "generalPost", label: "Chung" },
-  { value: "announcements", label: "Thông báo" },
-  { value: "exercises", label: "Bài tập" },
-  { value: "bigExercises", label: "Bài tập lớn" },
 ];
 
 // TODO: NAVBAR TAB
