@@ -34,7 +34,6 @@ import SubmitButton from "../shared/Button/SubmitButton";
 
 import { Form } from "@/components/ui/form";
 import React from "react";
-import CancelButtonForm from "../shared/CancelButtonForm";
 
 interface Props {
   score: number;
@@ -318,7 +317,9 @@ const SubmitExercise = (params: Props) => {
                   />
 
                   <div className="mt-2 flex gap-2 justify-end">
-                    <CancelButtonForm
+                    <IconButton
+                      text="Hủy"
+                      cancel
                       onClick={() => {
                         setIsShowDialogConfirmReview(false);
                         // params.onClickGetOut && params.onClickGetOut();

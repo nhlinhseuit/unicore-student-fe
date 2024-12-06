@@ -11,6 +11,7 @@ interface IconButtonProps {
   blue?: boolean;
   gray?: boolean;
   purple?: boolean;
+  cancel?: boolean;
 
   onClick?: () => void;
   iconLeft?: string;
@@ -34,18 +35,6 @@ const IconButton = (params: IconButtonProps) => {
         gap-1
         items-center
         justify-center
-        ${params.border && "border border-gray-200"}
-        ${params.isFilter && "border-[#2563EB]"} 
-        ${params.textColor ? `${params.textColor}` : "text-white"} 
-        ${params.bgColor ? `${params.bgColor}` : "bg-primary-500"} 
-
-        ${params.temp ? `bg-[#17A1FA]` : ""} 
-        ${params.yellow ? `bg-[#FFC107]` : ""} 
-        ${params.red ? `bg-[#F02021]` : ""} 
-        ${params.green ? `bg-[#27CD95]` : ""} 
-        ${params.blue ? `bg-[#7FC9FA]` : ""} 
-        ${params.gray ? `bg-[#CCCCCC]` : ""} 
-        ${params.purple ? `bg-[#8151fd]` : ""} 
         hover:bg-primary-800
         focus:ring-1
         focus:ring-gray-200
@@ -60,7 +49,24 @@ const IconButton = (params: IconButtonProps) => {
         dark:focus:ring-primary-800
         h-auto
         text-center
-        
+        shadow-none
+        ${params.border && "border light-border-2"}
+        ${params.isFilter && "border-[#2563EB]"} 
+        ${params.textColor ? `${params.textColor}` : "text-white"} 
+        ${params.bgColor ? `${params.bgColor}` : "bg-primary-500"} 
+
+        ${params.temp ? `bg-[#17A1FA]` : ""} 
+        ${params.yellow ? `bg-[#FFC107]` : ""} 
+        ${params.red ? `bg-[#F02021]` : ""} 
+        ${params.green ? `bg-[#27CD95]` : ""} 
+        ${params.blue ? `bg-[#7FC9FA]` : ""} 
+        ${params.gray ? `bg-[#CCCCCC]` : ""}
+        ${params.purple ? `bg-[#8151fd]` : ""} 
+         ${
+           params.cancel
+             ? `bg-white text-black border light-border-2 border-slate-200 shadow-sm hover:bg-slate-200`
+             : ""
+         }
         ${params.otherClasses}
         `}
     >

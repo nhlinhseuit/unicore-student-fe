@@ -5,7 +5,6 @@ import RegisterGroupTable from "@/components/shared/Table/TableRegisterGroup/Reg
 import { mockDataStudentRegisterGroup, mockDbStudent } from "@/mocks";
 import { useEffect, useRef, useState } from "react";
 
-import MiniButton from "@/components/shared/Button/MiniButton";
 import {
   AlertDialog,
   AlertDialogContent,
@@ -23,6 +22,8 @@ import {
 import { Input } from "@/components/ui/input";
 
 import BorderContainer from "@/components/shared/BorderContainer";
+import SubmitButton from "@/components/shared/Button/SubmitButton";
+import StudentItem from "@/components/shared/StudentItem";
 import { Action, maxStudentPerGroup, minStudentPerGroup } from "@/constants";
 import { toast } from "@/hooks/use-toast";
 import Student from "@/types/entity/Student";
@@ -31,7 +32,6 @@ import { AlertDialogTitle } from "@radix-ui/react-alert-dialog";
 import { usePathname } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import StudentItem from "@/components/shared/StudentItem";
 
 const ManageGroup = () => {
   const pathName = usePathname();
@@ -264,7 +264,8 @@ const ManageGroup = () => {
                     render={({ field }) => (
                       <FormItem className="flex w-full flex-col">
                         <FormLabel className="text-dark400_light800 text-[14px] font-semibold leading-[20.8px]">
-                          Danh sách thành viên nhóm <span className="text-red-600">*</span>
+                          Danh sách thành viên nhóm{" "}
+                          <span className="text-red-600">*</span>
                         </FormLabel>
                         <FormDescription className="body-regular mt-2.5 text-light-500">
                           Nhóm trưởng điền tên đầu tiên. Thành viên nhóm phải là
@@ -333,21 +334,14 @@ const ManageGroup = () => {
                   />
 
                   <div className="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
-                    <button
-                      type="button"
+                    <IconButton
+                      cancel
+                      text={"Hủy"}
                       onClick={() => {
                         setIsShowDialog(Action.none);
                       }}
-                      className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-slate-950 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 dark:focus-visible:ring-slate-300 border border-slate-200 bg-white shadow-sm hover:bg-slate-100 hover:text-slate-900 dark:border-slate-800 dark:bg-slate-950 dark:hover:bg-slate-800 dark:hover:text-slate-50 h-9 px-4 py-2 mt-2 sm:mt-0"
-                    >
-                      Hủy
-                    </button>
-                    <button
-                      type="submit"
-                      className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-slate-950 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 dark:focus-visible:ring-slate-300 bg-primary-500 text-slate-50 shadow hover:bg-primary-500/90 dark:bg-slate-50 dark:text-slate-900 dark:hover:bg-slate-50/90 h-9 px-4 py-2"
-                    >
-                      Đồng ý
-                    </button>
+                    />
+                    <SubmitButton text={"Đồng ý"} />
                   </div>
                 </div>
               </form>
