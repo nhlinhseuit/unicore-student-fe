@@ -13,7 +13,7 @@ import {
 } from "@radix-ui/react-alert-dialog";
 import { Table } from "flowbite-react";
 import { useState } from "react";
-import { tableTheme } from "../components/DataTable";
+import { tableTheme } from "@/constants";
 
 interface DataTableParams {
   isEditTable: boolean;

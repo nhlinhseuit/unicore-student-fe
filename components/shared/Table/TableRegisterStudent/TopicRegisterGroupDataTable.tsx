@@ -1,8 +1,8 @@
 import { Table } from "flowbite-react";
 import React, { useState } from "react";
-import { tableTheme } from "../components/DataTable";
 import RowTopicRegisterGroupDataTable from "./RowTopicRegisterGroupDataTable";
 import { TopicRegisterGroupDataItem } from "@/types";
+import { tableTheme } from "@/constants";
 
 interface DataTableParams {
   isEditTable: boolean;

@@ -3,7 +3,7 @@ import {
   ScoreTranscriptStudentDataItem,
 } from "@/types";
 import { Table } from "flowbite-react";
-import { tableTheme } from "../components/DataTable";
+import { tableTheme } from "@/constants";
 import RowScoreTranscriptTable from "./RowScoreTranscriptTable";
 
 interface DataTableParams {

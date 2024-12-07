@@ -2,7 +2,7 @@ import { mockDataReviewGradeExercise } from "@/mocks";
 import { useState } from "react";
 import IconButton from "../shared/Button/IconButton";
 import NoResult from "../shared/Status/NoResult";
-import ReviewGradeTable from "../shared/Table/TableGrading/ReviewGradeTable";
+import ReviewGradeTable from "../shared/Table/TableReviewGrade/ReviewGradeTable";
 
 interface Props {
   exerciseId: string;
@@ -18,14 +18,6 @@ const ReviewExercise = (params: Props) => {
     <>
       <div className="flex gap-4 items-center">
         <p className="paragraph-semibold underline ">Phúc khảo</p>
-
-        {/* //! SHOW CHO LUỒNG GIẢNG VIÊN */}
-        {/* <IconButton
-          text="Chỉnh sửa điểm"
-          onClick={() => {
-            // setIsEditGradeColumn(true);
-          }}
-        /> */}
       </div>
 
       <div className="mt-4">
