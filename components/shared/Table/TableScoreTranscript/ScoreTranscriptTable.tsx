@@ -1,9 +1,10 @@
+import { tableTheme } from "@/components/shared/Table/components/DataTable";
 import {
   GradeColumnPercentDataItem,
   ScoreTranscriptStudentDataItem,
 } from "@/types";
 import { Table } from "flowbite-react";
-import { tableTheme } from "@/constants";
+
 import RowScoreTranscriptTable from "./RowScoreTranscriptTable";
 
 interface DataTableParams {

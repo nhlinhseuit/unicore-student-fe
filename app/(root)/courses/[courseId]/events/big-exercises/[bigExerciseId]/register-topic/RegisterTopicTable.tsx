@@ -4,8 +4,9 @@ import { useMemo, useState } from "react";
 import RowRegisterTopicTable from "./RowRegisterTopicTable";
 
 import NoResult from "@/components/shared/Status/NoResult";
+import { tableTheme } from "@/components/shared/Table/components/DataTable";
 import MyFooter from "@/components/shared/Table/components/MyFooter";
-import { itemsPerPageRegisterTable, RegisterTopicTableType, tableTheme } from "@/constants";
+import { itemsPerPageRegisterTable, RegisterTopicTableType } from "@/constants";
 import { sSelectedTopic } from "./(store)/createReportStore";
 
 interface DataTableParams {

@@ -1,7 +1,7 @@
+import { tableTheme } from "@/components/shared/Table/components/DataTable";
 import { GradeColumnPercentDataItem, ScoreTranscriptDataCourse } from "@/types";
 import { Table } from "flowbite-react";
 import { useState } from "react";
-import { tableTheme } from "@/constants";
 
 interface DataTableParams {
   isEditTable: boolean;

@@ -2,7 +2,7 @@ import { Table } from "flowbite-react";
 import React, { useState } from "react";
 import RowTopicRegisterGroupDataTable from "./RowTopicRegisterGroupDataTable";
 import { TopicRegisterGroupDataItem } from "@/types";
-import { tableTheme } from "@/constants";
+import { tableTheme } from "@/components/shared/Table/components/DataTable";
 
 interface DataTableParams {
   isEditTable: boolean;
@@ -44,7 +44,7 @@ const TopicRegisterGroupDataTable = (params: DataTableParams) => {
             {Object.keys(params.dataTable[0].data || {}).map((key, index) => {
               return (
                 <Table.HeadCell
-                key={`${key}_${index}`}
+                  key={`${key}_${index}`}
                   theme={tableTheme?.head?.cell}
                   className={`px-2 py-4 border-r-[1px] uppercase whitespace-nowrap`}
                 >

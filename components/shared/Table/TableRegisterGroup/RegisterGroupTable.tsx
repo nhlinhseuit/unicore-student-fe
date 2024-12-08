@@ -2,7 +2,8 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
 } from "@/components/ui/alert-dialog";
-import { itemsPerPageRegisterTable, tableTheme } from "@/constants";
+import { tableTheme } from "@/components/shared/Table/components/DataTable";
+import { itemsPerPageRegisterTable } from "@/constants";
 import { RegisterGroupDataItem } from "@/types";
 import {
   AlertDialog,

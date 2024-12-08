@@ -1,8 +1,8 @@
+import { tableTheme } from "@/components/shared/Table/components/DataTable";
 import { DataGradingDetailItem } from "@/types";
 import { Table } from "flowbite-react";
 import { useRef } from "react";
 import InputComponent from "../Table/components/InputComponent";
-import { tableTheme } from "@/constants";
 
 interface DataTableParams {
   isEditTable: boolean;
@@ -31,7 +31,7 @@ const ScoreColumnDetailItemTable = (params: DataTableParams) => {
           value={value}
           placeholder={value}
           onChange={(newValue) => handleInputChange(key, newValue)}
-        isDescription={key === "Góp ý" ? true : false}
+          isDescription={key === "Góp ý" ? true : false}
           otherClassess="w-full"
         />
       );
