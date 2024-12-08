@@ -32,6 +32,7 @@ import { AlertDialogTitle } from "@radix-ui/react-alert-dialog";
 import { usePathname } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import TitleDescription from "@/components/shared/TitleDescription";
 
 const ManageGroup = () => {
   const pathName = usePathname();
@@ -189,12 +190,16 @@ const ManageGroup = () => {
   }, []);
 
   return (
-    <div className="px-6">
-      <div className="flex items-center justify-end mb-3 gap-2">
-        <p className="italic text-sm text-red-500">
-          * Nhóm trưởng điền tên đầu tiên
-        </p>
+    <div>
+      <TitleDescription
+        title="Đăng ký nhóm"
+        description={[
+          "Thời hạn: 7/12/2024 - 28/12/2024",
+          "Lưu ý: Nhóm trưởng điền tên đầu tiên",
+        ]}
+      />
 
+      <div className="flex items-center justify-end mb-3 gap-2">
         <IconButton
           text={
             isAlreadyRegisteredGroup ? "Sửa thông tin nhóm" : "Đăng ký nhóm"

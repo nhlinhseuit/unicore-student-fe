@@ -46,6 +46,7 @@ import StudentItem from "@/components/shared/StudentItem";
 import { usePathname } from "next/navigation";
 import Student from "@/types/entity/Student";
 import SubmitButton from "@/components/shared/Button/SubmitButton";
+import TitleDescription from "@/components/shared/TitleDescription";
 
 const RegisterTopic = () => {
   // Update biến: Danh sách thành viên nhóm
@@ -285,7 +286,15 @@ const RegisterTopic = () => {
       }>);
 
   return (
-    <div className="px-6">
+    <div>
+      <TitleDescription
+        title="Đăng ký đề tài"
+        description={[
+          "Thời hạn: 7/12/2024 - 28/12/2024",
+          "Lưu ý: Nhóm trưởng điền tên đầu tiên",
+        ]}
+      />
+
       {errorMessages.length > 0 && (
         <div className="mb-6">
           {errorMessages.map((item, index) => (
