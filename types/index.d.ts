@@ -42,7 +42,9 @@ export interface RegisterGroupData {
   "Họ và tên": string;
 }
 export interface RegisterTopicData {
-  "Tên đề tài": string;
+  "Mã đề tài": string;
+  "Tên đề tài tiếng Việt": string;
+  "Tên đề tài tiếng Anh": string;
   "Mô tả": string;
   "Mã nhóm": string;
   MSSV: string[];
@@ -55,7 +57,8 @@ export interface TopicRegisterGroupData {
 }
 
 export interface TopicData {
-  "Tên đề tài": string;
+  "Tên đề tài tiếng Việt": string;
+  "Tên đề tài tiếng Anh": string;
   "Mô tả": string;
 }
 export interface FileData {

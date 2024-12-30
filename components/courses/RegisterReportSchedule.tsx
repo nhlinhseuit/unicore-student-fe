@@ -73,14 +73,6 @@ const RegisterReportSchedule = (params: Props) => {
         <span className="mt-4 base-regular">
           Tất cả lựa chọn đều đã đạt số lượng câu trả lời tối đa.
         </span>
-        <span>
-          <a
-            href="/"
-            className="ml-2 body-regular text-blue-500 underline text-base italic"
-          >
-            Liên hệ giảng viên mở thêm lựa chọn mới
-          </a>
-        </span>
       </div>
 
       <IconButton

@@ -90,7 +90,7 @@ const RowRegisterTopicTable = React.memo(
       params.onChangeRow && params.onChangeRow(updatedDataItem); // Gọi callback để truyền dữ liệu đã chỉnh sửa lên DataTable
     };
 
-    var valueUniqueInput = params.dataItem.data["Tên đề tài"];
+    var valueUniqueInput = params.dataItem.data["Mã đề tài"];
 
     const renderCellValue = ({
       key,
@@ -228,7 +228,7 @@ const RowRegisterTopicTable = React.memo(
               id="approveTopic"
               type="radio"
               name="approveTopic"
-              checked={selectedTopic === params.dataItem.data["Tên đề tài"]}
+              checked={selectedTopic === params.dataItem.data["Mã đề tài"]}
               value={valueUniqueInput}
               onChange={() => {
                 {

@@ -6,7 +6,6 @@ import RenderFile from "../Annoucements/RenderFile";
 import IconButton from "../Button/IconButton";
 import Divider from "../Divider";
 import ScoreColumnDetailItemTable from "./ScoreColumnDetailItemTable";
-import { sErrorList } from "./(store)/scoreDetailStore";
 
 interface Props {
   postScoreDetail: PostDataGradingDetailItem;
@@ -18,57 +17,6 @@ interface Props {
 }
 
 const PostScoreColumnDetailItem = (params: Props) => {
-  const errorList = sErrorList.use();
-  sErrorList.set((prev) => {
-    // Kiểm tra nếu chưa có item với id là params.postScoreDetail.id
-    const existingItem = prev.value.find(
-      (item) => item.id === params.postScoreDetail.id
-    );
-
-    if (!existingItem) {
-      // Nếu không có item, thêm một item mới vào
-      prev.value.push({
-        id: params.postScoreDetail.id,
-        errorList: [],
-      });
-    }
-  });
-
-  const getErrorItem = () => {
-    return errorList.find((item) => item.id === params.postScoreDetail.id);
-  };
-
-  const validateScoreProgress = (inputValue: string) => {
-    const list: string[] = [];
-
-    // Kiểm tra giá trị có phải là số hay không
-    if (isNaN(parseInt(inputValue))) {
-      list.push("Hệ số điểm phải là chữ số");
-    }
-
-    // Kiểm tra giá trị trong khoảng từ 0 đến 100
-    const score = parseInt(inputValue);
-    if (!isNaN(score) && (score < 0 || score > 100)) {
-      list.push("Hệ số điểm phải lớn hơn hoặc bằng 0 và nhỏ hơn hoặc bằng 100");
-    }
-
-    // Cập nhật danh sách lỗi
-    sErrorList.set((prev) => {
-      prev.value = prev.value.map((item) => {
-        if (item.id === params.postScoreDetail.id) {
-          return {
-            id: params.postScoreDetail.id,
-            errorList: list,
-          };
-        }
-        return item;
-      });
-    });
-
-    // Trả về true nếu không có lỗi, ngược lại trả về false
-    return errorList.length === 0;
-  };
-
   return (
     <div className="card-wrapper rounded-[10px]">
       <div className="relative flex-col w-full p-6">
@@ -162,24 +110,6 @@ const PostScoreColumnDetailItem = (params: Props) => {
             }
           }}
         />
-
-        {!(errorList.length === 1 && errorList[0].errorList.includes("")) ? (
-          <div className="mt-4 flex justify-end">
-            {
-              // Nếu tìm thấy errorItem và errorList của nó có lỗi, hiển thị lỗi
-              getErrorItem()?.errorList?.map((item, index) => (
-                <p
-                  key={index}
-                  className="text-[0.8rem] font-medium dark:text-red-900 text-red-500"
-                >
-                  * {item}
-                </p>
-              ))
-            }
-          </div>
-        ) : (
-          <></>
-        )}
       </div>
     </div>
   );

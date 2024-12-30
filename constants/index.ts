@@ -60,6 +60,11 @@ export const DepartmentSubjectsTabItems = [
 export const StudentCourseTabItems = [
   { value: "generalPost", label: "Thông báo chung", route: "/" },
   {
+    value: "happeningEvent",
+    label: "Hoạt động đang diễn ra",
+    route: "/happening-event",
+  },
+  {
     value: "exercises",
     label: "Bài tập",
     route: "/exercises",
@@ -126,11 +131,6 @@ export const StudentBookmarksTabItems = [
 
 export const BigExerciseTabItems = [
   { value: "generalPost", label: "Thông báo chung", route: "/" },
-  {
-    value: "happeningEvent",
-    label: "Hoạt động đang diễn ra",
-    route: "/happening-event",
-  },
   {
     value: "registerTopic",
     label: "Đăng ký đề tài",

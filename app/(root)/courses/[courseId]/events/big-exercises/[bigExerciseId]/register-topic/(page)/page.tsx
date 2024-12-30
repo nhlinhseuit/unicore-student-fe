@@ -161,16 +161,12 @@ const RegisterTopic = () => {
 
   const getRegisterdTopicName = () => {
     return mockDataStudentRegisterTopic.find(
-      (item) => item.data["Tên đề tài"] === selectedTopic
-    )?.data["Tên đề tài"];
+      (item) => item.data["Tên đề tài tiếng Việt"] === selectedTopic
+    )?.data["Tên đề tài tiếng Việt"];
   };
 
   const RegisterTopicSchema = z
     .object({
-      nameGroup: z
-        .string()
-        .min(1, { message: "Bạn phải điền tên nhóm" })
-        .max(100, { message: "Tên nhóm chứa tối đa 100 ký tự" }),
       studentList: z.string().optional(),
     })
     .refine(() => selectedStudents.length >= minStudentPerGroup, {
@@ -188,17 +184,17 @@ const RegisterTopic = () => {
 
   const SuggestTopicSchema = z
     .object({
-      title: z
+      titleVi: z
+        .string()
+        .min(5, { message: "Tên đề tài phải chứa ít nhất 5 ký tự" })
+        .max(130),
+      titleEn: z
         .string()
         .min(5, { message: "Tên đề tài phải chứa ít nhất 5 ký tự" })
         .max(130),
       description: z
         .string()
         .min(20, { message: "Nội dung đề tài phải chứa ít nhất 20 ký tự" }),
-      nameGroup: z
-        .string()
-        .min(1, { message: "Bạn phải điền tên nhóm" })
-        .max(100, { message: "Tên nhóm chứa tối đa 100 ký tự" }),
       teacherSuggest: z.any().optional(),
       studentList: z.string().optional(),
     })
@@ -218,15 +214,14 @@ const RegisterTopic = () => {
   const formRegisterTopic = useForm<z.infer<typeof RegisterTopicSchema>>({
     resolver: zodResolver(RegisterTopicSchema),
     defaultValues: {
-      nameGroup: "",
     },
   });
 
   const formSuggestTopic = useForm<z.infer<typeof SuggestTopicSchema>>({
     resolver: zodResolver(SuggestTopicSchema),
     defaultValues: {
-      nameGroup: "",
-      title: "",
+      titleVi: "",
+      titleEn: "",
       description: "",
     },
   });
@@ -235,6 +230,8 @@ const RegisterTopic = () => {
     console.log("onSubmit");
     try {
       console.log({
+        titleVi: values.titleVi,
+        titleEn: values.titleEn,
         nameGroup: values.nameGroup,
       });
 
@@ -253,8 +250,8 @@ const RegisterTopic = () => {
 
       if (isShowDialogSuggestTopic) {
         resetSuggestTopicForm({
-          nameGroup: "",
-          title: "",
+          titleVi: "",
+          titleEn: "",
           description: "",
         });
         setIsShowDialogSuggestTopic(false);
@@ -277,12 +274,11 @@ const RegisterTopic = () => {
 
   const renderForm = isShowDialogSuggestTopic
     ? (formSuggestTopic as UseFormReturn<{
-        nameGroup: string;
-        title?: string;
+        titleVi?: string;
+        titleEn?: "",
         description?: string;
       }>)
     : (formRegisterTopic as UseFormReturn<{
-        nameGroup: string;
       }>);
 
   return (
@@ -408,28 +404,6 @@ const RegisterTopic = () => {
                   </div>
                 ) : null}
 
-                {/* Tên nhóm */}
-                <FormField
-                  control={renderForm.control}
-                  name="nameGroup"
-                  render={({ field }) => (
-                    <FormItem className="flex w-full flex-col">
-                      <FormLabel className="text-dark400_light800 text-[14px] font-semibold leading-[20.8px]">
-                        Tên nhóm <span className="text-red-600">*</span>
-                      </FormLabel>
-                      <FormControl className="mt-3.5 ">
-                        <Input
-                          {...field}
-                          placeholder="Nhập tên nhóm..."
-                          className="
-                                no-focus paragraph-regular background-light900_dark300 light-border-2 text-dark300_light700 min-h-[56px] border"
-                        />
-                      </FormControl>
-                      <FormMessage className="text-red-500" />
-                    </FormItem>
-                  )}
-                />
-
                 {/* Thông tin đề tài */}
                 {isShowDialogSuggestTopic ? (
                   <div className="flex flex-col gap-6">
@@ -437,16 +411,38 @@ const RegisterTopic = () => {
                       control={renderForm.control}
                       // ! Ignore: Biết chắc chắn với biến isShowDialogSuggestTopic thì đi với formSuggest
                       // @ts-ignore
-                      name="title"
+                      name="titleVi"
                       render={({ field }) => (
                         <FormItem className="flex w-full flex-col">
                           <FormLabel className="text-dark400_light800 text-[14px] font-semibold leading-[20.8px]">
-                            Tên đề tài <span className="text-red-600">*</span>
+                            Tên đề tài tiếng Việt <span className="text-red-600">*</span>
                           </FormLabel>
                           <FormControl className="mt-3.5 ">
                             <Input
                               {...field}
-                              placeholder="Nhập tên đề tài..."
+                              placeholder="Nhập tên đề tài tiếng Việt..."
+                              className="
+                                no-focus paragraph-regular background-light900_dark300 light-border-2 text-dark300_light700 min-h-[56px] border"
+                            />
+                          </FormControl>
+                          <FormMessage className="text-red-500" />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={renderForm.control}
+                      // ! Ignore: Biết chắc chắn với biến isShowDialogSuggestTopic thì đi với formSuggest
+                      // @ts-ignore
+                      name="titleEn"
+                      render={({ field }) => (
+                        <FormItem className="flex w-full flex-col">
+                          <FormLabel className="text-dark400_light800 text-[14px] font-semibold leading-[20.8px]">
+                            Tên đề tài tiếng Anh<span className="text-red-600">*</span>
+                          </FormLabel>
+                          <FormControl className="mt-3.5 ">
+                            <Input
+                              {...field}
+                              placeholder="Nhập tên đề tài tiếng Anh..."
                               className="
                                 no-focus paragraph-regular background-light900_dark300 light-border-2 text-dark300_light700 min-h-[56px] border"
                             />

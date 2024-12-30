@@ -1,12 +1,13 @@
-import { Table } from "flowbite-react";
-import React, { useState } from "react";
 import { FileDataItem } from "@/types";
-import MoreButtonComponent from "../components/MoreButtonComponent";
-import { FileTableDataMoreComponentItems } from "@/constants";
+import { Table } from "flowbite-react";
 import Image from "next/image";
 
 interface RowParams {
   dataItem: FileDataItem;
+  itemsSelected: string[];
+  valueUniqueInput: string;
+  isOnlyView?: boolean;
+  onClickCheckBoxSelect?: (item: string) => void;
   onClickDelete?: () => void;
 }
 interface handleInputChangeParams {
@@ -18,18 +19,7 @@ interface handleInputChangeParams {
 }
 
 const RowTopicDataTable = (params: RowParams) => {
-  const [isEdit, setIsEdit] = useState(false);
-
-  const handleEdit = () => {
-    if (isEdit === false) {
-      setIsEdit(true);
-    } else {
-      setIsEdit(false);
-    }
-  };
-
   const getFileIcon = (nameFile: string) => {
-    console.log("nameFile", nameFile);
     if (nameFile === undefined) return;
 
     const extension = nameFile.split(".").pop()?.toLowerCase();
@@ -114,26 +104,29 @@ const RowTopicDataTable = (params: RowParams) => {
       onClick={() => {}}
       className={`bg-background-secondary  text-leftduration-100`}
     >
+      {/* checkbox */}
       <Table.Cell className="w-10 border-r-[1px] z-100 ">
         <div
           onClick={(e) => {
             e.stopPropagation(); // Ngăn sự kiện lan truyền đến Table.Row
           }}
         >
-          <MoreButtonComponent
-            actions={FileTableDataMoreComponentItems}
-            handleEdit={handleEdit}
-            onClickGetOut={() => {
-              // params.onClickGetOut
-            }}
-            onClickDelete={(id: any) => {
-
-              // params.onClickDelete && params.onClickDelete(id)
-              
-              // params.deleteSingleRow &&
-              //   params.deleteSingleRow([valueUniqueInput]);
-            }}
-          />
+          <div className="flex items-center justify-center w-10 h-10">
+            <input
+              id="apple"
+              type="checkbox"
+              name="filterOptions"
+              value={params.valueUniqueInput}
+              checked={params.itemsSelected.includes(params.valueUniqueInput)}
+              onChange={() => {
+                {
+                  params.onClickCheckBoxSelect &&
+                    params.onClickCheckBoxSelect(params.valueUniqueInput);
+                }
+              }}
+              className="w-4 h-4 bg-gray-100 border-gray-300 rounded cursor-pointer text-primary-600"
+            />
+          </div>
         </div>
       </Table.Cell>
 

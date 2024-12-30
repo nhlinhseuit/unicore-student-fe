@@ -649,6 +649,23 @@ export const mockCentralizedExam = [
   },
 ];
 
+export const mockHappeningEventRegister = [
+  {
+    id: "1",
+    name: "Đăng ký nhóm",
+    creator: "Huỳnh Hồ Thị Mộng Trinh",
+    createdAt: "29/8/2024 7:23AM",
+    deadline: "10/09/2024 - 00:00AM",
+  },
+  {
+    id: "2",
+    name: "Đăng ký đề tài",
+    creator: "Huỳnh Hồ Thị Mộng Trinh",
+    createdAt: "29/8/2024 7:23AM",
+    deadline: "10/09/2024 - 00:00AM",
+  },
+];
+
 //
 // TODO: Big Exercise List
 //
@@ -736,7 +753,9 @@ export const mockDataStudentRegisterTopic = [
     isDeleted: false,
     data: {
       "Mã nhóm": "1",
-      "Tên đề tài": "Ứng dụng hẹn hò",
+      "Mã đề tài": "1",
+      "Tên đề tài tiếng Việt": "Ứng dụng hẹn hò",
+      "Tên đề tài tiếng Anh": "English name for topic",
       "Mô tả":
         "Kết nối người dùng với những người có sở thích tương tự Nơi người dùng có thể đăng tải và chia sẻ hình ảnh Một ứng dụng áp dụng phiếu giảm giá tự động để đảm bảo cung cấp phiếu giảm giá và giảm giá cho khách hàng",
       MSSV: ["21522289"],
@@ -749,7 +768,10 @@ export const mockDataStudentRegisterTopic = [
     isDeleted: false,
     data: {
       "Mã nhóm": "2",
-      "Tên đề tài": "Ứng dụng chia sẻ hình ảnh",
+      "Mã đề tài": "2",
+      "Tên đề tài tiếng Việt": "Ứng dụng chia sẻ hình ảnh",
+      "Tên đề tài tiếng Anh": "English name for topic",
+
       "Mô tả":
         "Nơi người dùng có thể đăng tải và chia sẻ hình ảnh Nơi người dùng có thể đăng tải và chia sẻ hình ảnh Nơi người dùng có thể đăng tải và chia sẻ hình ảnh Nơi người dùng có thể đăng tải và chia sẻ hình ảnh Nơi người dùng có thể đăng tải và chia sẻ hình ảnh Nơi người dùng có thể đăng tải và chia sẻ hình ảnh Nơi người dùng có thể đăng tải và chia sẻ hình ảnh Nơi người dùng có thể đăng tải và chia sẻ hình ảnh Nơi người dùng có thể đăng tải và chia sẻ hình ảnh Nơi người dùng có thể đăng tải và chia sẻ hình ảnh Nơi người dùng có thể đăng tải và chia sẻ hình ảnh",
       MSSV: ["21522289", "21522289"],
@@ -762,7 +784,10 @@ export const mockDataStudentRegisterTopic = [
     isDeleted: false,
     data: {
       "Mã nhóm": "3",
-      "Tên đề tài": "Ứng dụng nhà thông minh",
+      "Mã đề tài": "3",
+      "Tên đề tài tiếng Việt": "Ứng dụng nhà thông minh",
+      "Tên đề tài tiếng Anh": "English name for topic",
+
       "Mô tả": "Giúp người dùng xây dựng một ngôi nhà thông minh và tiện lợi",
       MSSV: ["21522289", "21522289"],
       "Họ và tên": ["Nguyễn Tiến Vĩ", "Nguyễn Vĩ"],
@@ -774,7 +799,10 @@ export const mockDataStudentRegisterTopic = [
     isDeleted: false,
     data: {
       "Mã nhóm": "4",
-      "Tên đề tài": "Ứng dụng ghi chú",
+      "Mã đề tài": "4",
+      "Tên đề tài tiếng Việt": "Ứng dụng ghi chú",
+      "Tên đề tài tiếng Anh": "English name for topic",
+
       "Mô tả": "Giúp người dùng ghi lại và tổ chức các ghi chú của mình",
       MSSV: ["21522289"],
       "Họ và tên": ["Võ Hữu Xike"],
@@ -794,13 +822,13 @@ export const mockSubmissionPost = {
 };
 
 export const mockSubmitExercisePost = {
-  score: 9,
+  score: [6, 9, 9],
   totalScore: 10,
   feedback: "Bài làm tốt, nhưng cần lưu ý cách trình bày",
   lateTime: "Quá hạn 2 ngày 12 tiếng",
   lastEdited: "Thứ Ba, 17 tháng 8 2024, 10:34 PM",
   submission: "NguyenHoangLinh_21522289.docx",
-  review: "Đang phúc khảo",
+  review: ["Phúc khảo lần 1: 6 -> 9", "Phúc khảo lần 2: 9 -> 9"],
 };
 
 //

@@ -36,13 +36,13 @@ import { Form } from "@/components/ui/form";
 import React from "react";
 
 interface Props {
-  score: number;
+  score: number[];
   totalScore: number;
   feedback: string;
   lateTime: string;
   lastEdited: string;
   submission: string;
-  review?: string;
+  review?: string[];
 }
 
 const SubmitExercise = (params: Props) => {
@@ -142,8 +142,7 @@ const SubmitExercise = (params: Props) => {
             <p className="body-medium text-green-500">Đã nộp để chấm điểm</p>
 
             <p className="body-medium text-green-500">
-              {params.score}{" "}
-              <span className="text-black">/ {params.totalScore} điểm</span>
+              {params.score.join(" -> ")}
             </p>
 
             <p className="body-medium">{params.feedback}</p>
@@ -154,9 +153,13 @@ const SubmitExercise = (params: Props) => {
 
             <p className="body-medium">{params.submission}</p>
 
-            {params.review ? (
-              <p className="body-medium">{params.review}</p>
-            ) : null}
+            {params.review
+              ? params.review.map((item, index) => (
+                  <p key={index} className="body-medium">
+                    {item}
+                  </p>
+                ))
+              : null}
           </div>
         </div>
       </BorderContainer>
