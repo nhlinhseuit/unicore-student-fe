@@ -84,11 +84,11 @@ export const StudentCourseTabItems = [
     label: "Bảng điểm",
     route: "/score-transcript",
   },
-  {
-    value: "timeTable",
-    label: "Lịch biểu",
-    route: "/time-table",
-  },
+  // {
+  //   value: "timeTable",
+  //   label: "Lịch biểu",
+  //   route: "/time-table",
+  // },
   {
     value: "files",
     label: "Lưu trữ",
@@ -254,26 +254,26 @@ export const sidebarStudentLinks: SidebarLink[] = [
     route: "/score-transcript",
     label: "Bảng điểm",
   },
+  // {
+  //   id: "4",
+  //   imgURL: "/assets/icons/timetable.svg",
+  //   route: "/timetable",
+  //   label: "Lịch biểu",
+  // },
+  // {
+  //   id: "4",
+  //   imgURL: "/assets/icons/messageIc.svg",
+  //   route: "/messages",
+  //   label: "Tin nhắn",
+  // },
   {
     id: "4",
-    imgURL: "/assets/icons/timetable.svg",
-    route: "/timetable",
-    label: "Lịch biểu",
-  },
-  {
-    id: "5",
-    imgURL: "/assets/icons/messageIc.svg",
-    route: "/messages",
-    label: "Tin nhắn",
-  },
-  {
-    id: "6",
     imgURL: "/assets/icons/bookmarks.svg",
     route: "/bookmarks",
     label: "Dấu trang",
   },
   {
-    id: "7",
+    id: "5",
     imgURL: "/assets/icons/setting.svg",
     route: "/setting",
     label: "Cài đặt",
