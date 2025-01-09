@@ -9,7 +9,6 @@ import {
 import { useState } from "react";
 
 const ScoreTranscript = () => {
-  const [selectedCourse, setSelectedCourse] = useState(-1);
   const [isViewDetailGradeColumn, setIsViewDetailGradeColumn] = useState(false);
 
   return (

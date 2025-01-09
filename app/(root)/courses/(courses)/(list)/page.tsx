@@ -1,4 +1,5 @@
 "use client";
+
 import CourseItem from "@/components/courses/CourseItem";
 import MoreButtonCourseItem from "@/components/courses/MoreButtonCourseItem";
 import { ListCourseColors } from "@/constants";
@@ -21,6 +22,7 @@ import { fetchCourses } from "@/services/courseServices";
 import { ICourseResponseData } from "@/types/entity/Course";
 import { useRouter } from "next/navigation";
 import { sClassCode, sClassId } from "../(store)/courseStore";
+import Image from "next/image";
 
 const Courses = () => {
   const [currentCourseId, setCurrentCourseId] = useState("");
@@ -53,7 +55,6 @@ const Courses = () => {
         <p className="mr-2 inline-flex justify-start text-sm font-semibold whitespace-nowrap">
           Bộ lọc lớp:
         </p>
-
         <DetailFilterComponent />
       </div>
 
@@ -84,7 +85,7 @@ const Courses = () => {
                 key={item.id}
                 id={item.code}
                 name={item.subject_metadata.name}
-                semester={item.semester.toString()} 
+                semester={item.semester.toString()}
                 year={item.semester.toString()}
                 teachers={item.subclasses
                   .map((item) => item.teacher_code)
