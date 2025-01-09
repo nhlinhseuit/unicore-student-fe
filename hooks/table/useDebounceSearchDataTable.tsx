@@ -1,11 +1,11 @@
 import { FilterType } from "@/constants";
 import { normalizeSearchItem } from "@/lib/utils";
 import {
-  CourseDataItem,
   StudentDataItem,
   SubjectDataItem,
   TeacherDataItem,
 } from "@/types";
+import { CourseDataItem } from "@/types/entity/Course";
 import { useEffect } from "react";
 
 const useDebounceSearchDataTable = (

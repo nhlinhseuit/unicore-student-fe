@@ -20,7 +20,6 @@ import useDebounceSearchDataTable from "@/hooks/table/useDebounceSearchDataTable
 import useDetailFilter from "@/hooks/table/useDetailFilter";
 import useSetDebounceSearchTerm from "@/hooks/table/useSetDebounceSearchTerm";
 import {
-  CourseDataItem,
   StudentDataItem,
   SubjectDataItem,
   TeacherDataItem,
@@ -33,6 +32,7 @@ import TableSearch from "../../Search/TableSearch";
 import NoResult from "../../Status/NoResult";
 import MyFooter from "./MyFooter";
 import Row from "./Row";
+import { CourseDataItem } from "@/types/entity/Course";
 
 // TODO: filteredData là để render giao diện (search, filter old new, detail filter)
 // TODO: localData là để handle save (khi edit từ search, filter old new, detail filter, pagination)
@@ -270,25 +270,33 @@ const DataTable = (params: DataTableParams) => {
       }
 
       const semesterSet: Set<number> = new Set();
-      const yearSet: Set<number> = new Set();
-      const subjectSet: Set<string> = new Set();
-      const teacherSet: Set<string> = new Set();
+  const yearSet: Set<number> = new Set();
+  const subjectSet: Set<string> = new Set();
+  const teacherSet: Set<string> = new Set();
 
-      dataTable.forEach((item) => {
-        item = item as CourseDataItem;
-        semesterSet.add(Number(item.data["Học kỳ"]));
-        yearSet.add(item.data["Năm học"]);
+  dataTable.forEach((item) => {
+    item = item as CourseDataItem;
+    semesterSet.add(Number(item.data["Học kỳ"]));
+    yearSet.add(item.data["Năm học"]);
 
-        if (item.type === "course") {
-          subjectSet.add((item as CourseDataItem).data["Tên môn học"]);
-
-          (item as CourseDataItem).data["Tên GV"]
-            .split(/\r\n|\n/)
-            .forEach((name) => {
-              teacherSet.add(name);
-            });
-        }
+    if (item.type === "course") {
+      subjectSet.add((item as CourseDataItem).data["Tên môn học"]);
+    
+      let teacherNames = (item as CourseDataItem).data["Tên GV"];
+    
+      // Đảm bảo teacherNames luôn là một mảng
+      teacherNames = Array.isArray(teacherNames)
+        ? teacherNames
+        : typeof teacherNames === "string"
+        ? [teacherNames] // Chuyển chuỗi thành mảng
+        : []; // Xử lý trường hợp không hợp lệ
+    
+      teacherNames.forEach((name: string) => {
+        teacherSet.add(name);
       });
+    }
+    
+  });
 
       return {
         semesterValues: Array.from(semesterSet).sort((a, b) => a - b),

@@ -1,4 +1,3 @@
-import { RegisterTopicDataItem } from "@/types";
 import { Table } from "flowbite-react";
 import { useMemo, useState } from "react";
 import RowRegisterTopicTable from "./RowRegisterTopicTable";
@@ -8,12 +7,13 @@ import { tableTheme } from "@/components/shared/Table/components/DataTable";
 import MyFooter from "@/components/shared/Table/components/MyFooter";
 import { itemsPerPageRegisterTable, RegisterTopicTableType } from "@/constants";
 import { sSelectedTopic } from "./(store)/createReportStore";
+import { TopicDataItem } from "@/types/entity/Topic";
 
 interface DataTableParams {
   type: RegisterTopicTableType;
   isEditTable: boolean;
   isMultipleDelete: boolean;
-  dataTable: RegisterTopicDataItem[];
+  dataTable: TopicDataItem[];
 }
 
 const RegisterTopicTable = (params: DataTableParams) => {
@@ -35,7 +35,7 @@ const RegisterTopicTable = (params: DataTableParams) => {
   }, [dataTable, currentPage]);
 
   const [filteredDataTable, setFilteredDataTable] =
-    useState<RegisterTopicDataItem[]>(currentItems);
+    useState<TopicDataItem[]>(currentItems);
 
   return (
     <div>

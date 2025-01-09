@@ -2,7 +2,6 @@
 
 import { useRef, useState } from "react";
 import * as XLSX from "xlsx";
-import { CourseDataItem } from "@/types";
 import DataTable from "../components/DataTable";
 import ErrorComponent from "../../Status/ErrorComponent";
 import TableSkeleton from "../components/TableSkeleton";
@@ -10,6 +9,7 @@ import NoResult from "../../Status/NoResult";
 import { useToast } from "@/hooks/use-toast";
 import IconButton from "../../Button/IconButton";
 import { DataTableType } from "@/constants";
+import { CourseDataItem } from "@/types/entity/Course";
 
 export default function CoursesDataTable() {
   const [isEditTable, setIsEditTable] = useState(false);

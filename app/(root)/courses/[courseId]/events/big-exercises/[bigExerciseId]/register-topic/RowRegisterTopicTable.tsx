@@ -1,8 +1,6 @@
 import InputComponent from "@/components/shared/Table/components/InputComponent";
 import { RegisterTopicTableType } from "@/constants";
 import {
-  CourseData,
-  RegisterTopicDataItem,
   StudentData,
   SubjectData,
   TeacherData,
@@ -10,10 +8,12 @@ import {
 import { Table } from "flowbite-react";
 import React, { useEffect, useRef, useState } from "react";
 import { sSelectedTopic } from "./(store)/createReportStore";
+import { CourseData } from "@/types/entity/Course";
+import { TopicDataItem } from "@/types/entity/Topic";
 
 interface RowParams {
   type: RegisterTopicTableType;
-  dataItem: RegisterTopicDataItem;
+  dataItem: TopicDataItem;
   isEditTable?: boolean;
   isMultipleDelete?: boolean;
   isHasSubCourses?: boolean;

@@ -1,4 +1,5 @@
 import { SidebarLink } from "@/types";
+import { CourseType } from "@/types/entity/Course";
 
 export const itemsPerPage = 30;
 export const maxStudentPerGroup = 2;
@@ -178,17 +179,14 @@ export enum FilterType {
   None,
 }
 
-export enum CourseType {
-  RegularCourseWithProject = "regularCourseWithProject",
-  InternCourse = "internCourse",
-  ThesisCourse = "thesisCourse",
-}
 
 export const ListCourseColors = [
   { type: CourseType.RegularCourseWithProject, color: "#e8f7ff" },
   { type: CourseType.InternCourse, color: "#fef5e5" },
+  { type: CourseType.ProjectCourse, color: "#ecf2ff" },
   { type: CourseType.ThesisCourse, color: "#ecf2ff" },
 ];
+
 
 export enum DetailFilter {
   Semester,

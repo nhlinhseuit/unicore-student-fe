@@ -4,9 +4,7 @@ import InputComponent from "./InputComponent";
 import { useState } from "react";
 import MoreButtonComponent from "./MoreButtonComponent";
 import {
-  CourseData,
   SubjectData,
-  CourseDataItem,
   SubjectDataItem,
   StudentDataItem,
   StudentData,
@@ -15,6 +13,7 @@ import {
 } from "@/types";
 import IconButton from "../../Button/IconButton";
 import Image from "next/image";
+import { CourseData, CourseDataItem } from "@/types/entity/Course";
 
 interface RowParams {
   dataItem:

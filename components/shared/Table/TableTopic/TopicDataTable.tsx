@@ -1,11 +1,11 @@
 import { tableTheme } from "@/components/shared/Table/components/DataTable";
 import { itemsPerPageTopicTable } from "@/constants";
-import { TopicDataItem } from "@/types";
 import { Table } from "flowbite-react";
 import { useMemo, useState } from "react";
 
 import MyFooter from "../components/MyFooter";
 import RowTopicDataTable from "./RowTopicDataTable";
+import { TopicDataItem } from "@/types/entity/Topic";
 
 interface DataTableParams {
   isEditTable: boolean;
