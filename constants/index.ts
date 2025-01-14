@@ -65,11 +65,11 @@ export const StudentCourseTabItems = [
     label: "Hoạt động đang diễn ra",
     route: "/happening-event",
   },
-  {
-    value: "exercises",
-    label: "Bài tập",
-    route: "/exercises",
-  },
+  // {
+  //   value: "exercises",
+  //   label: "Bài tập",
+  //   route: "/exercises",
+  // },
   {
     value: "manageGroup",
     label: "Đăng ký nhóm",
@@ -118,11 +118,11 @@ export const StudentBookmarksTabItems = [
     label: "Thông báo",
     route: "/announcements",
   },
-  {
-    value: "exercises",
-    label: "Bài tập",
-    route: "/exercises",
-  },
+  // {
+  //   value: "exercises",
+  //   label: "Bài tập",
+  //   route: "/exercises",
+  // },
   {
     value: "bigExercises",
     label: "Bài tập lớn",

@@ -1,18 +1,10 @@
-import React from "react";
-import Image from "next/image";
-import RenderFile from "../Annoucements/RenderFile";
-import Avatar from "../../courses/MyAvatar";
-import OtherComment from "../../courses/OtherComment";
-import MyComment from "../../courses/MyComment";
-import Divider from "../Divider";
-import { getAvatarName } from "@/lib/utils";
-
 interface Props {
+  isCentralizedExam?: boolean;
   id: string;
   name: string;
   creator: string;
   createdAt: string;
-  happeningEvent: string;
+  happeningEvent?: string;
   deadline: string;
 }
 
@@ -29,12 +21,17 @@ const BigExerciseItem = (params: Props) => {
         <p className="small-regular text-[#636363] line-clamp-1 ">
           {params.createdAt}
         </p>
-        <p className="mt-4 small-regular line-clamp-1 ">
-          <span className="italic">Sự kiện đang diễn ra: </span>{" "}
-          {params.happeningEvent}
-        </p>
-        <p className="small-regular line-clamp-1 ">
-          <span className="italic">Hạn cuối: </span> {params.deadline}
+        {params.happeningEvent ? (
+          <p className="mt-4 small-regular line-clamp-1 text-red-400">
+            <span className="italic">Sự kiện đang diễn ra: </span>
+            Đăng ký nhóm và đề tài báo cáo.
+          </p>
+        ) : null}
+        <p className="mt-4 small-regular line-clamp-1 text-red-400">
+          <span className="italic">
+            {params.isCentralizedExam ? "Ngày diễn ra" : "Hạn cuối"}:{" "}
+          </span>
+          {params.deadline}
         </p>
       </div>
     </div>
