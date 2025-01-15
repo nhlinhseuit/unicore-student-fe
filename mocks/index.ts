@@ -750,6 +750,7 @@ export const mockPostDataWithReport = [
 export const mockDataStudentRegisterTopic = [
   {
     STT: "1",
+    type: "topic",
     isDeleted: false,
     data: {
       "Mã nhóm": "1",
@@ -765,6 +766,7 @@ export const mockDataStudentRegisterTopic = [
   },
   {
     STT: "2",
+    type: "topic",
     isDeleted: false,
     data: {
       "Mã nhóm": "2",
@@ -781,6 +783,7 @@ export const mockDataStudentRegisterTopic = [
   },
   {
     STT: "3",
+    type: "topic",
     isDeleted: false,
     data: {
       "Mã nhóm": "3",
@@ -796,6 +799,7 @@ export const mockDataStudentRegisterTopic = [
   },
   {
     STT: "4",
+    type: "topic",
     isDeleted: false,
     data: {
       "Mã nhóm": "4",
