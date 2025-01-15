@@ -18,14 +18,6 @@ export interface SidebarLink {
   label: string;
 }
 
-// nếu giữ như này thì phải đổi lại tên vì đây là data của 1 student
-export interface RegisterGroupData {
-  "Mã nhóm": string;
-  MSSV: string;
-  SĐT: string;
-  "Họ và tên": string;
-}
-
 export interface TopicRegisterGroupData {
   MSSV: string;
   "Họ và tên": string;
@@ -143,11 +135,6 @@ export interface TeacherData {
   "Ngày sinh": string;
 }
 
-export interface RegisterGroupDataItem {
-  STT: string;
-  isDeleted: boolean;
-  data: RegisterGroupData;
-}
 // export interface RegisterTopicDataItem {
 //   STT: string;
 //   isDeleted: boolean;

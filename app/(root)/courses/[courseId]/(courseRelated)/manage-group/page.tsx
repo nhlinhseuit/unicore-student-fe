@@ -2,7 +2,6 @@
 
 import IconButton from "@/components/shared/Button/IconButton";
 import RegisterGroupTable from "@/components/shared/Table/TableRegisterGroup/RegisterGroupTable";
-import { mockDataStudentRegisterGroup, mockDbStudent } from "@/mocks";
 import { useEffect, useRef, useState } from "react";
 
 import {
@@ -23,27 +22,43 @@ import { Input } from "@/components/ui/input";
 
 import BorderContainer from "@/components/shared/BorderContainer";
 import SubmitButton from "@/components/shared/Button/SubmitButton";
+import NoResult from "@/components/shared/Status/NoResult";
 import StudentItem from "@/components/shared/StudentItem";
+import TableSkeleton from "@/components/shared/Table/components/TableSkeleton";
+import TitleDescription from "@/components/shared/TitleDescription";
 import { Action, maxStudentPerGroup, minStudentPerGroup } from "@/constants";
 import { toast } from "@/hooks/use-toast";
-import Student from "@/types/entity/Student";
+import {
+  fetchGroupRegisterSchedule,
+  registerGroup,
+} from "@/services/groupRegisterServices";
+import { IStudentResponseData } from "@/services/Student";
+import { fetchStudents } from "@/services/studentServices";
+import {
+  convertGroupDataToRegisterGroupDataItem,
+  IGroup,
+  IGroupRegisterResponseData,
+  IMember,
+  RegisterGroupDataItem,
+} from "@/types/entity/GroupRegister";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AlertDialogTitle } from "@radix-ui/react-alert-dialog";
+import { useAtomValue } from "jotai";
 import { usePathname } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import TitleDescription from "@/components/shared/TitleDescription";
+import { groupingIdAtom } from "../../../(courses)/(store)/courseStore";
 
 const ManageGroup = () => {
   const pathName = usePathname();
   const courseId = pathName.split("/")[2];
 
   const [isAlreadyRegisteredGroup, setIsAlreadyRegisteredGroup] =
-    useState(false);
+    useState<IGroup>();
 
   const [isShowDialog, setIsShowDialog] = useState(Action.none);
 
-  const [selectedStudents, setSelectedStudents] = useState<Student[]>([]);
+  const [selectedStudents, setSelectedStudents] = useState<IMember[]>([]);
 
   const AnnoucementSchema = z
     .object({
@@ -53,16 +68,13 @@ const ManageGroup = () => {
         .max(100, { message: "Tên nhóm chứa tối đa 100 ký tự" }),
       studentList: z.string().optional(),
     })
-    .refine(() => selectedStudents.length >= minStudentPerGroup, {
-      message: `Nhóm phải có ít nhất ${minStudentPerGroup} thành viên.`,
-      path: ["studentList"],
-    })
+    //! mockParams:
+    // .refine(() => selectedStudents.length >= minStudentPerGroup, {
+    //   message: `Nhóm phải có ít nhất ${minStudentPerGroup} thành viên.`,
+    //   path: ["studentList"],
+    // })
     .refine(() => selectedStudents.length <= maxStudentPerGroup, {
       message: `Nhóm chỉ được phép tối đa ${maxStudentPerGroup} thành viên.`,
-      path: ["studentList"],
-    })
-    .refine(() => isStudentAbleToBeMemberGroup(), {
-      message: `Thành viên nhóm có thể là sinh viên khác lớp, nhưng phải cùng giảng viên giảng dạy và cùng môn học.`,
       path: ["studentList"],
     });
 
@@ -74,24 +86,145 @@ const ManageGroup = () => {
     },
   });
 
+  //TODO: TABLE
+  const [isEditTable, setIsEditTable] = useState(false);
+  const [isMultipleDelete, setIsMultipleDelete] = useState(false);
+  const [dataTable, setDataTable] = useState<RegisterGroupDataItem[]>();
+
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const [groupRegisterSchedule, setGroupRegisterSchedule] =
+    useState<IGroupRegisterResponseData>();
+
+  const groupingId = useAtomValue(groupingIdAtom);
+  const mockParamsGroupingId = "2f92d554-747d-4183-b8e3-f767437cabd3";
+
+  const isAlreadyRegisterGroup = (
+    groupRegisterSchedule?: IGroupRegisterResponseData
+  ): IGroup | undefined => {
+    //TODO: Khi authen vào thì lưu vào jotai
+    const mockParamsMyStudentCode = "21522289";
+
+    if (!groupRegisterSchedule) {
+      return undefined; // Không có dữ liệu nhóm, trả về false
+    }
+
+    // Tìm nhóm chứa myStudentCode
+    return groupRegisterSchedule.groups.find((group) =>
+      group.members.some(
+        (member) => member.student_code === mockParamsMyStudentCode
+      )
+    );
+  };
+
+  useEffect(() => {
+    //@ts-ignore
+    if (mockParamsGroupingId !== "") {
+      fetchGroupRegisterSchedule(mockParamsGroupingId)
+        .then((data: IGroupRegisterResponseData) => {
+          console.log("fetchGroupRegisterSchedule", data);
+          console.log(
+            "convertGroupDataToRegisterGroupDataItem(data.groups)",
+            convertGroupDataToRegisterGroupDataItem(data.groups)
+          );
+
+          setDataTable(convertGroupDataToRegisterGroupDataItem(data.groups));
+
+          // check xem đăng ký chưa, nếu dkdy rồi thì gán vào
+          setIsAlreadyRegisteredGroup(isAlreadyRegisterGroup(data));
+
+          setGroupRegisterSchedule(data);
+          setIsLoading(false);
+        })
+        .catch((error) => {
+          setError(error.message);
+          setIsLoading(false);
+        });
+    } else {
+      setIsLoading(false);
+    }
+  }, []);
+
+  //! hoàn thiện API: Check xem có trùng sinh viên ở nhóm khác không
+  //! hoàn thiện API: Viết lại hàm này khi xác định được API để check 1 sv ngoài lớp mà cùng gv
+
+  const isStudentAlreadyInOtherGroup = (
+    groups: IGroup[]
+  ): number | undefined => {
+    return undefined;
+  };
+
   async function onSubmit(values: any) {
     try {
-      console.log({
-        nameGroup: values.nameGroup,
-        studentList: selectedStudents,
-      });
+      if (groupRegisterSchedule?.groups) {
+        const groupIndex = isStudentAlreadyInOtherGroup(
+          groupRegisterSchedule?.groups
+        );
 
-      toast({
-        title:
-          isShowDialog === Action.create
-            ? "Đăng ký nhóm thành công."
-            : "Sửa thông tin nhóm thành công.",
-        variant: "success",
-        duration: 3000,
-      });
+        if (groupIndex !== undefined) {
+          toast({
+            title: "Đăng ký nhóm lỗi.",
+            description: `Sinh viên đã tồn tại trong nhóm thứ ${groupIndex}`,
+            variant: "success",
+            duration: 3000,
+          });
+          return;
+        }
+      }
 
-      setIsAlreadyRegisteredGroup(true);
-      setIsShowDialog(Action.none);
+      const mockParams = {
+        name: values.nameGroup,
+        //? CODE LẤY DATA Ở ĐÂY
+        // members: students.map((student) => ({
+        //   name: student.name,
+        //   phone: student.phone || "",
+        //   class_id: student.organization_id,
+        //   subclass_code: student.advisory_class,
+        //   student_code: student.code,
+        //   group_name: values.nameGroup,
+        // })),
+        members: [
+          {
+            name: "Le Thanh BA",
+            phone: "123123",
+            class_id: "677fefdd854d3e02e4191707",
+            subclass_code: "IT002.O21.CLC",
+            student_code: "21522289",
+            group_name: "nhóm 1",
+          },
+          {
+            name: "Le Thanh CA",
+            phone: "123123",
+            class_id: "677fefdd854d3e02e4191707",
+            subclass_code: "IT002.O21.CLC",
+            student_code: "2153",
+            group_name: "nhóm 1",
+          },
+        ],
+        grouping_id: mockParamsGroupingId,
+      };
+
+      registerGroup(mockParams).then((data) => {
+        console.log("registerGroup", data);
+
+        //! mockParams: check lại chỗ này
+        console.log("data.data.groups", data.data.groups);
+        setDataTable(convertGroupDataToRegisterGroupDataItem(data.data.groups));
+
+        toast({
+          title:
+            isShowDialog === Action.create
+              ? "Đăng ký nhóm thành công."
+              : "Sửa thông tin nhóm thành công.",
+          variant: "success",
+          duration: 3000,
+        });
+
+        // lấy nhóm vừa đky từ data trả về để hiện trên UI
+        setIsAlreadyRegisteredGroup(isAlreadyRegisterGroup(data.data));
+        setIsShowDialog(Action.none);
+      });
 
       // ? không cần reset để lần sau có thể chỉnh sửa
       // reset({
@@ -101,6 +234,8 @@ const ManageGroup = () => {
     } finally {
     }
   }
+
+  console.log("dataTable", dataTable);
 
   // ! STUDENT OUTSIDE CLASS
   const studentIdRef = useRef<HTMLInputElement>(null);
@@ -116,46 +251,37 @@ const ManageGroup = () => {
 
   const ref = useRef<HTMLDivElement>(null);
 
-  //!: API trả về có kq
+  //!: hoàn thiện API: check xem sinh viên có thỏa điều kiện sinh viên khác lớp, nhưng phải cùng giảng viên giảng dạy và cùng môn học?
 
   const isHasStudentInDb = () => {
-    if (studentIdRef.current) {
-      return mockDbStudent.find(
-        (item) => item.id === studentIdRef.current!.value
-      );
-    }
-  };
-
-  //!: API check xem sinh viên có thỏa điều kiện sinh viên khác lớp, nhưng phải cùng giảng viên giảng dạy và cùng môn học?
-
-  const isStudentAbleToBeMemberGroup = () => {
-    for (const student of selectedStudents) {
-      if (student.class === "SE502.N25") return false;
-    }
-    return true;
+    // if (studentIdRef.current && students.length > 0) {
+    //   return students.find((item) => item.id === studentIdRef.current!.value);
+    // }
+    // return undefined;
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    updateStudentId(value);
-
-    if (debounceRef.current) {
-      clearTimeout(debounceRef.current);
-    }
-
-    debounceRef.current = setTimeout(() => {
-      if (isHasStudentInDb()) {
-        setSuggestion(true);
-      } else {
-        setSuggestion(false);
-      }
-    }, 300);
+    //!: hoàn thiện API:
+    // const value = e.target.value;
+    // updateStudentId(value);
+    // if (debounceRef.current) {
+    //   clearTimeout(debounceRef.current);
+    // }
+    // debounceRef.current = setTimeout(() => {
+    //   if (isHasStudentInDb()) {
+    //     setSuggestion(true);
+    //   } else {
+    //     setSuggestion(false);
+    //   }
+    // }, 300);
   };
 
   const handleSuggestionClick = () => {
     if (studentIdRef.current) {
       if (
-        selectedStudents.some((item) => item.id === studentIdRef.current!.value)
+        selectedStudents.some(
+          (item) => item.student_code === studentIdRef.current!.value
+        )
       ) {
         setSuggestion(false);
         updateStudentId("");
@@ -169,20 +295,23 @@ const ManageGroup = () => {
   };
 
   const handleFocus = () => {
-    if (isHasStudentInDb()) {
-      setSuggestion(true); // Hiển thị gợi ý nếu khớp
-    } else {
-      setSuggestion(false); // Ẩn gợi ý nếu không khớp
-    }
+    //!: hoàn thiện API:
+    // if (isHasStudentInDb()) {
+    //   setSuggestion(true); // Hiển thị gợi ý nếu khớp
+    // } else {
+    //   setSuggestion(false); // Ẩn gợi ý nếu không khớp
+    // }
   };
 
   const handleClickOutside = (e: MouseEvent) => {
+    //? ẩn gợi ý
     if (ref.current && !ref.current.contains(e.target as Node)) {
       setSuggestion(false); // Tắt suggestion khi click ra ngoài
     }
   };
 
   useEffect(() => {
+    //? ẩn gợi ý
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
@@ -196,36 +325,45 @@ const ManageGroup = () => {
         description={[
           "Thời hạn: 7/12/2024 - 28/12/2024",
           "Lưu ý: Nhóm trưởng điền tên đầu tiên",
+          `Thời hạn: ${1}`,
         ]}
       />
 
-      <div className="flex items-center justify-end mb-3 gap-2">
-        <IconButton
-          text={
-            isAlreadyRegisteredGroup ? "Sửa thông tin nhóm" : "Đăng ký nhóm"
-          }
-          yellow={isAlreadyRegisteredGroup ? true : false}
-          green={isAlreadyRegisteredGroup ? false : true}
-          iconLeft={
-            isAlreadyRegisteredGroup
-              ? "/assets/icons/edit.svg"
-              : "/assets/icons/add.svg"
-          }
-          iconWidth={22}
-          iconHeight={22}
-          onClick={
-            isAlreadyRegisteredGroup
-              ? () => setIsShowDialog(Action.edit)
-              : () => setIsShowDialog(Action.create)
-          }
-        />
-      </div>
+      {isLoading ? (
+        <TableSkeleton />
+      ) : dataTable &&
+        dataTable.filter((item) => !item.isDeleted).length > 0 ? (
+        <div>
+          <div className="flex items-center justify-end mb-3 gap-2">
+            <IconButton
+              text={
+                isAlreadyRegisteredGroup ? "Sửa thông tin nhóm" : "Đăng ký nhóm"
+              }
+              yellow={isAlreadyRegisteredGroup ? true : false}
+              green={isAlreadyRegisteredGroup ? false : true}
+              iconLeft={
+                isAlreadyRegisteredGroup
+                  ? "/assets/icons/edit.svg"
+                  : "/assets/icons/add.svg"
+              }
+              iconWidth={22}
+              iconHeight={22}
+              onClick={
+                isAlreadyRegisteredGroup
+                  ? () => setIsShowDialog(Action.edit)
+                  : () => setIsShowDialog(Action.create)
+              }
+            />
+          </div>
 
-      <RegisterGroupTable
-        isEditTable={false}
-        isMultipleDelete={false}
-        dataTable={mockDataStudentRegisterGroup}
-      />
+          <RegisterGroupTable dataTable={dataTable} />
+        </div>
+      ) : (
+        <NoResult
+          title="Không có dữ liệu!"
+          description="🚀 Chưa có nhóm nào được đăng ký."
+        />
+      )}
 
       <AlertDialog open={isShowDialog !== Action.none}>
         <AlertDialogContent>
@@ -247,8 +385,11 @@ const ManageGroup = () => {
                     render={({ field }) => (
                       <FormItem className="flex w-full flex-col">
                         <FormLabel className="text-dark400_light800 text-[14px] font-semibold leading-[20.8px]">
-                          Tên nhóm <span className="text-red-600">*</span>
+                          Tên nhóm
                         </FormLabel>
+                        <FormDescription className="body-regular mt-2.5 text-light-500">
+                          Không bắt buộc.
+                        </FormDescription>
                         <FormControl className="mt-3.5 ">
                           <Input
                             {...field}
@@ -299,9 +440,11 @@ const ManageGroup = () => {
                                     className="absolute left-0 z-50 w-full mt-1 bg-white cursor-pointer p-2 rounded-md border normal-regular no-focus text-dark300_light700 min-h-[46px] shadow-lg"
                                     onClick={handleSuggestionClick}
                                   >
-                                    {isHasStudentInDb()?.id} -{" "}
-                                    {isHasStudentInDb()?.name} -{" "}
-                                    {isHasStudentInDb()?.class}
+                                    {/* //!: hoàn thiện API: */}
+                                    {/* //! mockParams: Cần có lớp mà sinh viên này đang học */}
+                                    {/* {isHasStudentInDb()?.id} -{" "}
+                                    {isHasStudentInDb()?.name} -{" "} 
+                                   {isHasStudentInDb()?.class} */}
                                   </div>
                                 )}
                               </div>
@@ -311,7 +454,7 @@ const ManageGroup = () => {
                                     {selectedStudents && (
                                       <div className="flex flex-col gap-4">
                                         {selectedStudents.map((item, index) => (
-                                          <div key={item.id}>
+                                          <div key={item.student_code}>
                                             <StudentItem
                                               item={item}
                                               index={index}

@@ -1,14 +1,14 @@
 import React from "react";
 import MiniButton from "./Button/MiniButton";
 import BorderContainer from "./BorderContainer";
-import Student from "@/types/entity/Student";
+import { IMember } from "@/types/entity/GroupRegister";
 
 interface Props {
-  item: Student;
+  item: IMember;
   index: number;
   courseId: string;
-  selectedStudents: Student[]; // Thêm prop nhận danh sách
-  setSelectedStudents: React.Dispatch<React.SetStateAction<Student[]>>; // Thêm prop để set
+  selectedStudents: IMember[]; // Thêm prop nhận danh sách
+  setSelectedStudents: React.Dispatch<React.SetStateAction<IMember[]>>; // Thêm prop để set
 }
 
 const StudentItem = (params: Props) => {
@@ -29,7 +29,7 @@ const StudentItem = (params: Props) => {
             bgColor="bg-[#F02021]"
             onClick={() => {
               setSelectedStudents((prev) =>
-                prev.filter((student) => student.id !== item.id)
+                prev.filter((student) => student.student_code !== item.student_code) 
               );
             }}
             otherClasses={"!w-[18px] !h-[18px]"}
@@ -39,9 +39,9 @@ const StudentItem = (params: Props) => {
 
       <BorderContainer otherClasses="mt-2 p-3">
         <p className="flex-grow text-left normal-regular -translate-y-[1px] text-dark200_light900 line-clamp-2">
-          {item.id} - {item.name}
-          {item.class !== courseId ? (
-            <span className="text-green-500"> - {item.class}</span>
+          {item.student_code} - {item.name}
+          {item.subclass_code !== courseId ? (
+            <span className="text-green-500"> - {item.subclass_code}</span>
           ) : null}
         </p>
       </BorderContainer>
