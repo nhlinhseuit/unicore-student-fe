@@ -1,4 +1,4 @@
-"use server";
+// "use server";
 
 import { IBackendRes } from "@/types/commonType";
 import { sendRequest } from "@/utils/api";
