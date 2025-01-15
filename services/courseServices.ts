@@ -1,4 +1,6 @@
-// "use server";
+"use server";
+
+//! CORS không xảy ra trên serverside, nên đặt use server ở đây hợp lý
 
 import { IBackendRes } from "@/types/commonType";
 import { sendRequest } from "@/utils/api";
