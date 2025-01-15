@@ -7,7 +7,6 @@ import { useEffect, useState } from "react";
 
 import CourseItemDialog from "@/components/courses/CourseItemDialog";
 import DetailFilterComponent from "@/components/shared/DetailFilterComponent";
-import LoadingComponent from "@/components/shared/LoadingComponent";
 import NoResult from "@/components/shared/Status/NoResult";
 import {
   AlertDialog,
@@ -21,7 +20,10 @@ import {
 import { fetchCourses } from "@/services/courseServices";
 import { ICourseResponseData } from "@/types/entity/Course";
 import { useRouter } from "next/navigation";
-import { sClassCode, sClassId } from "../(store)/courseStore";
+import { classIdAtom, classCodeAtom } from "../(store)/courseStore";
+import LoadingComponent from "@/components/shared/LoadingComponent";
+import Image from "next/image";
+import { useAtom } from "jotai";
 
 const Courses = () => {
   const [currentCourseId, setCurrentCourseId] = useState("");
@@ -48,6 +50,9 @@ const Courses = () => {
     return courses.find((item) => item.code === currentCourseId);
   };
 
+  const [, setClassId] = useAtom(classIdAtom);
+  const [, setClassCode] = useAtom(classCodeAtom);
+
   return (
     <>
       <div className="flex items-center w-full gap-2 mb-8">
@@ -68,15 +73,15 @@ const Courses = () => {
               onClick={() => {
                 if (item.subclasses.length > 1) {
                   //? Lưu code, id vào store
-                  sClassId.set(item.id);
+                  setClassId(item.id);
 
                   setCurrentCourseId(item.code);
                 } else {
                   router.push(`/courses/${item.code}`);
 
                   //? Lưu code, id vào store
-                  sClassId.set(item.id);
-                  sClassCode.set(item.subclasses[0].code);
+                  setClassId(item.id);
+                  setClassCode(item.subclasses[0].code);
                 }
               }}
             >
@@ -133,7 +138,7 @@ const Courses = () => {
                     <div
                       onClick={() => {
                         //? Lưu code, id vào store
-                        sClassCode.set(
+                        setClassCode(
                           getCurrentCourse()?.subclasses[index].code ?? ""
                         );
 
