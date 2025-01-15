@@ -1,5 +1,4 @@
 import {
-  CourseData,
   RegisterGroupDataItem,
   StudentData,
   SubjectData,
@@ -10,6 +9,7 @@ import React, { useEffect, useRef, useState } from "react";
 import IconButton from "../../Button/IconButton";
 import InputComponent from "../components/InputComponent";
 import MoreButtonComponent from "../components/MoreButtonComponent";
+import { CourseData } from "@/types/entity/Course";
 
 interface RowParams {
   isMemberOfAboveGroup: boolean;

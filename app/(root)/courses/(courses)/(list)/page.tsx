@@ -22,7 +22,6 @@ import { fetchCourses } from "@/services/courseServices";
 import { ICourseResponseData } from "@/types/entity/Course";
 import { useRouter } from "next/navigation";
 import { sClassCode, sClassId } from "../(store)/courseStore";
-import Image from "next/image";
 
 const Courses = () => {
   const [currentCourseId, setCurrentCourseId] = useState("");
