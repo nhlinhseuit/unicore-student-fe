@@ -40,3 +40,21 @@ export const registerGroup = async (data: any) => {
 
   return res;
 };
+
+export const deleteGroup = async (groupId: string) => {
+  console.log(
+    "delete API",
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/classevent/grouping/${groupId}`
+  );
+  // const session = await auth();
+  const res = await sendRequest<IBackendRes<any>>({
+    url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/classevent/grouping/${groupId}`,
+    method: "DELETE",
+    // headers: {
+    //   Authorization: `Bearer ${session?.user?.access_token}`,
+    // },
+  });
+  revalidateTag("delete-group-register");
+
+  return res;
+};

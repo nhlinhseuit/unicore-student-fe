@@ -90,11 +90,11 @@ export const StudentCourseTabItems = [
   //   label: "Lịch biểu",
   //   route: "/time-table",
   // },
-  {
-    value: "files",
-    label: "Lưu trữ",
-    route: "/files",
-  },
+  // {
+  //   value: "files",
+  //   label: "Lưu trữ",
+  //   route: "/files",
+  // },
   {
     value: "reviews",
     label: "Phúc khảo",
@@ -137,16 +137,16 @@ export const BigExerciseTabItems = [
     label: "Đăng ký đề tài",
     route: "/register-topic",
   },
-  {
-    value: "reviews",
-    label: "Phúc khảo",
-    route: "/reviews",
-  },
-  {
-    value: "files",
-    label: "Lưu trữ",
-    route: "/files",
-  },
+  // {
+  //   value: "reviews",
+  //   label: "Phúc khảo",
+  //   route: "/reviews",
+  // },
+  // {
+  //   value: "files",
+  //   label: "Lưu trữ",
+  //   route: "/files",
+  // },
 ];
 
 // TODO: OTHERS
@@ -155,6 +155,7 @@ export enum Action {
   create,
   edit,
   editing,
+  delete,
   none,
 }
 

@@ -44,9 +44,11 @@ import RegisterTopicTable from "../RegisterTopicTable";
 import BorderContainer from "@/components/shared/BorderContainer";
 import StudentItem from "@/components/shared/StudentItem";
 import { usePathname } from "next/navigation";
-import Student from "@/types/entity/Student";
+
+//! mockParams: để tạm chờ API giống bên teacher khi ghép topic
 import SubmitButton from "@/components/shared/Button/SubmitButton";
 import TitleDescription from "@/components/shared/TitleDescription";
+import { IMember } from "@/types/entity/GroupRegister";
 
 const RegisterTopic = () => {
   // Update biến: Danh sách thành viên nhóm
@@ -54,7 +56,7 @@ const RegisterTopic = () => {
   const pathName = usePathname();
   const courseId = pathName.split("/")[2];
 
-  const [selectedStudents, setSelectedStudents] = useState<Student[]>([]);
+  const [selectedStudents, setSelectedStudents] = useState<IMember[]>([]);
 
   const studentIdRef = useRef<HTMLInputElement>(null);
   const updateStudentId = (value: string) => {
@@ -83,7 +85,7 @@ const RegisterTopic = () => {
 
   const isStudentAbleToBeMemberGroup = () => {
     for (const student of selectedStudents) {
-      if (student.class === "SE502.N25") return false;
+      if (student.subclass_code === "SE502.N25") return false;
     }
     return true;
   };
@@ -108,7 +110,7 @@ const RegisterTopic = () => {
   const handleSuggestionClick = () => {
     if (studentIdRef.current) {
       if (
-        selectedStudents.some((item) => item.id === studentIdRef.current!.value)
+        selectedStudents.some((item) => item.student_code === studentIdRef.current!.value)
       ) {
         setSuggestion(false);
         updateStudentId("");
@@ -116,7 +118,8 @@ const RegisterTopic = () => {
       }
     }
 
-    setSelectedStudents((prev) => [...prev, isHasStudentInDb()!]);
+    //! mockParams: để tạm
+    // setSelectedStudents((prev) => [...prev, isHasStudentInDb()!]);
     setSuggestion(false);
     updateStudentId("");
   };
@@ -621,7 +624,7 @@ const RegisterTopic = () => {
                                   {selectedStudents && (
                                     <div className="flex flex-col gap-4">
                                       {selectedStudents.map((item, index) => (
-                                        <div key={item.id}>
+                                        <div key={item.student_code}>
                                           <StudentItem
                                             item={item}
                                             index={index}

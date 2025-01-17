@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import {
   AlertDialog,
   AlertDialogContent,
+  AlertDialogDescription,
   AlertDialogHeader,
 } from "@/components/ui/alert-dialog";
 import {
@@ -29,6 +30,7 @@ import TitleDescription from "@/components/shared/TitleDescription";
 import { Action, maxStudentPerGroup, minStudentPerGroup } from "@/constants";
 import { toast } from "@/hooks/use-toast";
 import {
+  deleteGroup,
   fetchGroupRegisterSchedule,
   registerGroup,
 } from "@/services/groupRegisterServices";
@@ -48,12 +50,15 @@ import { usePathname } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { groupingIdAtom } from "../../../(courses)/(store)/courseStore";
+import { formatISOToDayDatatype } from "@/utils/dateTimeUtil";
+import { format } from "date-fns";
+import LoadingComponent from "@/components/shared/LoadingComponent";
 
 const ManageGroup = () => {
   const pathName = usePathname();
   const courseId = pathName.split("/")[2];
 
-  const [isAlreadyRegisteredGroup, setIsAlreadyRegisteredGroup] =
+  const [isAlreadyRegisteredGroupVar, setIsAlreadyRegisteredGroupVar] =
     useState<IGroup>();
 
   const [isShowDialog, setIsShowDialog] = useState(Action.none);
@@ -91,7 +96,14 @@ const ManageGroup = () => {
   const [isMultipleDelete, setIsMultipleDelete] = useState(false);
   const [dataTable, setDataTable] = useState<RegisterGroupDataItem[]>();
 
+  const [minMember, setMinMember] = useState("");
+  const [maxMember, setMaxMember] = useState("");
+  const [selectedLeaderOption, setSelectedLeaderOption] = useState(false);
+  const [dateStart, setDateStart] = useState<Date>();
+  const [dateEnd, setDateEnd] = useState<Date>();
+
   const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingAPI, setIsLoadingAPI] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const [groupRegisterSchedule, setGroupRegisterSchedule] =
@@ -100,7 +112,7 @@ const ManageGroup = () => {
   const groupingId = useAtomValue(groupingIdAtom);
   const mockParamsGroupingId = "2f92d554-747d-4183-b8e3-f767437cabd3";
 
-  const isAlreadyRegisterGroup = (
+  const getIsAlreadyRegisterGroup = (
     groupRegisterSchedule?: IGroupRegisterResponseData
   ): IGroup | undefined => {
     //TODO: Khi authen vào thì lưu vào jotai
@@ -123,19 +135,28 @@ const ManageGroup = () => {
     if (mockParamsGroupingId !== "") {
       fetchGroupRegisterSchedule(mockParamsGroupingId)
         .then((data: IGroupRegisterResponseData) => {
-          console.log("fetchGroupRegisterSchedule", data);
-          console.log(
-            "convertGroupDataToRegisterGroupDataItem(data.groups)",
-            convertGroupDataToRegisterGroupDataItem(data.groups)
-          );
+          if (data) {
+            console.log("fetchGroupRegisterSchedule", data);
+            console.log(
+              "convertGroupDataToRegisterGroupDataItem(data.groups)",
+              convertGroupDataToRegisterGroupDataItem(data.groups)
+            );
 
-          setDataTable(convertGroupDataToRegisterGroupDataItem(data.groups));
+            setDataTable(convertGroupDataToRegisterGroupDataItem(data.groups));
 
-          // check xem đăng ký chưa, nếu dkdy rồi thì gán vào
-          setIsAlreadyRegisteredGroup(isAlreadyRegisterGroup(data));
+            //?
+            setDateStart(formatISOToDayDatatype(data.start_register_date));
+            setDateEnd(formatISOToDayDatatype(data.end_register_date));
+            setMaxMember(data.max_size.toString());
+            setMinMember(data.min_size.toString());
+            // ! mockParams
+            // setSelectedLeaderOption(data.hasLeader)
+            // check xem đăng ký chưa, nếu dkdy rồi thì gán vào
+            setIsAlreadyRegisteredGroupVar(getIsAlreadyRegisterGroup(data));
 
-          setGroupRegisterSchedule(data);
-          setIsLoading(false);
+            setGroupRegisterSchedule(data);
+            setIsLoading(false);
+          }
         })
         .catch((error) => {
           setError(error.message);
@@ -146,13 +167,41 @@ const ManageGroup = () => {
     }
   }, []);
 
-  //! hoàn thiện API: Check xem có trùng sinh viên ở nhóm khác không
-  //! hoàn thiện API: Viết lại hàm này khi xác định được API để check 1 sv ngoài lớp mà cùng gv
+  //! hoàn thiện API: Check xem có trùng sinh viên ở nhóm khác không +++ Khi đã đky r thì check để gán vào data cho alertdialog
+  //! hoàn thiện API: Viết lại hàm này khi xác định được API để check 1 sv ngoài lớp mà cùng gv (các model của dataSource)
 
   const isStudentAlreadyInOtherGroup = (
     groups: IGroup[]
   ): number | undefined => {
     return undefined;
+  };
+
+  const handleDelete = () => {
+    console.log("handleDelete");
+
+    setIsLoadingAPI(true);
+
+    console.log("delete data", isAlreadyRegisteredGroupVar?.id ?? "");
+
+    deleteGroup(isAlreadyRegisteredGroupVar?.id ?? "").then((data) => {
+      console.log("deleteGroup", data);
+
+      //! mockParams: check lại chỗ này
+      console.log("data.data.groups", data.data.groups);
+      // setDataTable(convertGroupDataToRegisterGroupDataItem(data.data.groups));
+
+      toast({
+        title: "Xóa thông tin đăng ký nhóm thành công.",
+        variant: "success",
+        duration: 3000,
+      });
+
+      setIsLoadingAPI(false);
+      // lấy nhóm vừa đky từ data trả về để hiện trên UI
+      setIsAlreadyRegisteredGroupVar(undefined);
+      setIsShowDialog(Action.none);
+      return;
+    });
   };
 
   async function onSubmit(values: any) {
@@ -205,6 +254,7 @@ const ManageGroup = () => {
         grouping_id: mockParamsGroupingId,
       };
 
+      setIsLoadingAPI(true);
       registerGroup(mockParams).then((data) => {
         console.log("registerGroup", data);
 
@@ -221,8 +271,9 @@ const ManageGroup = () => {
           duration: 3000,
         });
 
+        setIsLoadingAPI(false);
         // lấy nhóm vừa đky từ data trả về để hiện trên UI
-        setIsAlreadyRegisteredGroup(isAlreadyRegisterGroup(data.data));
+        setIsAlreadyRegisteredGroupVar(getIsAlreadyRegisterGroup(data.data));
         setIsShowDialog(Action.none);
       });
 
@@ -320,12 +371,16 @@ const ManageGroup = () => {
 
   return (
     <div>
+      {isLoadingAPI ? <LoadingComponent /> : null}
       <TitleDescription
         title="Đăng ký nhóm"
         description={[
-          "Thời hạn: 7/12/2024 - 28/12/2024",
-          "Lưu ý: Nhóm trưởng điền tên đầu tiên",
-          `Thời hạn: ${1}`,
+          selectedLeaderOption ? "Lưu ý: Nhóm trưởng điền tên đầu tiên" : "",
+          `Thời hạn: ${
+            dateStart ? format(dateStart, "dd/MM/yyyy") : "Ngày bắt đầu"
+          }
+          - ${dateEnd ? format(dateEnd, "dd/MM/yyyy") : "Ngày bắt đầu"}`,
+          `Số lượng thành viên nhóm: Tối thiểu ${minMember} - Tối đa ${maxMember}`,
         ]}
       />
 
@@ -337,23 +392,34 @@ const ManageGroup = () => {
           <div className="flex items-center justify-end mb-3 gap-2">
             <IconButton
               text={
-                isAlreadyRegisteredGroup ? "Sửa thông tin nhóm" : "Đăng ký nhóm"
+                isAlreadyRegisteredGroupVar
+                  ? "Sửa thông tin nhóm"
+                  : "Đăng ký nhóm"
               }
-              yellow={isAlreadyRegisteredGroup ? true : false}
-              green={isAlreadyRegisteredGroup ? false : true}
+              yellow={isAlreadyRegisteredGroupVar ? true : false}
+              green={isAlreadyRegisteredGroupVar ? false : true}
               iconLeft={
-                isAlreadyRegisteredGroup
+                isAlreadyRegisteredGroupVar
                   ? "/assets/icons/edit.svg"
                   : "/assets/icons/add.svg"
               }
               iconWidth={22}
               iconHeight={22}
               onClick={
-                isAlreadyRegisteredGroup
+                isAlreadyRegisteredGroupVar
                   ? () => setIsShowDialog(Action.edit)
                   : () => setIsShowDialog(Action.create)
               }
             />
+            {isAlreadyRegisteredGroupVar ? (
+              <IconButton
+                text={"Xóa nhóm"}
+                red
+                iconWidth={22}
+                iconHeight={22}
+                onClick={() => setIsShowDialog(Action.delete)}
+              />
+            ) : null}
           </div>
 
           <RegisterGroupTable dataTable={dataTable} />
@@ -369,131 +435,155 @@ const ManageGroup = () => {
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle className=" text-lg font-semibold text-center">
-              {isShowDialog === Action.create
+              {isShowDialog === Action.delete
+                ? "Bạn có chắc chắn muốn xóa?"
+                : isShowDialog === Action.create
                 ? "Đăng ký nhóm"
                 : "Sửa thông tin nhóm"}
             </AlertDialogTitle>
+            {isShowDialog === Action.delete ? (
+              <AlertDialogDescription>
+                Thao tác này không thể hoàn tác, dữ liệu của bạn sẽ bị xóa vĩnh
+                viễn và không thể khôi phục.
+              </AlertDialogDescription>
+            ) : null}
           </AlertDialogHeader>
 
           <div className="flex flex-col gap-6">
-            <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)}>
-                <div className="flex flex-col gap-10">
-                  <FormField
-                    control={form.control}
-                    name="nameGroup"
-                    render={({ field }) => (
-                      <FormItem className="flex w-full flex-col">
-                        <FormLabel className="text-dark400_light800 text-[14px] font-semibold leading-[20.8px]">
-                          Tên nhóm
-                        </FormLabel>
-                        <FormDescription className="body-regular mt-2.5 text-light-500">
-                          Không bắt buộc.
-                        </FormDescription>
-                        <FormControl className="mt-3.5 ">
-                          <Input
-                            {...field}
-                            placeholder="Nhập tên nhóm..."
-                            className="
-                                  no-focus paragraph-regular background-light900_dark300 light-border-2 text-dark300_light700 min-h-[56px] border"
-                          />
-                        </FormControl>
-                        <FormMessage className="text-red-500" />
-                      </FormItem>
-                    )}
-                  />
-
-                  {/* Danh sách thành viên nhóm */}
-                  <FormField
-                    control={form.control}
-                    name="studentList"
-                    render={({ field }) => (
-                      <FormItem className="flex w-full flex-col">
-                        <FormLabel className="text-dark400_light800 text-[14px] font-semibold leading-[20.8px]">
-                          Danh sách thành viên nhóm{" "}
-                          <span className="text-red-600">*</span>
-                        </FormLabel>
-                        <FormDescription className="body-regular mt-2.5 text-light-500">
-                          Nhóm trưởng điền tên đầu tiên. Thành viên nhóm phải là
-                          sinh viên của lớp hiện tại.
-                        </FormDescription>
-
-                        {/* //!: API setting của lớp học để hiển thị cái này */}
-                        <FormDescription className="body-regular mt-2.5 text-light-500">
-                          Hoặc thành viên nhóm có thể là sinh viên khác lớp,
-                          nhưng phải cùng giảng viên giảng dạy và cùng môn học.
-                        </FormDescription>
-                        <FormControl className="mt-3.5 ">
-                          <div className="mt-6">
-                            <div>
-                              <div className="relative" ref={ref}>
-                                <Input
-                                  ref={studentIdRef}
-                                  onChange={handleChange}
-                                  name="studentIdRef"
-                                  placeholder={placeholder}
-                                  onFocus={handleFocus}
-                                  className="no-focus paragraph-regular background-light900_dark300 light-border-2 text-dark300_light700 min-h-[46px] border"
-                                />
-                                {suggestion && (
-                                  <div
-                                    className="absolute left-0 z-50 w-full mt-1 bg-white cursor-pointer p-2 rounded-md border normal-regular no-focus text-dark300_light700 min-h-[46px] shadow-lg"
-                                    onClick={handleSuggestionClick}
-                                  >
-                                    {/* //!: hoàn thiện API: */}
-                                    {/* //! mockParams: Cần có lớp mà sinh viên này đang học */}
-                                    {/* {isHasStudentInDb()?.id} -{" "}
-                                    {isHasStudentInDb()?.name} -{" "} 
-                                   {isHasStudentInDb()?.class} */}
-                                  </div>
-                                )}
-                              </div>
-                              {selectedStudents.length > 0 ? (
-                                <BorderContainer otherClasses="mt-3">
-                                  <div className="my-4 ml-4">
-                                    {selectedStudents && (
-                                      <div className="flex flex-col gap-4">
-                                        {selectedStudents.map((item, index) => (
-                                          <div key={item.student_code}>
-                                            <StudentItem
-                                              item={item}
-                                              index={index}
-                                              courseId={courseId}
-                                              selectedStudents={
-                                                selectedStudents
-                                              }
-                                              setSelectedStudents={
-                                                setSelectedStudents
-                                              }
-                                            />
-                                          </div>
-                                        ))}
-                                      </div>
-                                    )}
-                                  </div>
-                                </BorderContainer>
-                              ) : null}
-                            </div>
-                          </div>
-                        </FormControl>
-                        <FormMessage className="text-red-500" />
-                      </FormItem>
-                    )}
-                  />
-
-                  <div className="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
-                    <IconButton
-                      cancel
-                      text={"Hủy"}
-                      onClick={() => {
-                        setIsShowDialog(Action.none);
-                      }}
+            {isShowDialog === Action.delete ? (
+              <div className="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
+                <IconButton
+                  cancel
+                  text={"Hủy"}
+                  onClick={() => {
+                    setIsShowDialog(Action.none);
+                  }}
+                />
+                <IconButton text={"Đồng ý"} onClick={handleDelete} />
+              </div>
+            ) : (
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)}>
+                  <div className="flex flex-col gap-10">
+                    <FormField
+                      control={form.control}
+                      name="nameGroup"
+                      render={({ field }) => (
+                        <FormItem className="flex w-full flex-col">
+                          <FormLabel className="text-dark400_light800 text-[14px] font-semibold leading-[20.8px]">
+                            Tên nhóm
+                          </FormLabel>
+                          <FormDescription className="body-regular mt-2.5 text-light-500">
+                            Không bắt buộc.
+                          </FormDescription>
+                          <FormControl className="mt-3.5 ">
+                            <Input
+                              {...field}
+                              placeholder="Nhập tên nhóm..."
+                              className="
+                                    no-focus paragraph-regular background-light900_dark300 light-border-2 text-dark300_light700 min-h-[56px] border"
+                            />
+                          </FormControl>
+                          <FormMessage className="text-red-500" />
+                        </FormItem>
+                      )}
                     />
-                    <SubmitButton text={"Đồng ý"} />
+
+                    {/* Danh sách thành viên nhóm */}
+                    <FormField
+                      control={form.control}
+                      name="studentList"
+                      render={({ field }) => (
+                        <FormItem className="flex w-full flex-col">
+                          <FormLabel className="text-dark400_light800 text-[14px] font-semibold leading-[20.8px]">
+                            Danh sách thành viên nhóm{" "}
+                            <span className="text-red-600">*</span>
+                          </FormLabel>
+                          <FormDescription className="body-regular mt-2.5 text-light-500">
+                            Nhóm trưởng điền tên đầu tiên. Thành viên nhóm phải
+                            là sinh viên của lớp hiện tại.
+                          </FormDescription>
+
+                          {/* //!: API setting của lớp học để hiển thị cái này */}
+                          <FormDescription className="body-regular mt-2.5 text-light-500">
+                            Hoặc thành viên nhóm có thể là sinh viên khác lớp,
+                            nhưng phải cùng giảng viên giảng dạy và cùng môn
+                            học.
+                          </FormDescription>
+                          <FormControl className="mt-3.5 ">
+                            <div className="mt-6">
+                              <div>
+                                <div className="relative" ref={ref}>
+                                  <Input
+                                    ref={studentIdRef}
+                                    onChange={handleChange}
+                                    name="studentIdRef"
+                                    placeholder={placeholder}
+                                    onFocus={handleFocus}
+                                    className="no-focus paragraph-regular background-light900_dark300 light-border-2 text-dark300_light700 min-h-[46px] border"
+                                  />
+                                  {suggestion && (
+                                    <div
+                                      className="absolute left-0 z-50 w-full mt-1 bg-white cursor-pointer p-2 rounded-md border normal-regular no-focus text-dark300_light700 min-h-[46px] shadow-lg"
+                                      onClick={handleSuggestionClick}
+                                    >
+                                      {/* //!: hoàn thiện API: */}
+                                      {/* //! mockParams: Cần có lớp mà sinh viên này đang học */}
+                                      {/* {isHasStudentInDb()?.id} -{" "}
+                                      {isHasStudentInDb()?.name} -{" "} 
+                                     {isHasStudentInDb()?.class} */}
+                                    </div>
+                                  )}
+                                </div>
+                                {selectedStudents.length > 0 ? (
+                                  <BorderContainer otherClasses="mt-3">
+                                    <div className="my-4 ml-4">
+                                      {selectedStudents && (
+                                        <div className="flex flex-col gap-4">
+                                          {selectedStudents.map(
+                                            (item, index) => (
+                                              <div key={item.student_code}>
+                                                <StudentItem
+                                                  item={item}
+                                                  index={index}
+                                                  courseId={courseId}
+                                                  selectedStudents={
+                                                    selectedStudents
+                                                  }
+                                                  setSelectedStudents={
+                                                    setSelectedStudents
+                                                  }
+                                                />
+                                              </div>
+                                            )
+                                          )}
+                                        </div>
+                                      )}
+                                    </div>
+                                  </BorderContainer>
+                                ) : null}
+                              </div>
+                            </div>
+                          </FormControl>
+                          <FormMessage className="text-red-500" />
+                        </FormItem>
+                      )}
+                    />
+
+                    <div className="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
+                      <IconButton
+                        cancel
+                        text={"Hủy"}
+                        onClick={() => {
+                          setIsShowDialog(Action.none);
+                        }}
+                      />
+                      <SubmitButton text={"Đồng ý"} />
+                    </div>
                   </div>
-                </div>
-              </form>
-            </Form>
+                </form>
+              </Form>
+            )}
           </div>
         </AlertDialogContent>
       </AlertDialog>
