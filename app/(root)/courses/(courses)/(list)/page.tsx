@@ -37,6 +37,7 @@ const Courses = () => {
   useEffect(() => {
     fetchCourses()
       .then((data: ICourseResponseData[]) => {
+        console.log("fetchCourses", data);
         setCourses(data);
         setIsLoading(false);
       })
