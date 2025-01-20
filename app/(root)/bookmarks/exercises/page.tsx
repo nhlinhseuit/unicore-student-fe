@@ -14,7 +14,8 @@ const Exercises = () => {
           creator={item.creator}
           createdAt={item.createdAt}
           title={item.title}
-          fileName={item.fileName}
+            desc={item.title}
+            fileName={item.fileName}
           comments={item.comments}
         />
       ))}
