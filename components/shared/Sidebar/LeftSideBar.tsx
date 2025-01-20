@@ -16,10 +16,12 @@ import { Fragment } from "react";
 import Divider from "../Divider";
 import NotiItem from "../NotiItem";
 import UnreadContainer from "../UnreadContainer";
+import { isLoginAtom } from "@/app/(root)/courses/(courses)/(store)/courseStore";
+import { useAtomValue } from "jotai";
 
 const LeftSideBar = () => {
   const pathName = usePathname();
-  const isLoggedIn = true;
+  const isLoggedIn = useAtomValue(isLoginAtom);
 
   const isOriginalRoute = () => {
     // TODO: MỚI SỬA CODE TỪ LUỒNG STUDENT
@@ -69,7 +71,7 @@ const LeftSideBar = () => {
 
   return (
     <section
-    className="
+      className="
       flex flex-col
       background-light900_dark200
       min-w-[250px]
@@ -101,7 +103,8 @@ const LeftSideBar = () => {
       </div>
 
       {/* NỘI DUNG CUỘN */}
-      <div className="
+      <div
+        className="
       flex flex-col
       gap-4
       px-6
@@ -109,7 +112,8 @@ const LeftSideBar = () => {
       overflow-y-auto
       flex-grow
       custom-scrollbar
-    ">
+    "
+      >
         {/* ITEM */}
         {sidebarStudentLinks.map((item, index) => {
           let isActive;
@@ -242,24 +246,19 @@ const LeftSideBar = () => {
           </Popover>
         </div>
       ) : (
-        <div className="absolute bottom-0 flex flex-col gap-3 mx-6 mt-6 mb-6 ">
-          {/* <SignedOut>
-        </SignedOut> */}
-          <Link
-            href="/sign-in"
-            className="flex rounded-lg background-light800_dark400 "
+        <div className="flex flex-col gap-3 mx-6 mt-6 mb-6 flex-shrink-0">
+        <Link
+            href="/login"
+            className="flex rounded-lg background-light700_dark300"
           >
             <Button
               className="
-                        small-medium btn-secondary 
-                        min-h-[41px] w-full rounded-lg
-                        px-4 py-3 shadow-none
-                        max-lg:hidden
-                        "
+              small-medium btn-tertiary light-border-2 
+              min-h-[41px] w-full rounded-lg
+              px-4 py-3 shadow-none text-dark400_light900
+              max-lg:hidden"
             >
-              <span className=" max-lg:hidden primary-text-gradient">
                 Đăng nhập
-              </span>
             </Button>
             <Image
               src="/assets/icons/account.svg"
@@ -267,34 +266,7 @@ const LeftSideBar = () => {
               width={20}
               height={20}
               className="
-                invert-colors 
-                max-lg:w-[52px]
-                bg-transparent p-4
-                lg:hidden"
-            />
-          </Link>
-
-          <Link
-            href="/sign-up"
-            className="flex rounded-lg background-light700_dark300"
-          >
-            <Button
-              className="
-                        small-medium btn-tertiary light-border-2 
-                        min-h-[41px] w-full rounded-lg
-                        px-4 py-3 shadow-none text-dark400_light900
-                        max-lg:hidden"
-            >
-              Đăng ký
-            </Button>
-
-            <Image
-              src="/assets/icons/sign-up.svg"
-              alt="signup"
-              width={20}
-              height={20}
-              className="
-                invert-colors 
+         invert-colors 
                 max-lg:w-[52px]
                 bg-transparent p-4
                 lg:hidden"

@@ -1,6 +1,6 @@
-import SubmitExercise from "@/components/courses/SubmitExercise";
+import RegisterReportSchedule from "@/components/courses/RegisterReportSchedule";
 import { getAvatarName } from "@/lib/utils";
-import { mockSubmitExercisePost } from "@/mocks";
+import { mockSubmissionPost } from "@/mocks";
 import Image from "next/image";
 import MyAvatar from "../../courses/MyAvatar";
 import MyComment from "../../courses/MyComment";
@@ -8,7 +8,7 @@ import OtherComment from "../../courses/OtherComment";
 import RenderFile from "../Annoucements/RenderFile";
 import StatusButton from "../Button/StatusButton";
 import Divider from "../Divider";
-import parse from "html-react-parser";
+import CheckAttendance from "@/components/courses/CheckAttendance";
 
 interface Comment {
   id: string;
@@ -21,24 +21,24 @@ interface Props {
   creator: string;
   createdAt: string;
   title: string;
-  desc: string;
   fileName: string;
-  comments?: Comment[];
+  comments: Comment[];
+  setGrading: () => void;
 }
 
-const ExercisePostItem = (params: Props) => {
+const ReportPostItem = (params: Props) => {
   return (
     <div className="card-wrapper rounded-[10px]">
       <div className="relative flex-col w-full p-6">
         <div className="flex justify-start items-center gap-2">
-          <MyAvatar text={params.creator} />
+          <MyAvatar text="MT" />
           <p className="body-regular">{params.creator}</p>
           <p className="small-regular italic text-[#636363] line-clamp-1 ">
             - {params.createdAt}
           </p>
           <StatusButton
-            green
-            text="Bài tập"
+            orange
+            text="Báo cáo"
             smallText
             otherClasses="rounded-md ml-4"
             infoComponent={
@@ -59,48 +59,43 @@ const ExercisePostItem = (params: Props) => {
               </ul>
             }
           />
-          {/* <Image
+          <Image
             src={"/assets/icons/edit-black.svg"}
             width={26}
             height={26}
             alt={"edit"}
             className={`object-contain cursor-pointer ml-4`}
-          /> */}
+          />
         </div>
 
-        <p className="base-regular mt-3 ml-2 ">{params.title}</p>
-        <p className="body-regular mt-2 ml-2 ">{parse(params.desc)}</p>
+        <div className=" mt-3 ml-2 flex gap-4 items-center">
+          <p className="base-regular">{params.title}</p>
+        </div>
 
-        <RenderFile _id={1} name={"exercise.docx"} otherClasses={"mt-3 px-2"} />
+        <RenderFile _id={1} name={"exercise.docx"} otherClasses={"mt-2 px-2"} />
 
         <Divider />
 
-        <SubmitExercise
-          score={mockSubmitExercisePost.score}
-          totalScore={mockSubmitExercisePost.totalScore}
-          feedback={mockSubmitExercisePost.feedback}
-          lateTime={mockSubmitExercisePost.lateTime}
-          lastEdited={mockSubmitExercisePost.lastEdited}
-          submission={mockSubmitExercisePost.submission}
-          review={mockSubmitExercisePost.review}
-        />
+         <div className="mb-12">
+          <CheckAttendance />
+        </div> 
+
+        <RegisterReportSchedule />
 
         <Divider />
 
         <div className="flex flex-col gap-4">
-          {params.comments &&
-            params.comments.map((item, index) => (
-              <p>
-                <OtherComment
-                  key={item.id}
-                  textAvatar={getAvatarName(item.author)}
-                  name={item.author}
-                  comment={item.content}
-                />
-                <Divider />
-              </p>
-            ))}
+          {params.comments.map((item, index) => (
+            <OtherComment
+              key={item.id}
+              textAvatar={getAvatarName(item.author)}
+              name={item.author}
+              comment={item.content}
+            />
+          ))}
         </div>
+
+        <Divider />
 
         <MyComment textAvatar="HL" />
       </div>
@@ -108,4 +103,4 @@ const ExercisePostItem = (params: Props) => {
   );
 };
 
-export default ExercisePostItem;
+export default ReportPostItem;

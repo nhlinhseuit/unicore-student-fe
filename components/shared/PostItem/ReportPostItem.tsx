@@ -1,14 +1,12 @@
 import RegisterReportSchedule from "@/components/courses/RegisterReportSchedule";
 import { getAvatarName } from "@/lib/utils";
-import { mockSubmissionPost } from "@/mocks";
-import Image from "next/image";
+import parse from "html-react-parser";
 import MyAvatar from "../../courses/MyAvatar";
 import MyComment from "../../courses/MyComment";
 import OtherComment from "../../courses/OtherComment";
 import RenderFile from "../Annoucements/RenderFile";
 import StatusButton from "../Button/StatusButton";
 import Divider from "../Divider";
-import CheckAttendance from "@/components/courses/CheckAttendance";
 
 interface Comment {
   id: string;
@@ -21,8 +19,9 @@ interface Props {
   creator: string;
   createdAt: string;
   title: string;
+  desc: string;
   fileName: string;
-  comments: Comment[];
+  comments?: Comment[];
   setGrading: () => void;
 }
 
@@ -31,7 +30,7 @@ const ReportPostItem = (params: Props) => {
     <div className="card-wrapper rounded-[10px]">
       <div className="relative flex-col w-full p-6">
         <div className="flex justify-start items-center gap-2">
-          <MyAvatar text="MT" />
+          <MyAvatar text={params.creator} />
           <p className="body-regular">{params.creator}</p>
           <p className="small-regular italic text-[#636363] line-clamp-1 ">
             - {params.createdAt}
@@ -59,43 +58,40 @@ const ReportPostItem = (params: Props) => {
               </ul>
             }
           />
-          <Image
+          {/* <Image
             src={"/assets/icons/edit-black.svg"}
             width={26}
             height={26}
             alt={"edit"}
             className={`object-contain cursor-pointer ml-4`}
-          />
+          /> */}
         </div>
 
-        <div className=" mt-3 ml-2 flex gap-4 items-center">
-          <p className="base-regular">{params.title}</p>
-        </div>
+        <p className="base-regular mt-3 ml-2 ">{params.title}</p>
+        <p className="body-regular mt-2 ml-2 ">{parse(params.desc)}</p>
 
-        <RenderFile _id={1} name={"exercise.docx"} otherClasses={"mt-2 px-2"} />
+        <RenderFile _id={1} name={"exercise.docx"} otherClasses={"mt-3 px-2"} />
 
         <Divider />
-
-        <div className="mb-12">
-          <CheckAttendance />
-        </div>
 
         <RegisterReportSchedule />
 
         <Divider />
 
         <div className="flex flex-col gap-4">
-          {params.comments.map((item, index) => (
-            <OtherComment
-              key={item.id}
-              textAvatar={getAvatarName(item.author)}
-              name={item.author}
-              comment={item.content}
-            />
-          ))}
+          {params.comments &&
+            params.comments.map((item, index) => (
+              <p>
+                <OtherComment
+                  key={item.id}
+                  textAvatar={getAvatarName(item.author)}
+                  name={item.author}
+                  comment={item.content}
+                />
+                <Divider />
+              </p>
+            ))}
         </div>
-
-        <Divider />
 
         <MyComment textAvatar="HL" />
       </div>

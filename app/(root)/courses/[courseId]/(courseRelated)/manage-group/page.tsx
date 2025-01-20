@@ -384,46 +384,42 @@ const ManageGroup = () => {
         ]}
       />
 
+      <div className="flex items-center justify-end mb-3 gap-2">
+        <IconButton
+          text={
+            isAlreadyRegisteredGroupVar ? "Sửa thông tin nhóm" : "Đăng ký nhóm"
+          }
+          yellow={isAlreadyRegisteredGroupVar ? true : false}
+          green={isAlreadyRegisteredGroupVar ? false : true}
+          iconLeft={
+            isAlreadyRegisteredGroupVar
+              ? "/assets/icons/edit.svg"
+              : "/assets/icons/add.svg"
+          }
+          iconWidth={22}
+          iconHeight={22}
+          onClick={
+            isAlreadyRegisteredGroupVar
+              ? () => setIsShowDialog(Action.edit)
+              : () => setIsShowDialog(Action.create)
+          }
+        />
+        {isAlreadyRegisteredGroupVar ? (
+          <IconButton
+            text={"Xóa nhóm"}
+            red
+            iconWidth={22}
+            iconHeight={22}
+            onClick={() => setIsShowDialog(Action.delete)}
+          />
+        ) : null}
+      </div>
+
       {isLoading ? (
         <TableSkeleton />
       ) : dataTable &&
         dataTable.filter((item) => !item.isDeleted).length > 0 ? (
-        <div>
-          <div className="flex items-center justify-end mb-3 gap-2">
-            <IconButton
-              text={
-                isAlreadyRegisteredGroupVar
-                  ? "Sửa thông tin nhóm"
-                  : "Đăng ký nhóm"
-              }
-              yellow={isAlreadyRegisteredGroupVar ? true : false}
-              green={isAlreadyRegisteredGroupVar ? false : true}
-              iconLeft={
-                isAlreadyRegisteredGroupVar
-                  ? "/assets/icons/edit.svg"
-                  : "/assets/icons/add.svg"
-              }
-              iconWidth={22}
-              iconHeight={22}
-              onClick={
-                isAlreadyRegisteredGroupVar
-                  ? () => setIsShowDialog(Action.edit)
-                  : () => setIsShowDialog(Action.create)
-              }
-            />
-            {isAlreadyRegisteredGroupVar ? (
-              <IconButton
-                text={"Xóa nhóm"}
-                red
-                iconWidth={22}
-                iconHeight={22}
-                onClick={() => setIsShowDialog(Action.delete)}
-              />
-            ) : null}
-          </div>
-
-          <RegisterGroupTable dataTable={dataTable} />
-        </div>
+        <RegisterGroupTable dataTable={dataTable} />
       ) : (
         <NoResult
           title="Không có dữ liệu!"

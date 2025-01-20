@@ -69,11 +69,11 @@ const RegisterReportSchedule = (params: Props) => {
         ))}
       </BorderContainer>
 
-      <div className="mt-4">
+      {/* <div className="mt-4">
         <span className="mt-4 base-regular">
           Tất cả lựa chọn đều đã đạt số lượng câu trả lời tối đa.
         </span>
-      </div>
+      </div> */}
 
       <IconButton
         text={isEditing ? "Lưu câu trả lời" : "Sửa câu trả lời"}

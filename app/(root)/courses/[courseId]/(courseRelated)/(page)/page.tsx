@@ -23,6 +23,7 @@ const page = () => {
             creator={item.creator}
             createdAt={item.createdAt}
             title={item.title}
+            desc={item.title}
             fileName={item.fileName}
             comments={item.comments}
             setGrading={() => {
@@ -38,6 +39,7 @@ const page = () => {
             creator={item.creator}
             createdAt={item.createdAt}
             title={item.title}
+            desc={item.title}
             fileName={item.fileName}
             comments={item.comments}
           />
@@ -51,6 +53,7 @@ const page = () => {
             creator={item.creator}
             createdAt={item.createdAt}
             title={item.title}
+            desc={item.title}
             fileName={item.fileName}
             comments={item.comments}
           />
