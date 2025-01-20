@@ -1,18 +1,20 @@
 "use client";
 
 import IconButton from "@/components/shared/Button/IconButton";
+import LoadingComponent from "@/components/shared/LoadingComponent";
 import ExercisePostItem from "@/components/shared/PostItem/ExercisePostItem";
 import PostItem from "@/components/shared/PostItem/PostItem";
 import ReportPostItem from "@/components/shared/PostItem/ReportPostItem";
 import TableSearch from "@/components/shared/Search/TableSearch";
+import NoResult from "@/components/shared/Status/NoResult";
 import { FilterType } from "@/constants";
-import { mockPostDataCourseIdPage } from "@/mocks";
+import { fetchAnnoucements } from "@/services/announcementServices";
+import { IAnnouncementResponseData } from "@/types/entity/Annoucement";
 import { Dropdown } from "flowbite-react";
+import Image from "next/image";
+import { useEffect, useState } from "react";
 
 const page = () => {
-
-  var typeFilter = FilterType.SortNewer;
-
   const getRenderPostItem = (item: any): JSX.Element => {
     switch (item.typePost) {
       case "report":
@@ -61,21 +63,156 @@ const page = () => {
     }
   };
 
+  const getRenderItems = (): JSX.Element => {
+    switch (selectedAnnoucementType) {
+      case 1:
+        return (
+          <>
+            {annoucements.map((item, index) => {
+              console.log("case item", item);
+              return (
+                <PostItem
+                  key={item.id}
+                  id={item.id}
+                  creator={item.create_by}
+                  createdAt={item.created_date}
+                  title={item.name}
+                  desc={item.description}
+                  fileName={""}
+                  // comments={}
+                />
+              );
+            })}
+          </>
+        );
+      default:
+        return (
+          <NoResult
+            title="Không có dữ liệu!"
+            description="💡 Không có thông báo nào."
+          />
+        );
+    }
+  };
+
+  const annoucementTypes = [
+    { id: 1, value: "Thông báo" },
+    { id: 2, value: "Bài tập" },
+    { id: 3, value: "Báo cáo" },
+  ];
+
+  const [typeFilter, setTypeFilter] = useState(FilterType.None);
+
+  const cancelDetailFilter = () => {
+    setTypeFilter(FilterType.None);
+  };
+
+  const [selectedAnnoucementType, setSelectedAnnoucementType] = useState(1);
+
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [annoucements, setAnnoucements] = useState<IAnnouncementResponseData[]>(
+    []
+  );
+
+  const mockParamsClass_id = "677fefdd854d3e02e4191707";
+
+  useEffect(() => {
+    setIsLoading(true);
+    if (selectedAnnoucementType === 1) fetchAnnoucementsAPI();
+  }, []);
+
+  useEffect(() => {
+    // setIsLoading(true);
+    // if (selectedAnnoucementType === 2 && exercises.length === 0)
+    //   fetchExercisesAPI();
+    // if (selectedAnnoucementType === 3 && exercises.length === 0) fetchReportsAPI();
+  }, [selectedAnnoucementType]);
+
+  const fetchAnnoucementsAPI = () => {
+    fetchAnnoucements(mockParamsClass_id)
+      .then((data: any) => {
+        console.log("fetchAnnoucements", data);
+        setAnnoucements(data.data);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        setError(error.message);
+        setIsLoading(false);
+      });
+  };
+
+  console.log("annoucements", annoucements);
+
   return (
     <div>
+      {isLoading ? <LoadingComponent /> : null}
       <div
         className="
         mt-6 mb-10 flex w-full gap-6 sm:flex-row sm:items-center justify-between"
       >
         {/* Search & Filter */}
-        <div className="flex justify-start w-1/2">
+        <div className="flex items-center gap-2 justify-start w-2/3">
           <TableSearch
             setSearchTerm={() => {}}
             searchTerm={""}
-            otherClasses="pr-2 w-[70%]"
+            otherClasses="w-[50%]"
           />
+
           <Dropdown
-            className="z-30 rounded-lg w-[30%]"
+            className="z-30 rounded-lg w-[25%]"
+            label=""
+            dismissOnClick={false}
+            renderTrigger={() => (
+              <div>
+                <IconButton
+                  text={`${
+                    annoucementTypes[selectedAnnoucementType - 1].value
+                  }`}
+                  iconRight={"/assets/icons/chevron-down.svg"}
+                  bgColor="bg-white"
+                  textColor="text-black"
+                  border
+                />
+              </div>
+            )}
+          >
+            <div className="w-full scroll-container scroll-container-dropdown-content">
+              {annoucementTypes.map((type, index) => (
+                <Dropdown.Item
+                  key={`${type.id}_${index}`}
+                  onClick={() => {
+                    if (selectedAnnoucementType === type.id) {
+                      setSelectedAnnoucementType(1);
+                    } else {
+                      setSelectedAnnoucementType(type.id);
+                    }
+                  }}
+                  className="min-w-max"
+                >
+                  <div className="flex justify-between w-full">
+                    <p className="w-[80%] text-left line-clamp-1">
+                      {type.value}
+                    </p>
+                    {selectedAnnoucementType === type.id ? (
+                      <Image
+                        src="/assets/icons/check.svg"
+                        alt="search"
+                        width={21}
+                        height={21}
+                        className="cursor-pointer mr-2"
+                      />
+                    ) : (
+                      <></>
+                    )}
+                  </div>
+                </Dropdown.Item>
+              ))}
+            </div>
+          </Dropdown>
+
+          <Dropdown
+            className="z-30 rounded-lg w-[25%]"
             label=""
             dismissOnClick={false}
             renderTrigger={() => (
@@ -91,7 +228,6 @@ const page = () => {
                   bgColor="bg-white"
                   textColor="text-black"
                   border
-                  isFilter={typeFilter === FilterType.DetailFilter}
                 />
               </div>
             )}
@@ -99,8 +235,7 @@ const page = () => {
             <Dropdown.Header>
               <span
                 onClick={() => {
-                  // cancelDetailFilter();
-                  // handleChooseFilter(FilterType.None);
+                  cancelDetailFilter();
                 }}
                 className="block truncate text-sm font-medium cursor-pointer"
               >
@@ -126,7 +261,7 @@ const page = () => {
                   name="filterOptions"
                   value={FilterType.SortNewer}
                   onChange={() => {
-                    // handleChooseFilter(FilterType.SortNewer)
+                    setTypeFilter(FilterType.SortNewer);
                   }}
                   className="w-4 h-4  cursor-pointer bg-gray-100 border-gray-300 rounded text-primary-600"
                 />
@@ -149,14 +284,13 @@ const page = () => {
                     "
               >
                 <input
-                  // checked={typeFilter === FilterType.SortOlder}
-                  checked={true}
+                  checked={typeFilter === FilterType.SortOlder}
                   id="SortOlder"
                   type="radio"
                   name="filterOptions"
                   value={FilterType.SortOlder}
                   onChange={() => {
-                    // handleChooseFilter(FilterType.SortOlder)
+                    setTypeFilter(FilterType.SortOlder);
                   }}
                   className="w-4 h-4  cursor-pointer bg-gray-100 border-gray-300 rounded text-primary-600"
                 />
@@ -170,15 +304,16 @@ const page = () => {
             </ul>
           </Dropdown>
         </div>
-
-        
       </div>
 
       {/* PostList */}
       <div className="mt-6 flex flex-col gap-4">
-        {mockPostDataCourseIdPage.map((item, index) => {
-           return getRenderPostItem(item);
-        })}
+        {/* //! mockParams */}
+        {/* {mockPostDataCourseIdPage.map((item, index) => {
+          return getRenderPostItem(item);
+        })} */}
+
+        {getRenderItems()}
       </div>
     </div>
   );
