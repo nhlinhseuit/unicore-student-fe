@@ -1,10 +1,6 @@
 import InputComponent from "@/components/shared/Table/components/InputComponent";
 import { RegisterTopicTableType } from "@/constants";
-import {
-  StudentData,
-  SubjectData,
-  TeacherData,
-} from "@/types";
+import { StudentData, SubjectData, TeacherData } from "@/types";
 import { Table } from "flowbite-react";
 import React, { useEffect, useRef, useState } from "react";
 import { sSelectedTopic } from "./(store)/createReportStore";
@@ -183,7 +179,7 @@ const RowRegisterTopicTable = React.memo(
       params: any;
       isEdit: boolean;
     }) => {
-      if (key === "Mã nhóm") return null;
+      if (key === "Mã nhóm" || key === "Mã đề tài") return null;
 
       return (
         <Table.Cell
