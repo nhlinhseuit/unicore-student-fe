@@ -318,10 +318,6 @@ const RegisterTopic = () => {
         />
 
         <div className="w-[60%] flex items-center justify-end mb-3 gap-2">
-          <p className="italic text-sm text-red-500">
-            * Nhóm trưởng điền tên đầu tiên
-          </p>
-
           <IconButton
             text={isAlreadyRegisteredGroup ? "Chỉnh sửa" : "Đăng ký nhóm"}
             yellow={isAlreadyRegisteredGroup ? true : false}
@@ -577,7 +573,7 @@ const RegisterTopic = () => {
                 {/* Danh sách thành viên nhóm */}
                 <FormField
                   control={renderForm.control}
-                  // @ts-ignore
+                  // @ts-ignore 
                   name="studentList"
                   render={({ field }) => (
                     <FormItem className="flex w-full flex-col">

@@ -93,7 +93,7 @@ const ReportPostItem = (params: Props) => {
             ))}
         </div>
 
-        <MyComment textAvatar="HL" />
+        <MyComment textAvatar="HL" type="report" sourceId={params.id}/>
       </div>
     </div>
   );

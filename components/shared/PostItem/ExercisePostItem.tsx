@@ -71,7 +71,8 @@ const ExercisePostItem = (params: Props) => {
         <p className="base-regular mt-3 ml-2 ">{params.title}</p>
         <p className="body-regular mt-2 ml-2 ">{parse(params.desc)}</p>
 
-        <RenderFile _id={1} name={"exercise.docx"} otherClasses={"mt-3 px-2"} />
+        {/* //! KHI NÀO CÓ NỘP FILE  */}
+        {/* <RenderFile _id={1} name={"exercise.docx"} otherClasses={"mt-3 px-2"} /> */}
 
         <Divider />
 
@@ -102,7 +103,7 @@ const ExercisePostItem = (params: Props) => {
             ))}
         </div>
 
-        <MyComment textAvatar="HL" />
+        <MyComment textAvatar="HL"  type="exercise" sourceId={params.id}/>
       </div>
     </div>
   );
