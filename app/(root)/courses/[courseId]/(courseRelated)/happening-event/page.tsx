@@ -87,6 +87,7 @@ const page = () => {
                   createdAt={item.createdAt}
                   happeningEvent={""}
                   deadline={item.deadline}
+                  onClick={() => {}}
                 />
               </Link>
             ))
