@@ -100,7 +100,7 @@ const ReportPostItem = (params: Props) => {
 
         <Divider />
 
-        <div className="flex flex-col gap-4">
+        {/* <div className="flex flex-col gap-4">
           {params.comments &&
             params.comments.map((item, index) => (
               <p>
@@ -113,7 +113,7 @@ const ReportPostItem = (params: Props) => {
                 <Divider />
               </p>
             ))}
-        </div>
+        </div> */}
 
         <MyComment textAvatar="HL" type="report" sourceId={params.id} />
       </div>
