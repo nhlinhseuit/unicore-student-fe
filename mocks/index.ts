@@ -548,18 +548,13 @@ export const mockFileDataTable = [
 
 export const mockDataStudentRegisterGroup = [
   {
-    //
-    // TODO: Kh// cần STT của sv ở đây
-    // TODO: //Hiện tại chỉ dùng làm key
-    // * FIX:// STT count ++ cho row leader
-
     STT: "1",
     isDeleted: false,
     data: {
       "Mã nhóm": "1",
-      MSSV: "21522289",
-      "Họ và tên": "Nguyễn Hoàng Linh",
-      SĐT: "0378060972",
+      MSSV: ["21522289", "21521087"],
+      "Họ và tên": ["Nguyễn Hoàng Linh", "Lê Thành Lộc"],
+      SĐT: ["0378060972", "0128060972"],
     },
   },
   {
@@ -567,49 +562,29 @@ export const mockDataStudentRegisterGroup = [
     isDeleted: false,
     data: {
       "Mã nhóm": "2",
-      MSSV: "21522289",
-      "Họ và tên": "Lê Thành Lộc",
-      SĐT: "0378060972",
+      MSSV: ["21522100"],
+      "Họ và tên": ["Lê Bảo Như"],
+      SĐT: ["0928060973"],
     },
   },
   {
     STT: "3",
     isDeleted: false,
     data: {
-      "Mã nhóm": "2",
-      MSSV: "21522289",
-      "Họ và tên": "Huỳnh Hồ Thị Mộng Trinh",
-      SĐT: "0378060972",
+      "Mã nhóm": "3",
+      MSSV: ["21522133", "21521600"],
+      "Họ và tên": ["Nguyễn Tiến Vĩ", "Đào Bích Huyền"],
+      SĐT: ["0378060972", "0128060972"],
     },
   },
   {
     STT: "4",
     isDeleted: false,
     data: {
-      "Mã nhóm": "3",
-      MSSV: "21522289",
-      "Họ và tên": "Nguyễn Tiến Vĩ",
-      SĐT: "0378060972",
-    },
-  },
-  {
-    STT: "5",
-    isDeleted: false,
-    data: {
-      "Mã nhóm": "3",
-      MSSV: "21522289",
-      "Họ và tên": "Nguyễn Thị Thanh Tuyền",
-      SĐT: "0378060972",
-    },
-  },
-  {
-    STT: "6",
-    isDeleted: false,
-    data: {
       "Mã nhóm": "4",
-      MSSV: "21522289",
-      "Họ và tên": "Võ Hữu Xike",
-      SĐT: "0378060972",
+      MSSV: ["21522322", "21521123"],
+      "Họ và tên": ["Võ Hữu", "Nguyễn Hoàng Khang"],
+      SĐT: ["0378060972", "0128060972"],
     },
   },
 ];
