@@ -76,9 +76,9 @@ const ReportPostItem = (params: Props) => {
 
         <Divider />
 
-         <div className="mb-12">
+        <div className="mb-12">
           <CheckAttendance />
-        </div> 
+        </div>
 
         <RegisterReportSchedule />
 
@@ -97,7 +97,7 @@ const ReportPostItem = (params: Props) => {
 
         <Divider />
 
-        <MyComment textAvatar="HL" />
+        <MyComment textAvatar="HL" type="check-attendance" sourceId="" />
       </div>
     </div>
   );
