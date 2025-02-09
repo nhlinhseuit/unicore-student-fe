@@ -56,7 +56,7 @@ const Bookmarks = () => {
             title={item.title}
             desc={item.title}
             fileName={item.fileName}
-            comments={item.comments}
+            // comments={item.comments}
           />
         );
     }
