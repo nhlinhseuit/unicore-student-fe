@@ -34,7 +34,7 @@ import {
   fetchGroupRegisterSchedule,
   registerGroup,
 } from "@/services/groupRegisterServices";
-import { IStudentResponseData } from "@/services/Student";
+import Student, { IStudentResponseData } from "@/services/Student";
 import { fetchStudents } from "@/services/studentServices";
 import {
   convertGroupDataToRegisterGroupDataItem,
@@ -63,7 +63,9 @@ const ManageGroup = () => {
 
   const [isShowDialog, setIsShowDialog] = useState(Action.none);
 
-  const [selectedStudents, setSelectedStudents] = useState<IMember[]>([]);
+  // const [selectedStudents, setSelectedStudents] = useState<IMember[]>([]);
+    const [selectedStudents, setSelectedStudents] = useState<Student[]>([]);
+  
 
   const AnnoucementSchema = z
     .object({
@@ -327,12 +329,29 @@ const ManageGroup = () => {
     // }, 300);
   };
 
+  // const handleSuggestionClick = () => {
+  //   if (studentIdRef.current) {
+  //     if (
+  //       selectedStudents.some(
+  //         (item) => item.student_code === studentIdRef.current!.value
+  //       )
+  //     ) {
+  //       setSuggestion(false);
+  //       updateStudentId("");
+  //       return;
+  //     }
+  //   }
+
+  //   setSelectedStudents((prev) => [...prev, isHasStudentInDb()!]);
+  //   setSuggestion(false);
+  //   updateStudentId("");
+  // };
+
+  //! FAKE API
   const handleSuggestionClick = () => {
     if (studentIdRef.current) {
       if (
-        selectedStudents.some(
-          (item) => item.student_code === studentIdRef.current!.value
-        )
+        selectedStudents.some((item) => item.id === studentIdRef.current!.value)
       ) {
         setSuggestion(false);
         updateStudentId("");
@@ -534,11 +553,34 @@ const ManageGroup = () => {
                                 {selectedStudents.length > 0 ? (
                                   <BorderContainer otherClasses="mt-3">
                                     <div className="my-4 ml-4">
-                                      {selectedStudents && (
+                                      {/* {selectedStudents && (
                                         <div className="flex flex-col gap-4">
                                           {selectedStudents.map(
                                             (item, index) => (
                                               <div key={item.student_code}>
+                                                <StudentItem
+                                                  item={item}
+                                                  index={index}
+                                                  courseId={courseId}
+                                                  selectedStudents={
+                                                    selectedStudents
+                                                  }
+                                                  setSelectedStudents={
+                                                    setSelectedStudents
+                                                  }
+                                                />
+                                              </div>
+                                            )
+                                          )}
+                                        </div>
+                                      )} */}
+                                      
+                                      {/* //! FAKE API */}
+                                      {selectedStudents && (
+                                        <div className="flex flex-col gap-4">
+                                          {selectedStudents.map(
+                                            (item, index) => (
+                                              <div key={item.id}>
                                                 <StudentItem
                                                   item={item}
                                                   index={index}
