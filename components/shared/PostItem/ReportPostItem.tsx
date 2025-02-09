@@ -7,6 +7,11 @@ import OtherComment from "../../courses/OtherComment";
 import RenderFile from "../Annoucements/RenderFile";
 import StatusButton from "../Button/StatusButton";
 import Divider from "../Divider";
+import { useAtomValue } from "jotai";
+import { classIdAtom } from "@/app/(root)/courses/(courses)/(store)/courseStore";
+import SubmitExercise from "@/components/courses/SubmitExercise";
+import { mockSubmitExercisePost } from "@/mocks";
+import SubmitReport from "@/components/courses/SubmitReport";
 
 interface Comment {
   id: string;
@@ -26,6 +31,11 @@ interface Props {
 }
 
 const ReportPostItem = (params: Props) => {
+  //! mockParams: fake API
+  const classId = useAtomValue(classIdAtom);
+  // const isDA1 = classId === "SE121.O21.PMCL";
+  const isDA1 = true
+
   return (
     <div className="card-wrapper rounded-[10px]">
       <div className="relative flex-col w-full p-6">
@@ -74,7 +84,21 @@ const ReportPostItem = (params: Props) => {
 
         <Divider />
 
-        <RegisterReportSchedule />
+        {/* //! fake API: kh demo chọn lịch */}
+        {isDA1 ? (
+          <SubmitReport
+            score={mockSubmitExercisePost.score}
+            totalScore={mockSubmitExercisePost.totalScore}
+            feedback={mockSubmitExercisePost.feedback}
+            lateTime={mockSubmitExercisePost.lateTime}
+            lastEdited={mockSubmitExercisePost.lastEdited}
+            submission={mockSubmitExercisePost.submission}
+            review={mockSubmitExercisePost.review}
+          />
+        ) : (
+          <RegisterReportSchedule />
+        )}
+        {/* <RegisterReportSchedule /> */}
 
         <Divider />
 
@@ -93,7 +117,7 @@ const ReportPostItem = (params: Props) => {
             ))}
         </div>
 
-        <MyComment textAvatar="HL" type="report" sourceId={params.id}/>
+        <MyComment textAvatar="HL" type="report" sourceId={params.id} />
       </div>
     </div>
   );

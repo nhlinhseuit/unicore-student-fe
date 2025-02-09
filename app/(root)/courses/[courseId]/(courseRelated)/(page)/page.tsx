@@ -15,6 +15,9 @@ import { ITExerciseResponseData } from "@/types/entity/Exercise";
 import { Dropdown } from "flowbite-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { classIdAtom } from "../../../(courses)/(store)/courseStore";
+import { useAtomValue } from "jotai";
+import { mockPostDataCourseIdPage } from "@/mocks";
 
 const page = () => {
   const getRenderPostItem = (item: any): JSX.Element => {
@@ -114,6 +117,25 @@ const page = () => {
             description="🚀 Thử tải lại trang để xem bài tập lớp học."
           />
         );
+
+
+      //! fakeAPI mockParams:
+      case 3:
+        return (
+          <ReportPostItem
+            key={mockPostDataCourseIdPage[0].id}
+            id={mockPostDataCourseIdPage[0].id}
+            creator={mockPostDataCourseIdPage[0].creator}
+            createdAt={mockPostDataCourseIdPage[0].createdAt}
+            title={mockPostDataCourseIdPage[0].title}
+            desc={mockPostDataCourseIdPage[0].title}
+            fileName={mockPostDataCourseIdPage[0].fileName}
+            comments={mockPostDataCourseIdPage[0].comments}
+            setGrading={() => {
+              // setIsGrading(true);
+            }}
+          />
+        );
       default:
         return (
           <NoResult
@@ -124,11 +146,20 @@ const page = () => {
     }
   };
 
-  const annoucementTypes = [
-    { id: 1, value: "Thông báo" },
-    { id: 2, value: "Bài tập" },
-    { id: 3, value: "Báo cáo" },
-  ];
+  //! mockParams: fake API
+  const classId = useAtomValue(classIdAtom);
+  const isDA1 = classId === "SE121.O21.PMCL";
+
+  const annoucementTypes = isDA1
+    ? [
+        { id: 1, value: "Thông báo" },
+        { id: 2, value: "Báo cáo" },
+      ]
+    : [
+        { id: 1, value: "Thông báo" },
+        { id: 2, value: "Bài tập" },
+        { id: 3, value: "Báo cáo" },
+      ];
 
   const [typeFilter, setTypeFilter] = useState(FilterType.None);
 
