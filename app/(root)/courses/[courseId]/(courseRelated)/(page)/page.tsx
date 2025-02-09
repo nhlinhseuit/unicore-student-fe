@@ -154,7 +154,7 @@ const page = () => {
   const annoucementTypes = isDA1
     ? [
         { id: 1, value: "Thông báo" },
-        { id: 2, value: "Báo cáo" },
+        { id: 3, value: "Báo cáo" },
       ]
     : [
         { id: 1, value: "Thông báo" },
