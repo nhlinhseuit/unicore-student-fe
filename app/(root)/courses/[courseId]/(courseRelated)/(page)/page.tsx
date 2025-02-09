@@ -15,7 +15,10 @@ import { ITExerciseResponseData } from "@/types/entity/Exercise";
 import { Dropdown } from "flowbite-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { classCodeAtom, classIdAtom } from "../../../(courses)/(store)/courseStore";
+import {
+  classCodeAtom,
+  classIdAtom,
+} from "../../../(courses)/(store)/courseStore";
 import { useAtomValue } from "jotai";
 import { mockPostDataCourseIdPage } from "@/mocks";
 
@@ -95,7 +98,21 @@ const page = () => {
           />
         );
       case 2:
-        return exercises.length > 0 ? (
+        return isDA1 ? (
+          <ReportPostItem
+            key={mockPostDataCourseIdPage[0].id}
+            id={mockPostDataCourseIdPage[0].id}
+            creator={mockPostDataCourseIdPage[0].creator}
+            createdAt={mockPostDataCourseIdPage[0].createdAt}
+            title={mockPostDataCourseIdPage[0].title}
+            desc={mockPostDataCourseIdPage[0].title}
+            fileName={mockPostDataCourseIdPage[0].fileName}
+            comments={mockPostDataCourseIdPage[0].comments}
+            setGrading={() => {
+              // setIsGrading(true);
+            }}
+          />
+        ) : exercises.length > 0 ? (
           <>
             {exercises.map((item, index) => {
               return (
@@ -118,9 +135,8 @@ const page = () => {
           />
         );
 
-
       //! fakeAPI mockParams:
-      case 4:
+      case 3:
         return (
           <ReportPostItem
             key={mockPostDataCourseIdPage[0].id}
@@ -148,13 +164,13 @@ const page = () => {
 
   //! mockParams: fake API
   const classCode = useAtomValue(classCodeAtom);
-  console.log('classCode', classCode)
+  console.log("classCode", classCode);
   const isDA1 = classCode === "SE121.O21.PMCL";
 
   const annoucementTypes = isDA1
     ? [
         { id: 1, value: "Thông báo" },
-        { id: 4, value: "Báo cáo" },
+        { id: 2, value: "Báo cáo" },
       ]
     : [
         { id: 1, value: "Thông báo" },
