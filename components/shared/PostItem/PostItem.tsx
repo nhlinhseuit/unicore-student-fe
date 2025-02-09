@@ -94,7 +94,7 @@ const PostItem = (params: Props) => {
             }}
             className="flex justify-end underline cursor-pointer body-regular text-gray-500 mt-3 ml-2"
           >
-            3 bình luận
+            0 bình luận
             {/* {params.commentsCount} bình luận */}
           </p>
         )}
