@@ -15,7 +15,7 @@ import { ITExerciseResponseData } from "@/types/entity/Exercise";
 import { Dropdown } from "flowbite-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { classIdAtom } from "../../../(courses)/(store)/courseStore";
+import { classCodeAtom, classIdAtom } from "../../../(courses)/(store)/courseStore";
 import { useAtomValue } from "jotai";
 import { mockPostDataCourseIdPage } from "@/mocks";
 
@@ -147,8 +147,9 @@ const page = () => {
   };
 
   //! mockParams: fake API
-  const classId = useAtomValue(classIdAtom);
-  const isDA1 = classId === "SE121.O21.PMCL";
+  const classCode = useAtomValue(classCodeAtom);
+  console.log('classCode', classCode)
+  const isDA1 = classCode === "SE121.O21.PMCL";
 
   const annoucementTypes = isDA1
     ? [

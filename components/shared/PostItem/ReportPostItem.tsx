@@ -1,17 +1,16 @@
+import { classCodeAtom } from "@/app/(root)/courses/(courses)/(store)/courseStore";
 import RegisterReportSchedule from "@/components/courses/RegisterReportSchedule";
+import SubmitReport from "@/components/courses/SubmitReport";
 import { getAvatarName } from "@/lib/utils";
+import { mockSubmitExercisePost } from "@/mocks";
 import parse from "html-react-parser";
+import { useAtomValue } from "jotai";
 import MyAvatar from "../../courses/MyAvatar";
 import MyComment from "../../courses/MyComment";
 import OtherComment from "../../courses/OtherComment";
 import RenderFile from "../Annoucements/RenderFile";
 import StatusButton from "../Button/StatusButton";
 import Divider from "../Divider";
-import { useAtomValue } from "jotai";
-import { classIdAtom } from "@/app/(root)/courses/(courses)/(store)/courseStore";
-import SubmitExercise from "@/components/courses/SubmitExercise";
-import { mockSubmitExercisePost } from "@/mocks";
-import SubmitReport from "@/components/courses/SubmitReport";
 
 interface Comment {
   id: string;
@@ -32,9 +31,8 @@ interface Props {
 
 const ReportPostItem = (params: Props) => {
   //! mockParams: fake API
-  const classId = useAtomValue(classIdAtom);
-  // const isDA1 = classId === "SE121.O21.PMCL";
-  const isDA1 = true
+  const classCode = useAtomValue(classCodeAtom);
+  const isDA1 = classCode === "SE121.O21.PMCL";
 
   return (
     <div className="card-wrapper rounded-[10px]">
