@@ -155,7 +155,9 @@ const SubmitReport = (params: Props) => {
             {!isAlreadySubmit ? (
               <>
                 <p className="body-medium text-red-500">Chưa nộp</p>
-                <p className="body-medium text-red-500">{params.lateTime}</p>
+                <p className="body-medium text-green-500">
+                  Còn lại 8 ngày 12 tiếng
+                </p>
               </>
             ) : (
               <>
@@ -167,13 +169,15 @@ const SubmitReport = (params: Props) => {
 
                 <p className="body-medium">Không</p>
 
-                <p className="body-medium text-red-500">{params.lateTime}</p>
+                <p className="body-medium text-green-500">
+                  Còn lại 8 ngày 12 tiếng
+                </p>
 
                 <p className="body-medium">Chủ nhật, 9 tháng 2 2024, 8:02 AM</p>
 
                 <p className="body-medium">{params.submission}</p>
 
-                <p className="body-medium text-green-500">Chưa phúc khảo</p>
+                <p className="body-medium">Chưa phúc khảo</p>
               </>
             )}
           </div>

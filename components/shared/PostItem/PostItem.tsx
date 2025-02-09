@@ -9,6 +9,7 @@ import { getAvatarName } from "@/lib/utils";
 import StatusButton from "../Button/StatusButton";
 import parse from "html-react-parser";
 import { fetchComments } from "@/services/commentsServices";
+import SmallAvatar from "@/components/courses/SmallAvatar";
 
 interface Comment {
   id: string;
@@ -27,13 +28,15 @@ interface Props {
 
 const PostItem = (params: Props) => {
   const [isViewComments, setIsViewComments] = useState(false);
-  const [comments, setComments] = useState<Comment[]>([])
+  const [comments, setComments] = useState<Comment[]>([]);
 
   const fetchViewComments = () => {
-    fetchComments(params.id).then(data => {
-      console.log('data fetchComments', data)
-    })
-  }
+    fetchComments(params.id).then((data) => {
+      console.log("data fetchComments", data);
+    });
+  };
+
+  const [cmt, setCmt] = useState("");
 
   return (
     <div className="card-wrapper rounded-[10px]">
@@ -85,7 +88,9 @@ const PostItem = (params: Props) => {
           <p
             onClick={() => {
               setIsViewComments(true);
-              fetchViewComments()
+
+              //! fake API
+              // fetchViewComments();
             }}
             className="flex justify-end underline cursor-pointer body-regular text-gray-500 mt-3 ml-2"
           >
@@ -94,7 +99,25 @@ const PostItem = (params: Props) => {
           </p>
         )}
 
-        <MyComment textAvatar="HL" type="post" sourceId={params.id} />
+        {cmt !== "" ? (
+          <div className="flex pl-2 gap-4 mb-4">
+            <SmallAvatar text={"HL"} bgColor={"bg-[#DA3B01]"} />
+
+            <div>
+              <p className="small-regular">Nguyễn Hoàng Linh</p>
+              <p className="body-regular mt-1">{cmt}</p>
+            </div>
+          </div>
+        ) : null}
+
+        <MyComment
+          textAvatar="HL"
+          type="post"
+          sourceId={params.id}
+          onComplete={(cmt: string) => {
+            setCmt(cmt);
+          }}
+        />
       </div>
     </div>
   );

@@ -9,6 +9,7 @@ interface Props {
   textAvatar: string;
   type: string;
   sourceId: string;
+  onComplete?: (cmt: string) => void;
 }
 
 const MyComment = (params: Props) => {
@@ -48,6 +49,8 @@ const MyComment = (params: Props) => {
     if (inputValue.trim()) {
       onSendComment(inputValue); // Gọi hàm từ props
       setInputValue(""); // Xóa giá trị sau khi gửi
+
+      params.onComplete && params.onComplete(inputValue)
     } else {
       toast({
         title: `Vui lòng nhập nội dung bình luận!.`,
