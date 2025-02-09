@@ -787,7 +787,7 @@ const ManageGroup = () => {
       <TitleDescription
         title="Đăng ký nhóm"
         description={[
-          "Thời hạn: 7/12/2024 - 28/12/2024",
+          "Thời hạn: 01/02/2025 - 28/02/2025",
           "Lưu ý: Nhóm trưởng điền tên đầu tiên",
         ]}
       />
