@@ -120,7 +120,7 @@ const page = () => {
 
 
       //! fakeAPI mockParams:
-      case 3:
+      case 4:
         return (
           <ReportPostItem
             key={mockPostDataCourseIdPage[0].id}
@@ -154,7 +154,7 @@ const page = () => {
   const annoucementTypes = isDA1
     ? [
         { id: 1, value: "Thông báo" },
-        { id: 3, value: "Báo cáo" },
+        { id: 4, value: "Báo cáo" },
       ]
     : [
         { id: 1, value: "Thông báo" },
