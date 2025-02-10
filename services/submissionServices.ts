@@ -92,6 +92,9 @@ export const getDetailSubmissionsOfPost = async (eventId: string) => {
   }
 };
 
+
+//TODO: AUTH
+
 export const checkAuthGoogle = async (studentMail: string) => {
   console.log("submitFile");
   console.log("studentMail", studentMail);

@@ -92,7 +92,7 @@ const SubmitReport = (params: Props) => {
   const mockParamsHOMEWORKID = "67a72c1867bcae42d4b2c7a8";
 
   const mockParamsStudentCode = "21522289";
-  const mockParamsStudentMail = "dev.hoanglinh@gmail.com";
+  const mockParamsStudentMail = "dev.hoanglinh123@gmail.com";
 
   console.log("postId", params.postId);
   console.log("submissions", params.submissions);
@@ -244,7 +244,7 @@ const SubmitReport = (params: Props) => {
                   Còn lại 8 ngày 12 tiếng
                 </p>
 
-                <p className="body-medium">Chủ nhật, 9 tháng 2 2024, 8:02 AM</p>
+                <p className="body-medium">Chủ nhật, 10 tháng 2 2025, 6:10 PM</p>
 
                 <p
                   className="text-blue-500 underline text-sm break-all"
