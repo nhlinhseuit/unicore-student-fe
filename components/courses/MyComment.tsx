@@ -47,7 +47,7 @@ const MyComment = (params: Props) => {
 
   const handleSendClick = () => {
     if (inputValue.trim()) {
-      // onSendComment(inputValue); // Gọi hàm từ props
+      onSendComment(inputValue); // Gọi hàm từ props
       setInputValue(""); // Xóa giá trị sau khi gửi
 
       params.onComplete && params.onComplete(inputValue)

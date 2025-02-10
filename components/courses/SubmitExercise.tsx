@@ -6,11 +6,8 @@ import IconButton from "../shared/Button/IconButton";
 
 import {
   AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
-  AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
@@ -34,14 +31,19 @@ import SubmitButton from "../shared/Button/SubmitButton";
 
 import { Form } from "@/components/ui/form";
 import React from "react";
+import { checkAuthGoogle, submitFile } from "@/services/submissionServices";
+import LoadingSpinner from "../shared/LoadingSpinner";
+import GlobalLoading from "../shared/GlobalLoading";
+import { useRouter } from "next/navigation";
 
 interface Props {
+  postId: string;
   score: number[];
   totalScore: number;
   feedback: string;
   lateTime: string;
   lastEdited: string;
-  submission: string;
+  submissions: string[];
   review?: string[];
 }
 
@@ -49,6 +51,8 @@ const SubmitExercise = (params: Props) => {
   const [isAlreadySubmit, setIsAlreadySubmit] = useState(false);
   const [isEditting, setIsEditting] = useState(false);
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   const [isShowDialogConfirmReview, setIsShowDialogConfirmReview] =
     useState(false);
@@ -78,6 +82,60 @@ const SubmitExercise = (params: Props) => {
 
       setSelectedFiles((prevFiles) => [...prevFiles, ...validFiles]);
     }
+  };
+
+  const mockParamsStudentCode = "21522289";
+  const mockParamsStudentMail = "dev.hoanglinh@gmail.com";
+
+  console.log("postId", params.postId);
+  console.log("submissions", params.submissions);
+
+  const handleSubmit = () => {
+    if (selectedFiles.length === 0) {
+      toast({
+        title: "Vui lòng chọn file.",
+        variant: "error",
+        duration: 3000,
+      });
+      return;
+    }
+    checkAuthGoogle(mockParamsStudentMail).then((data) => {
+      console.log("data", data);
+      if (!data.data.userAuthenticated) {
+        //? Auth google
+        const authUrl = data.data.authUrl;
+        // Mở trang xác thực trong tab mới
+        window.open(authUrl, "_blank");
+        return;
+      } else {
+        console.log("User is authenticated");
+
+        const formData = new FormData();
+        if (selectedFiles.length > 1) {
+          selectedFiles.forEach((file) => {
+            formData.append("file", file);
+          });
+        } else {
+          formData.append("file", selectedFiles[0]);
+        }
+        formData.append("event_id", params.postId);
+        formData.append("student_code", mockParamsStudentCode);
+        formData.append("student_mail", mockParamsStudentMail);
+        setIsLoading(true);
+
+        formData.forEach((value, key) => {
+          console.log(`Key: ${key}, Value:`, value);
+        });
+
+        submitFile(formData).then((data) => {
+          console.log("data submitFile", data);
+
+          setIsLoading(false);
+          setIsEditting(false);
+          setIsAlreadySubmit(true);
+        });
+      }
+    });
   };
 
   const linkSubmit = useRef<HTMLInputElement>(null);
@@ -124,8 +182,8 @@ const SubmitExercise = (params: Props) => {
   return (
     <>
       <p className="paragraph-semibold underline ">Bài nộp</p>
-      <BorderContainer otherClasses="mt-4 p-6 flex flex-col gap-4">
-        <div className="flex gap-10">
+      <BorderContainer otherClasses="mt-4 p-6">
+        {/* <div className="flex gap-10">
           <div className="flex flex-col gap-4">
             <p className="body-semibold text-black">Trạng thái bài nộp:</p>
             <p className="body-semibold text-black">Trạng thái chấm điểm:</p>
@@ -151,7 +209,22 @@ const SubmitExercise = (params: Props) => {
 
             <p className="body-medium">{params.lastEdited}</p>
 
-            <p className="body-medium">{params.submission}</p>
+            <div className="max-h-[150px] overflow-y-auto border rounded-lg p-2">
+              {params.submissions.length > 0 ? (
+                params.submissions.map((item, index) => (
+                  <p
+                    key={index}
+                    className="text-blue-500 underline text-sm break-all"
+                  >
+                    <a href={item} className="body-medium">
+                      {item}
+                    </a>
+                  </p>
+                ))
+              ) : (
+                <p className="text-gray-500">Chưa có bài nộp</p>
+              )}
+            </div>
 
             {params.review
               ? params.review.map((item, index) => (
@@ -161,6 +234,61 @@ const SubmitExercise = (params: Props) => {
                 ))
               : null}
           </div>
+        </div> */}
+
+        <div className="grid grid-cols-[20%_80%] gap-x-2 gap-y-4 items-start">
+          <p className="body-semibold text-black">Trạng thái bài nộp:</p>
+          <p className="body-medium text-green-500">Đã nộp để chấm điểm</p>
+
+          <p className="body-semibold text-black">Trạng thái chấm điểm:</p>
+          <p className="body-medium text-green-500">
+            {params.score.join(" -> ")}
+          </p>
+
+          <p className="body-semibold text-black">Góp ý:</p>
+          <p className="body-medium">{params.feedback}</p>
+
+          <p className="body-semibold text-black">Thời gian còn lại:</p>
+          <p className="body-medium text-red-500">{params.lateTime}</p>
+
+          <p className="body-semibold text-black">Chỉnh sửa lần cuối:</p>
+          <p className="body-medium">{params.lastEdited}</p>
+
+          <p className="body-semibold text-black">Bài nộp:</p>
+          <div className="max-h-[150px] overflow-y-auto border rounded-lg p-2">
+            {params.submissions.length > 0 ? (
+              params.submissions.map((item, index) => (
+                <p
+                  key={index}
+                  className="text-blue-500 underline text-sm break-all"
+                >
+                  <a
+                    href={item}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="body-medium"
+                  >
+                    {item}
+                  </a>
+                </p>
+              ))
+            ) : (
+              <p className="text-gray-500">Chưa có bài nộp</p>
+            )}
+          </div>
+
+          {params.review && (
+            <>
+              <p className="body-semibold text-black">Trạng thái phúc khảo:</p>
+              <div>
+                {params.review.map((item, index) => (
+                  <p key={index} className="body-medium">
+                    {item}
+                  </p>
+                ))}
+              </div>
+            </>
+          )}
         </div>
       </BorderContainer>
 
@@ -202,8 +330,17 @@ const SubmitExercise = (params: Props) => {
                   className="no-focus paragraph-regular background-light900_dark300 light-border-2 text-dark300_light700 min-h-[46px] border"
                 />
               </div>
+
+              {isLoading ? (
+                <div className="ml-4">
+                  <LoadingSpinner />
+                  <GlobalLoading />
+                </div>
+              ) : (
+                <></>
+              )}
             </div>
-            <div className="mt-2 flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2">
               {selectedFiles.map((file, index) => (
                 <ClosedButton
                   key={`${index}_${file.name}`}
@@ -224,10 +361,7 @@ const SubmitExercise = (params: Props) => {
             <IconButton
               text={"Lưu"}
               otherClasses="mt-4"
-              onClick={() => {
-                setIsEditting(false);
-                setIsAlreadySubmit(true);
-              }}
+              onClick={handleSubmit}
             />
             <IconButton
               text={"Hủy"}

@@ -1,14 +1,18 @@
 import SubmitExercise from "@/components/courses/SubmitExercise";
 import { getAvatarName } from "@/lib/utils";
 import { mockSubmitExercisePost } from "@/mocks";
-import Image from "next/image";
+import parse from "html-react-parser";
 import MyAvatar from "../../courses/MyAvatar";
 import MyComment from "../../courses/MyComment";
 import OtherComment from "../../courses/OtherComment";
-import RenderFile from "../Annoucements/RenderFile";
 import StatusButton from "../Button/StatusButton";
 import Divider from "../Divider";
-import parse from "html-react-parser";
+import {
+  getDetailSubmissionsOfPost,
+  getSubmissionsOfPost,
+} from "@/services/submissionServices";
+import { useEffect, useState } from "react";
+import { IDetailSubmissionsOfPostResponseData } from "@/types/entity/DetailSubmissionsOfPost";
 
 interface Comment {
   id: string;
@@ -27,6 +31,26 @@ interface Props {
 }
 
 const ExercisePostItem = (params: Props) => {
+  const [submissions, setSubmissions] = useState<string[]>();
+
+  useEffect(() => {
+    getSubmissionsOfPost(params.id).then((data) => {
+      console.log("getSubmissionsOfPost", data);
+      const res = data.data;
+
+      setSubmissions(
+        res[res.length - 1].files.map((item: any) => item.webview_link)
+      );
+    });
+
+    getDetailSubmissionsOfPost(params.id).then((data) => {
+      console.log("getDetailSubmissionsOfPost", data);
+      const res = data.data as IDetailSubmissionsOfPostResponseData[];
+
+      console.log("IDetailSubmissionsOfPostResponseData res", res);
+    });
+  }, []);
+
   return (
     <div className="card-wrapper rounded-[10px]">
       <div className="relative flex-col w-full p-6">
@@ -77,12 +101,13 @@ const ExercisePostItem = (params: Props) => {
         <Divider />
 
         <SubmitExercise
+          postId={params.id}
+          submissions={submissions ?? []}
           score={mockSubmitExercisePost.score}
           totalScore={mockSubmitExercisePost.totalScore}
           feedback={mockSubmitExercisePost.feedback}
           lateTime={mockSubmitExercisePost.lateTime}
           lastEdited={mockSubmitExercisePost.lastEdited}
-          submission={mockSubmitExercisePost.submission}
           review={mockSubmitExercisePost.review}
         />
 
@@ -91,19 +116,18 @@ const ExercisePostItem = (params: Props) => {
         <div className="flex flex-col gap-4">
           {params.comments &&
             params.comments.map((item, index) => (
-              <p>
+              <div key={item.id}>
                 <OtherComment
-                  key={item.id}
                   textAvatar={getAvatarName(item.author)}
                   name={item.author}
                   comment={item.content}
                 />
                 <Divider />
-              </p>
+              </div>
             ))}
         </div>
 
-        <MyComment textAvatar="HL"  type="exercise" sourceId={params.id}/>
+        <MyComment textAvatar="HL" type="exercise" sourceId={params.id} />
       </div>
     </div>
   );

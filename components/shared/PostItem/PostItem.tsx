@@ -73,15 +73,15 @@ const PostItem = (params: Props) => {
         {isViewComments && comments.length > 0 ? (
           <div className="flex flex-col gap-4">
             {comments.map((item, index) => (
-              <p>
+              <div key={item.id}>
                 <OtherComment
-                  key={item.id}
+                  
                   textAvatar={getAvatarName(item.author)}
                   name={item.author}
                   comment={item.content}
                 />
                 <Divider />
-              </p>
+              </div>
             ))}
           </div>
         ) : (
@@ -90,7 +90,7 @@ const PostItem = (params: Props) => {
               setIsViewComments(true);
 
               //! fake API
-              // fetchViewComments();
+              fetchViewComments();
             }}
             className="flex justify-end underline cursor-pointer body-regular text-gray-500 mt-3 ml-2"
           >

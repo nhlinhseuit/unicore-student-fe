@@ -104,7 +104,9 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                   </li>
                   <li role="menuitem">
                     <p className="flex items-center justify-start w-full px-4 py-2 text-sm text-left text-gray-700 cursor-default">
-                      Kiểm chứng phần mềm
+                      {courseId === "SE121.O21.PMCL"
+                        ? "Đồ án 1"
+                        : "Kiểm chứng phần mềm"}
                     </p>
                   </li>
                   <li role="menuitem">
@@ -118,7 +120,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
           </div>
 
           <p className="text-left line-clamp-1 body-regular ">
-            Kiểm chứng phần mềm
+            {courseId === "SE121.O21.PMCL" ? "Đồ án 1" : "Kiểm chứng phần mềm"}
           </p>
         </div>
       </div>

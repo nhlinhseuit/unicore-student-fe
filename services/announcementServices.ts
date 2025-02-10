@@ -20,14 +20,19 @@ export const createAnnoucement = async (data: any) => {
 
 export const fetchAnnoucements = async (classId: string) => {
   try {
-    const res = await sendRequest<IBackendRes<any>>({
-      url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/post/class`,
+    const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/post/class?class_id=${classId}`;
+    const response = await fetch(url, {
       method: "GET",
-      queryParams: { class_id: classId },
-      nextOption: {
-        next: { tags: ["list-annoucements"] },
+      headers: {
+        "Content-Type": "application/json",
       },
     });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const res = await response.json();
 
     if (res?.data) {
       console.log("res.data::", res);
@@ -40,3 +45,26 @@ export const fetchAnnoucements = async (classId: string) => {
     throw error;
   }
 };
+
+// export const fetchAnnoucements = async (classId: string) => {
+//   try {
+//     const res = await sendRequest<IBackendRes<any>>({
+//       url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/post/class`,
+//       method: "GET",
+//       queryParams: { class_id: classId },
+//       nextOption: {
+//         next: { tags: ["list-annoucements"] },
+//       },
+//     });
+
+//     if (res?.data) {
+//       console.log("res.data::", res);
+//       return res.data;
+//     } else {
+//       throw new Error("Data format error: 'data' field is missing.");
+//     }
+//   } catch (error) {
+//     console.error("fetchAnnoucements failed:", error);
+//     throw error;
+//   }
+// };

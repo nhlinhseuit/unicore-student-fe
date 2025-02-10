@@ -103,15 +103,14 @@ const ReportPostItem = (params: Props) => {
         {/* <div className="flex flex-col gap-4">
           {params.comments &&
             params.comments.map((item, index) => (
-              <p>
+              <div key={item.id}>
                 <OtherComment
-                  key={item.id}
                   textAvatar={getAvatarName(item.author)}
                   name={item.author}
                   comment={item.content}
                 />
                 <Divider />
-              </p>
+              </div>
             ))}
         </div> */}
 

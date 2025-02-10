@@ -76,7 +76,6 @@ const page = () => {
         return annoucements.length > 0 ? (
           <>
             {annoucements.map((item, index) => {
-              console.log("case item", item);
               return (
                 <PostItem
                   key={item.id}
