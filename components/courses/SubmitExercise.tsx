@@ -90,7 +90,7 @@ const SubmitExercise = (params: Props) => {
   console.log("postId", params.postId);
   console.log("submissions", params.submissions);
 
-  const handleSubmit = () => {
+  const handleSubmitFile = () => {
     if (selectedFiles.length === 0) {
       toast({
         title: "Vui lòng chọn file.",
@@ -361,7 +361,7 @@ const SubmitExercise = (params: Props) => {
             <IconButton
               text={"Lưu"}
               otherClasses="mt-4"
-              onClick={handleSubmit}
+              onClick={handleSubmitFile}
             />
             <IconButton
               text={"Hủy"}

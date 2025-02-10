@@ -11,6 +11,12 @@ import OtherComment from "../../courses/OtherComment";
 import RenderFile from "../Annoucements/RenderFile";
 import StatusButton from "../Button/StatusButton";
 import Divider from "../Divider";
+import {
+  getSubmissionsOfPost,
+  getDetailSubmissionsOfPost,
+} from "@/services/submissionServices";
+import { IDetailSubmissionsOfPostResponseData } from "@/types/entity/DetailSubmissionsOfPost";
+import { useState, useEffect } from "react";
 
 interface Comment {
   id: string;
@@ -32,7 +38,24 @@ interface Props {
 const ReportPostItem = (params: Props) => {
   //! mockParams: fake API
   const classCode = useAtomValue(classCodeAtom);
-  const isDA1 = classCode === "SE121.O21.PMCL";
+  const isDA1 = true;
+  // const isDA1 = classCode === "SE121.O21.PMCL";
+
+  const [submissions, setSubmissions] = useState<string[]>();
+
+  const mockParamsHOMEWORKID = "67a72c1867bcae42d4b2c7a8";
+
+  useEffect(() => {
+    getSubmissionsOfPost(mockParamsHOMEWORKID).then((data) => {
+      console.log("getSubmissionsOfPost", data);
+      const res = data.data;
+      if (res) {
+        setSubmissions(
+          res[res.length - 1].files.map((item: any) => item.webview_link)
+        );
+      }
+    });
+  }, []);
 
   return (
     <div className="card-wrapper rounded-[10px]">
@@ -85,6 +108,8 @@ const ReportPostItem = (params: Props) => {
         {/* //! fake API: kh demo chọn lịch */}
         {isDA1 ? (
           <SubmitReport
+            postId={params.id}
+            submissions={submissions ?? []}
             score={mockSubmitExercisePost.score}
             totalScore={mockSubmitExercisePost.totalScore}
             feedback={mockSubmitExercisePost.feedback}

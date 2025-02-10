@@ -34,8 +34,13 @@ import SubmitButton from "../shared/Button/SubmitButton";
 
 import { Form } from "@/components/ui/form";
 import React from "react";
+import { checkAuthGoogle, submitFile } from "@/services/submissionServices";
+import LoadingSpinner from "../shared/LoadingSpinner";
+import GlobalLoading from "../shared/GlobalLoading";
 
 interface Props {
+  postId: string;
+  submissions: string[];
   score: number[];
   totalScore: number;
   feedback: string;
@@ -49,6 +54,10 @@ const SubmitReport = (params: Props) => {
   const [isAlreadySubmit, setIsAlreadySubmit] = useState(false);
   const [isEditting, setIsEditting] = useState(false);
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  //! FAKE API
+  const [submission, setSubmission] = useState("");
 
   const [isShowDialogConfirmReview, setIsShowDialogConfirmReview] =
     useState(false);
@@ -78,6 +87,68 @@ const SubmitReport = (params: Props) => {
 
       setSelectedFiles((prevFiles) => [...prevFiles, ...validFiles]);
     }
+  };
+
+  const mockParamsHOMEWORKID = "67a72c1867bcae42d4b2c7a8";
+
+  const mockParamsStudentCode = "21522289";
+  const mockParamsStudentMail = "dev.hoanglinh@gmail.com";
+
+  console.log("postId", params.postId);
+  console.log("submissions", params.submissions);
+
+  const handleSubmitFile = () => {
+    if (selectedFiles.length === 0) {
+      toast({
+        title: "Vui lòng chọn file.",
+        variant: "error",
+        duration: 3000,
+      });
+      return;
+    }
+    checkAuthGoogle(mockParamsStudentMail).then((data) => {
+      console.log("data", data);
+      if (!data.data.userAuthenticated) {
+        //? Auth google
+        const authUrl = data.data.authUrl;
+        // Mở trang xác thực trong tab mới
+        window.open(authUrl, "_blank");
+        return;
+      } else {
+        console.log("User is authenticated");
+
+        const formData = new FormData();
+        if (selectedFiles.length > 1) {
+          selectedFiles.forEach((file) => {
+            formData.append("file", file);
+          });
+        } else {
+          formData.append("file", selectedFiles[0]);
+        }
+        // formData.append("event_id", params.postId);
+
+        //! FAKE API
+        formData.append("event_id", mockParamsHOMEWORKID);
+
+        formData.append("student_code", mockParamsStudentCode);
+        formData.append("student_mail", mockParamsStudentMail);
+        setIsLoading(true);
+
+        formData.forEach((value, key) => {
+          console.log(`Key: ${key}, Value:`, value);
+        });
+
+        submitFile(formData).then((data) => {
+          console.log("data submitFile", data);
+
+          setSubmission(data.data.files[0].webview_link);
+
+          setIsLoading(false);
+          setIsEditting(false);
+          setIsAlreadySubmit(true);
+        });
+      }
+    });
   };
 
   const linkSubmit = useRef<HTMLInputElement>(null);
@@ -175,7 +246,18 @@ const SubmitReport = (params: Props) => {
 
                 <p className="body-medium">Chủ nhật, 9 tháng 2 2024, 8:02 AM</p>
 
-                <p className="body-medium">{params.submission}</p>
+                <p
+                  className="text-blue-500 underline text-sm break-all"
+                >
+                  <a
+                    href={submission}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="body-medium"
+                  >
+                    {submission}
+                  </a>
+                </p>
 
                 <p className="body-medium">Chưa phúc khảo</p>
               </>
@@ -222,6 +304,15 @@ const SubmitReport = (params: Props) => {
                   className="no-focus paragraph-regular background-light900_dark300 light-border-2 text-dark300_light700 min-h-[46px] border"
                 />
               </div>
+
+              {isLoading ? (
+                <div className="ml-4">
+                  <LoadingSpinner />
+                  <GlobalLoading />
+                </div>
+              ) : (
+                <></>
+              )}
             </div>
             <div className="mt-2 flex flex-wrap gap-2">
               {selectedFiles.map((file, index) => (
@@ -244,10 +335,7 @@ const SubmitReport = (params: Props) => {
             <IconButton
               text={"Lưu"}
               otherClasses="mt-4"
-              onClick={() => {
-                setIsEditting(false);
-                setIsAlreadySubmit(true);
-              }}
+              onClick={handleSubmitFile}
             />
             <IconButton
               text={"Hủy"}

@@ -43,12 +43,12 @@ const ExercisePostItem = (params: Props) => {
       );
     });
 
-    getDetailSubmissionsOfPost(params.id).then((data) => {
-      console.log("getDetailSubmissionsOfPost", data);
-      const res = data.data as IDetailSubmissionsOfPostResponseData[];
+    // getDetailSubmissionsOfPost(params.id).then((data) => {
+    //   console.log("getDetailSubmissionsOfPost", data);
+    //   const res = data.data as IDetailSubmissionsOfPostResponseData[];
 
-      console.log("IDetailSubmissionsOfPostResponseData res", res);
-    });
+    //   console.log("IDetailSubmissionsOfPostResponseData res", res);
+    // });
   }, []);
 
   return (
