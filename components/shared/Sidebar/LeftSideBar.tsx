@@ -16,10 +16,12 @@ import { Fragment } from "react";
 import Divider from "../Divider";
 import NotiItem from "../NotiItem";
 import UnreadContainer from "../UnreadContainer";
+import { isLoginAtom } from "@/app/(root)/courses/(courses)/(store)/courseStore";
+import { useAtomValue } from "jotai";
 
 const LeftSideBar = () => {
   const pathName = usePathname();
-  const isLoggedIn: boolean = sessionStorage.getItem('isLoginAtom') === 'true'
+  const isLoggedIn = useAtomValue(isLoginAtom);
 
   const isOriginalRoute = () => {
     // TODO: MỚI SỬA CODE TỪ LUỒNG STUDENT
@@ -245,7 +247,7 @@ const LeftSideBar = () => {
         </div>
       ) : (
         <div className="flex flex-col gap-3 mx-6 mt-6 mb-6 flex-shrink-0">
-        <Link
+          <Link
             href="/login"
             className="flex rounded-lg background-light700_dark300"
           >
@@ -256,7 +258,7 @@ const LeftSideBar = () => {
               px-4 py-3 shadow-none text-dark400_light900
               max-lg:hidden"
             >
-                Đăng nhập
+              Đăng nhập
             </Button>
             <Image
               src="/assets/icons/account.svg"
