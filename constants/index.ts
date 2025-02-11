@@ -106,6 +106,34 @@ export const StudentCourseTabItems = [
     route: "/setting",
   },
 ];
+export const StudentInternCourseTabItems = [
+  { value: "generalPost", label: "Thông báo chung", route: "/" },
+  {
+    value: "happeningEvent",
+    label: "Hoạt động đang diễn ra",
+    route: "/happening-event",
+  },
+  {
+    value: "internInfo",
+    label: "Điền thông tin thực tập",
+    route: "/intern-info",
+  },
+  {
+    value: "events",
+    label: "Sự kiện",
+    route: "/events",
+  },
+  {
+    value: "scoreTranscript",
+    label: "Bảng điểm",
+    route: "/score-transcript",
+  },
+  {
+    value: "setting",
+    label: "Cài đặt",
+    route: "/setting",
+  },
+];
 
 export const StudentBookmarksTabItems = [
   {

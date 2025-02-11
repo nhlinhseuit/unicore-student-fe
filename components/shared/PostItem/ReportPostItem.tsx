@@ -62,8 +62,8 @@ interface Props {
 const ReportPostItem = (params: Props) => {
   //! mockParams: fake API
   const classCode = useAtomValue(classCodeAtom);
-  const isDA1 = true;
-  // const isDA1 = classCode === "SE121.O21.PMCL";
+  // const isDA1 = true;
+  const isDA1 = classCode === "SE121.O21.PMCL";
 
   const [submissionsOfStudent, setSubmissionsOfStudent] =
     useState<IDetailSubmissionsOfPostResponseData>();

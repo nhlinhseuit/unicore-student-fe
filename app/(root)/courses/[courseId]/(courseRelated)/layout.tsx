@@ -3,16 +3,28 @@
 import React from "react";
 import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
-import { StudentCourseTabItems } from "@/constants";
+import {
+  StudentCourseTabItems,
+  StudentInternCourseTabItems,
+} from "@/constants";
 import { Dropdown } from "flowbite-react";
 import Image from "next/image";
 import NavbarButton from "@/components/shared/NavbarButton";
+import { useAtomValue } from "jotai";
+import { classCodeAtom } from "../../(courses)/(store)/courseStore";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const pathName = usePathname();
   const params = useParams() as { courseId: string };
   const { courseId } = params;
   // TODO: Get API lấy tên lớp học
+
+  const classCode = useAtomValue(classCodeAtom);
+  const isTTDN = classCode === "SE501.O21.PMCL";
+
+  const renderTabItems = isTTDN
+    ? StudentInternCourseTabItems
+    : StudentCourseTabItems;
 
   return (
     <main
@@ -38,7 +50,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
           pr-[230px]
         "
       >
-        {StudentCourseTabItems.map((item) => {
+        {renderTabItems.map((item) => {
           let isActive;
 
           // TODO: handle cho COURSE ITEM

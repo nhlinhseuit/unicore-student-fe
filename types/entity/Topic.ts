@@ -17,6 +17,24 @@ export interface TopicData {
   SĐT: string[];
   "Họ và tên": string[];
 }
+export interface InternInfoItem {
+  STT: string;
+  isDeleted: boolean;
+  data: InternInfo;
+}
+
+export interface InternInfo {
+  MSSV: string;
+  "Họ và tên": string;
+  Email: string;
+  "GV hướng dẫn": string;
+  "Thông tin liên lạc": string;
+  "Nơi thực tập": string;
+  "Nội dung thực tập": string;
+  "Vị trí thực tập": string;
+  "Ngày bắt đầu": string;
+  "Ngày kết thúc": string;
+}
 
 export interface ITopicResponseData {
   id: string;

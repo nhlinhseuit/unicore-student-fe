@@ -790,6 +790,76 @@ export const mockDataStudentRegisterTopic = [
   },
 ];
 
+export const mockDataStudentInternInfo = [
+  {
+    STT: "1",
+    isDeleted: false,
+    data: {
+      MSSV: "21520112",
+      "Họ và tên": "Nguyễn Thị Phương Tiên",
+      Email: "21520112@gm.uit.edu.vn",
+      "GV hướng dẫn": "Th.S Lê Thanh Trọng",
+      "Thông tin liên lạc": "tronglt@uit.edu.vn",
+      "Nơi thực tập": "FPT Software",
+      "Nội dung thực tập": "Nội dung thực tập",
+      "Vị trí thực tập": "Intern",
+      "Ngày bắt đầu": "23/09/2024",
+      "Ngày kết thúc": "23/11/2024",
+    },
+  },
+
+  {
+    STT: "2",
+    isDeleted: false,
+    data: {
+      MSSV: "21520166",
+      "Họ và tên": "Trần Minh Chính",
+      Email: "21520166@gm.uit.edu.vn",
+      "GV hướng dẫn": "Th.S Lê Thanh Trọng",
+      "Thông tin liên lạc": "tronglt@uit.edu.vn",
+      "Nơi thực tập": "Briswell Vietnam",
+      "Nội dung thực tập": "NodeJS Developer",
+      "Vị trí thực tập": "Intern",
+      "Ngày bắt đầu": "2/12/2024",
+      "Ngày kết thúc": "7/2/2024",
+    },
+  },
+
+  {
+    STT: "3",
+    isDeleted: false,
+    data: {
+      MSSV: "21520249",
+      "Họ và tên": "Hồ Trung Hưng",
+      Email: "21520249@gm.uit.edu.vn",
+      "GV hướng dẫn": "Th.S Lê Thanh Trọng",
+      "Thông tin liên lạc": "tronglt@uit.edu.vn",
+      "Nơi thực tập": "CÔNG TY TNHH CÔNG NGHỆ HOA SƠN",
+      "Nội dung thực tập": "Frontend Developer: ReactJS",
+      "Vị trí thực tập": "Intern",
+      "Ngày bắt đầu": "7/10/2024",
+      "Ngày kết thúc": "22/12/2024",
+    },
+  },
+
+  {
+    STT: "4",
+    isDeleted: false,
+    data: {
+      MSSV: "21520327",
+      "Họ và tên": "Trần Lê Yến Linh",
+      Email: "21520327@gm.uit.edu.vn",
+      "GV hướng dẫn": "Th.S Lê Thanh Trọng",
+      "Thông tin liên lạc": "tronglt@uit.edu.vn",
+      "Nơi thực tập": "CÔNG TY TNHH TỔ HỢP NHẤT VIỆT (SMG)",
+      "Nội dung thực tập": "Backend Developer: NodeJS",
+      "Vị trí thực tập": "Intern",
+      "Ngày bắt đầu": "07/10/2024",
+      "Ngày kết thúc": "18/12/2024",
+    },
+  },
+];
+
 //
 // TODO: Exercise Post item
 //
