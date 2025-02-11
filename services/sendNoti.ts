@@ -6,14 +6,13 @@ import { revalidateTag } from "next/cache";
 
 export const suggestTopicSendNoti = async (data: any) => {
   const res = await sendRequest<IBackendRes<any>>({
-    url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/post/class/create`,
+    url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/post/mail/topics/suggestion`,
     method: "POST",
     // headers: {
     //   Authorization: `Bearer ${session?.user?.access_token}`,
     // },
     body: { ...data },
   });
-  revalidateTag("create-annoucement");
 
   return res;
 };
