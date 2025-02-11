@@ -265,7 +265,15 @@ const SubmitExercise = (params: Props) => {
 
           <p className="body-semibold text-black">Thời gian còn lại:</p>
           {/* <p className="body-medium text-red-500">{params.lateTime}</p> */}
-          <p className="body-medium text-green-500">Còn lại 8 ngày 12 tiếng</p>
+          <p
+            className={`body-medium ${
+              dataSubmit.submit_time_status.includes("trễ")
+                ? "text-red-500"
+                : "text-green-500"
+            } `}
+          >
+            {dataSubmit.submit_time_status}
+          </p>
 
           <p className="body-semibold text-black">Chỉnh sửa lần cuối:</p>
           <p className="body-medium">
@@ -275,7 +283,7 @@ const SubmitExercise = (params: Props) => {
           <p className="body-semibold text-black">Bài nộp:</p>
           <div className="max-h-[150px] overflow-y-auto border rounded-lg p-2">
             {getSubmissions().length > 0 ? (
-              getSubmissions().map((item, index) => (
+              getSubmissions().map((item, index) => ( 
                 <p
                   key={index}
                   className="text-blue-500 underline text-sm break-all"

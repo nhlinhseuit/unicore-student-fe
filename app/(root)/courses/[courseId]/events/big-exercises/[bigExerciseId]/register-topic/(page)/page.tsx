@@ -829,11 +829,11 @@ const RegisterTopic = () => {
 
   const [selectedTeacherSuggest, setSelectedTeacherSuggest] = useState(-1);
 
-  const selectedTopic = sSelectedTopic.use();
+  const selectedTopicId = sSelectedTopic.use();
 
   const getRegisterdTopicName = () => {
     return mockDataStudentRegisterTopic.find(
-      (item) => item.data["Tên đề tài tiếng Việt"] === selectedTopic
+      (item) => item.STT === selectedTopicId
     )?.data["Tên đề tài tiếng Việt"];
   };
 
@@ -913,6 +913,11 @@ const RegisterTopic = () => {
       // naviate to home page
       // router.push("/");
 
+      setDescriptions((prev) => [
+        ...prev,
+        `Đề tài đã đăng ký: ${getRegisterdTopicName()}`,
+      ]);
+
       toast({
         title: isShowDialogSuggestTopic
           ? "Đề xuất đề tài thành công"
@@ -947,6 +952,11 @@ const RegisterTopic = () => {
 
   const { reset: resetSuggestTopicForm } = formSuggestTopic;
 
+  const [descriptions, setDescriptions] = useState([
+    "Thời hạn: 01/02/2025 - 28/02/2025",
+    "Lưu ý: Nhóm trưởng điền tên đầu tiên",
+  ]);
+
   const renderForm = isShowDialogSuggestTopic
     ? (formSuggestTopic as UseFormReturn<{
         nameGroup: string;
@@ -959,13 +969,7 @@ const RegisterTopic = () => {
 
   return (
     <div>
-      <TitleDescription
-        title="Đăng ký đề tài"
-        description={[
-          "Thời hạn: 01/02/2025 - 28/02/2025",
-          "Lưu ý: Nhóm trưởng điền tên đầu tiên",
-        ]}
-      />
+      <TitleDescription title="Đăng ký đề tài" description={descriptions} />
 
       {errorMessages.length > 0 && (
         <div className="mb-6">
@@ -1008,7 +1012,7 @@ const RegisterTopic = () => {
                     setIsShowDialogRegisterTopic(Action.edit);
                   }
                 : () => {
-                    if (selectedTopic === "") {
+                    if (selectedTopicId === "") {
                       toast({
                         title: "Bạn chưa chọn đề tài!",
                         variant: "error",
@@ -1031,6 +1035,7 @@ const RegisterTopic = () => {
 
       <RegisterTopicTable
         type={RegisterTopicTableType.registerTopic}
+        isAlreadyRegisteredGroup={isAlreadyRegisteredGroup}
         isEditTable={false}
         isMultipleDelete={false}
         dataTable={mockDataStudentRegisterTopic}

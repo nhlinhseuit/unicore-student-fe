@@ -11,6 +11,7 @@ interface RowParams {
   type: RegisterTopicTableType;
   dataItem: TopicDataItem;
   isEditTable?: boolean;
+  isAlreadyRegisteredGroup?: boolean;
   isMultipleDelete?: boolean;
   isHasSubCourses?: boolean;
   onClickGetOut?: () => void;
@@ -226,10 +227,9 @@ const RowRegisterTopicTable = React.memo(
               name="approveTopic"
               checked={selectedTopic === params.dataItem.data["Mã đề tài"]}
               value={valueUniqueInput}
+              disabled={params.isAlreadyRegisteredGroup}
               onChange={() => {
-                {
-                  sSelectedTopic.set(valueUniqueInput);
-                }
+                sSelectedTopic.set(valueUniqueInput);
               }}
               className="w-4 h-4 bg-gray-100 border-gray-300 rounded cursor-pointer text-primary-600"
             />
@@ -260,7 +260,8 @@ const RowRegisterTopicTable = React.memo(
     return (
       prevProps.dataItem === nextProps.dataItem &&
       prevProps.isEditTable === nextProps.isEditTable &&
-      prevProps.isMultipleDelete === nextProps.isMultipleDelete
+      prevProps.isMultipleDelete === nextProps.isMultipleDelete &&
+      prevProps.isAlreadyRegisteredGroup === nextProps.isAlreadyRegisteredGroup 
     );
   }
 );

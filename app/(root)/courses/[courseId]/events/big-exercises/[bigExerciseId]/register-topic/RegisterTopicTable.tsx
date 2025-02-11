@@ -11,6 +11,7 @@ import { TopicDataItem } from "@/types/entity/Topic";
 
 interface DataTableParams {
   type: RegisterTopicTableType;
+  isAlreadyRegisteredGroup?: boolean;
   isEditTable: boolean;
   isMultipleDelete: boolean;
   dataTable: TopicDataItem[];
@@ -75,8 +76,8 @@ const RegisterTopicTable = (params: DataTableParams) => {
                 STT
               </Table.HeadCell>
               {Object.keys(filteredDataTable[0]?.data || {}).map((key) => {
-                if (key === "Mã nhóm" || key === 'Mã đề tài') return null;
-                
+                if (key === "Mã nhóm" || key === "Mã đề tài") return null;
+
                 return (
                   <Table.HeadCell
                     key={key}
@@ -101,6 +102,7 @@ const RegisterTopicTable = (params: DataTableParams) => {
                       type={params.type}
                       key={dataItem.STT}
                       dataItem={dataItem}
+                      isAlreadyRegisteredGroup={params.isAlreadyRegisteredGroup}
                       isEditTable={params.isEditTable}
                       isMultipleDelete={params.isMultipleDelete}
                       onChangeRow={(updatedDataItem: any) => {
