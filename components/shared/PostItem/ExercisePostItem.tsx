@@ -55,16 +55,23 @@ interface Props {
 }
 
 const ExercisePostItem = (params: Props) => {
-  const [submissions, setSubmissions] = useState<string[]>();
+  const [submissionsOfStudent, setSubmissionsOfStudent] =
+    useState<IDetailSubmissionsOfPostResponseData>();
+
+  const mockParamsStudentCode = "21522289";
 
   useEffect(() => {
     getSubmissionsOfPost(params.id).then((data) => {
-      console.log("getSubmissionsOfPost", data);
-      const res = data.data;
+      if (data.data) {
+        const submissionsOfStd: IDetailSubmissionsOfPostResponseData =
+          data.data.find((item: any) => {
+            return item.submitters.find(
+              (item: any) => item.student_code === mockParamsStudentCode
+            );
+          });
 
-      setSubmissions(
-        res[res.length - 1].files.map((item: any) => item.webview_link)
-      );
+        setSubmissionsOfStudent(submissionsOfStd);
+      }
     });
 
     // getDetailSubmissionsOfPost(params.id).then((data) => {
@@ -126,18 +133,22 @@ const ExercisePostItem = (params: Props) => {
 
         <Divider />
 
-        <SubmitExercise
-          postId={params.id}
-          submissions={submissions ?? []}
-          score={mockSubmitExercisePost.score}
-          totalScore={mockSubmitExercisePost.totalScore}
-          feedback={mockSubmitExercisePost.feedback}
-          lateTime={mockSubmitExercisePost.lateTime}
-          lastEdited={mockSubmitExercisePost.lastEdited}
-          review={mockSubmitExercisePost.review}
-        />
+        {submissionsOfStudent ? (
+          <>
+            <SubmitExercise
+              postId={params.id}
+              submissionsOfStudent={submissionsOfStudent}
 
-        <Divider />
+              score={mockSubmitExercisePost.score}
+              totalScore={mockSubmitExercisePost.totalScore}
+              feedback={mockSubmitExercisePost.feedback}
+              lateTime={mockSubmitExercisePost.lateTime}
+              lastEdited={mockSubmitExercisePost.lastEdited}
+              review={mockSubmitExercisePost.review}
+            />
+            <Divider />
+          </>
+        ) : null}
 
         <div className="flex flex-col gap-4">
           {params.comments &&

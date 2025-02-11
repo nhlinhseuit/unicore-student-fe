@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ClosedButton from "../shared/Annoucements/ClosedButton";
 import RenderFile from "../shared/Annoucements/RenderFile";
 import BorderContainer from "../shared/BorderContainer";
@@ -35,15 +35,20 @@ import { checkAuthGoogle, submitFile } from "@/services/submissionServices";
 import LoadingSpinner from "../shared/LoadingSpinner";
 import GlobalLoading from "../shared/GlobalLoading";
 import { useRouter } from "next/navigation";
+import { IDetailSubmissionsOfPostResponseData } from "@/types/entity/DetailSubmissionsOfPost";
+import { parseISODateToDisplayDateTime } from "@/utils/dateTimeUtil";
+import { useAtom } from "jotai";
+import { isLoadingUpFileAtom } from "@/app/(root)/courses/(courses)/(store)/courseStore";
 
 interface Props {
   postId: string;
+  submissionsOfStudent: IDetailSubmissionsOfPostResponseData;
+
   score: number[];
   totalScore: number;
   feedback: string;
   lateTime: string;
   lastEdited: string;
-  submissions: string[];
   review?: string[];
 }
 
@@ -52,7 +57,16 @@ const SubmitExercise = (params: Props) => {
   const [isEditting, setIsEditting] = useState(false);
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingUpFile, setIsLoadingUpFile] = useAtom(isLoadingUpFileAtom);
   const router = useRouter();
+
+  //? Xử lý local
+  const [dataSubmit, setDataSubmit] =
+    useState<IDetailSubmissionsOfPostResponseData>(params.submissionsOfStudent);
+
+  const getSubmissions = () => {
+    return dataSubmit.files.map((item: any) => item.webview_link);
+  };
 
   const [isShowDialogConfirmReview, setIsShowDialogConfirmReview] =
     useState(false);
@@ -87,9 +101,6 @@ const SubmitExercise = (params: Props) => {
   const mockParamsStudentCode = "21522289";
   const mockParamsStudentMail = "dev.hoanglinh@gmail.com";
 
-  console.log("postId", params.postId);
-  console.log("submissions", params.submissions);
-
   const handleSubmitFile = () => {
     if (selectedFiles.length === 0) {
       toast({
@@ -121,16 +132,17 @@ const SubmitExercise = (params: Props) => {
         formData.append("event_id", params.postId);
         formData.append("student_code", mockParamsStudentCode);
         formData.append("student_mail", mockParamsStudentMail);
-        setIsLoading(true);
+        setIsLoadingUpFile(true);
 
         formData.forEach((value, key) => {
           console.log(`Key: ${key}, Value:`, value);
         });
 
         submitFile(formData).then((data) => {
-          console.log("data submitFile", data);
-
-          setIsLoading(false);
+          if (data.data) {
+            setDataSubmit(data.data);
+          }
+          setIsLoadingUpFile(false);
           setIsEditting(false);
           setIsAlreadySubmit(true);
         });
@@ -155,8 +167,6 @@ const SubmitExercise = (params: Props) => {
       description: "",
     },
   });
-
-  const { reset } = form;
 
   async function onSubmit(values: any) {
     try {
@@ -210,8 +220,8 @@ const SubmitExercise = (params: Props) => {
             <p className="body-medium">{params.lastEdited}</p>
 
             <div className="max-h-[150px] overflow-y-auto border rounded-lg p-2">
-              {params.submissions.length > 0 ? (
-                params.submissions.map((item, index) => (
+              {localSubmissions.length > 0 ? (
+                localSubmissions.map((item, index) => (
                   <p
                     key={index}
                     className="text-blue-500 underline text-sm break-all"
@@ -241,23 +251,31 @@ const SubmitExercise = (params: Props) => {
           <p className="body-medium text-green-500">Đã nộp để chấm điểm</p>
 
           <p className="body-semibold text-black">Trạng thái chấm điểm:</p>
-          <p className="body-medium text-green-500">
+          {/* <p className="body-medium text-green-500">
             {params.score.join(" -> ")}
-          </p>
+          </p> */}
+          <p className="body-medium">Chưa chấm</p>
 
           <p className="body-semibold text-black">Góp ý:</p>
-          <p className="body-medium">{params.feedback}</p>
+          {dataSubmit.feedback ? (
+            dataSubmit.feedback
+          ) : (
+            <p className="body-medium">Không</p>
+          )}
 
           <p className="body-semibold text-black">Thời gian còn lại:</p>
-          <p className="body-medium text-red-500">{params.lateTime}</p>
+          {/* <p className="body-medium text-red-500">{params.lateTime}</p> */}
+          <p className="body-medium text-green-500">Còn lại 8 ngày 12 tiếng</p>
 
           <p className="body-semibold text-black">Chỉnh sửa lần cuối:</p>
-          <p className="body-medium">{params.lastEdited}</p>
+          <p className="body-medium">
+            {parseISODateToDisplayDateTime(dataSubmit.created_date)}
+          </p>
 
           <p className="body-semibold text-black">Bài nộp:</p>
           <div className="max-h-[150px] overflow-y-auto border rounded-lg p-2">
-            {params.submissions.length > 0 ? (
-              params.submissions.map((item, index) => (
+            {getSubmissions().length > 0 ? (
+              getSubmissions().map((item, index) => (
                 <p
                   key={index}
                   className="text-blue-500 underline text-sm break-all"
@@ -273,20 +291,19 @@ const SubmitExercise = (params: Props) => {
                 </p>
               ))
             ) : (
-              <p className="text-gray-500">Chưa có bài nộp</p>
+              <p className="text-gray-500 body-medium">Chưa có bài nộp</p>
             )}
           </div>
 
           {params.review && (
             <>
               <p className="body-semibold text-black">Trạng thái phúc khảo:</p>
-              <div>
-                {params.review.map((item, index) => (
-                  <p key={index} className="body-medium">
-                    {item}
-                  </p>
-                ))}
-              </div>
+              {/* //! CHUYEN THANH TRUONG PHUC KHAO */}
+              {dataSubmit.feedback ? (
+                dataSubmit.feedback
+              ) : (
+                <p className="body-medium">Chưa phúc khảo</p>
+              )}
             </>
           )}
         </div>
@@ -331,10 +348,9 @@ const SubmitExercise = (params: Props) => {
                 />
               </div>
 
-              {isLoading ? (
+              {isLoadingUpFile ? (
                 <div className="ml-4">
                   <LoadingSpinner />
-                  <GlobalLoading />
                 </div>
               ) : (
                 <></>

@@ -1,11 +1,15 @@
 "use client";
 
+import GlobalLoading from "@/components/shared/GlobalLoading";
 import LeftSideBar from "@/components/shared/Sidebar/LeftSideBar";
 import { Toaster } from "@/components/ui/toaster";
+import { useAtomValue } from "jotai";
 import React from "react";
+import { isLoadingUpFileAtom } from "./courses/(courses)/(store)/courseStore";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const isBrowser = () => typeof window !== "undefined";
+  const isLoadingUpFile = useAtomValue(isLoadingUpFileAtom);
 
   return (
     <main
@@ -48,6 +52,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         <div className="fixed top-10 right-10 z-50">
           <Toaster />
         </div>
+        {isLoadingUpFile ? <GlobalLoading /> : null}
       </div>
 
       {/* Toaster */}

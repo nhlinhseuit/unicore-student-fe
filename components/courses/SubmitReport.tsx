@@ -37,10 +37,13 @@ import React from "react";
 import { checkAuthGoogle, submitFile } from "@/services/submissionServices";
 import LoadingSpinner from "../shared/LoadingSpinner";
 import GlobalLoading from "../shared/GlobalLoading";
+import { IDetailSubmissionsOfPostResponseData } from "@/types/entity/DetailSubmissionsOfPost";
+import { parseISODateToDisplayDateTime } from "@/utils/dateTimeUtil";
 
 interface Props {
   postId: string;
-  submissions: string[];
+  submissionsOfStudent: IDetailSubmissionsOfPostResponseData;
+
   score: number[];
   totalScore: number;
   feedback: string;
@@ -56,8 +59,15 @@ const SubmitReport = (params: Props) => {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  //! FAKE API
-  const [submission, setSubmission] = useState("");
+  //? Xử lý local
+  const [dataSubmit, setDataSubmit] =
+    useState<IDetailSubmissionsOfPostResponseData>(params.submissionsOfStudent);
+
+  const getSubmissions = () => {
+    return dataSubmit.files.map((item: any) => item.webview_link);
+  };
+
+  console.log("dataSubmit", dataSubmit);
 
   const [isShowDialogConfirmReview, setIsShowDialogConfirmReview] =
     useState(false);
@@ -92,10 +102,7 @@ const SubmitReport = (params: Props) => {
   const mockParamsHOMEWORKID = "67a72c1867bcae42d4b2c7a8";
 
   const mockParamsStudentCode = "21522289";
-  const mockParamsStudentMail = "dev.hoanglinh123@gmail.com";
-
-  console.log("postId", params.postId);
-  console.log("submissions", params.submissions);
+  const mockParamsStudentMail = "dev.hoanglinh@gmail.com";
 
   const handleSubmitFile = () => {
     if (selectedFiles.length === 0) {
@@ -139,9 +146,9 @@ const SubmitReport = (params: Props) => {
         });
 
         submitFile(formData).then((data) => {
-          console.log("data submitFile", data);
-
-          setSubmission(data.data.files[0].webview_link);
+          if (data.data) {
+            setDataSubmit(data.data);
+          }
 
           setIsLoading(false);
           setIsEditting(false);
@@ -196,7 +203,7 @@ const SubmitReport = (params: Props) => {
     <>
       <p className="paragraph-semibold underline ">Bài nộp</p>
       <BorderContainer otherClasses="mt-4 p-6 flex flex-col gap-4">
-        <div className="flex gap-10">
+        {/* <div className="flex gap-10">
           <div className="flex flex-col gap-4">
             {!isAlreadySubmit ? (
               <>
@@ -263,6 +270,68 @@ const SubmitReport = (params: Props) => {
               </>
             )}
           </div>
+        </div> */}
+
+        <div className="grid grid-cols-[20%_80%] gap-x-2 gap-y-4 items-start">
+          <p className="body-semibold text-black">Trạng thái bài nộp:</p>
+          <p className="body-medium text-green-500">Đã nộp để chấm điểm</p>
+
+          <p className="body-semibold text-black">Trạng thái chấm điểm:</p>
+          {/* <p className="body-medium text-green-500">
+            {params.score.join(" -> ")}
+          </p> */}
+          <p className="body-medium">Chưa chấm</p>
+
+          <p className="body-semibold text-black">Góp ý:</p>
+          {dataSubmit.feedback ? (
+            dataSubmit.feedback
+          ) : (
+            <p className="body-medium">Không</p>
+          )}
+
+          <p className="body-semibold text-black">Thời gian còn lại:</p>
+          {/* <p className="body-medium text-red-500">{params.lateTime}</p> */}
+          <p className="body-medium text-green-500">Còn lại 8 ngày 12 tiếng</p>
+
+          <p className="body-semibold text-black">Chỉnh sửa lần cuối:</p>
+          <p className="body-medium">
+            {parseISODateToDisplayDateTime(dataSubmit.created_date)}
+          </p>
+
+          <p className="body-semibold text-black">Bài nộp:</p>
+          <div className="max-h-[150px] overflow-y-auto border rounded-lg p-2">
+            {getSubmissions().length > 0 ? (
+              getSubmissions().map((item, index) => (
+                <p
+                  key={index}
+                  className="text-blue-500 underline text-sm break-all"
+                >
+                  <a
+                    href={item}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="body-medium"
+                  >
+                    {item}
+                  </a>
+                </p>
+              ))
+            ) : (
+              <p className="text-gray-500 body-medium">Chưa có bài nộp</p>
+            )}
+          </div>
+
+          {params.review && (
+            <>
+              <p className="body-semibold text-black">Trạng thái phúc khảo:</p>
+              {/* //! CHUYEN THANH TRUONG PHUC KHAO */}
+              {dataSubmit.feedback ? (
+                dataSubmit.feedback
+              ) : (
+                <p className="body-medium">Chưa phúc khảo</p>
+              )}
+            </>
+          )}
         </div>
       </BorderContainer>
 

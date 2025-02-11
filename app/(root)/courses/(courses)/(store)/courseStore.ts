@@ -9,3 +9,4 @@ export const startTopicImportTimeAtom = atom<string | null>()
 export const endTopicImportTimeAtom = atom<string | null>()
 
 export const isLoginAtom = atom<boolean>(false)
+export const isLoadingUpFileAtom = atom<boolean>(false)

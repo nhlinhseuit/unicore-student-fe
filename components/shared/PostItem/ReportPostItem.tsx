@@ -17,7 +17,6 @@ import {
 import { IDetailSubmissionsOfPostResponseData } from "@/types/entity/DetailSubmissionsOfPost";
 import { useState, useEffect } from "react";
 
-
 import Prism from "prismjs";
 import parse from "html-react-parser";
 
@@ -66,26 +65,32 @@ const ReportPostItem = (params: Props) => {
   const isDA1 = true;
   // const isDA1 = classCode === "SE121.O21.PMCL";
 
-  const [submissions, setSubmissions] = useState<string[]>();
+  const [submissionsOfStudent, setSubmissionsOfStudent] =
+    useState<IDetailSubmissionsOfPostResponseData>();
+
+  const mockParamsStudentCode = "21522289";
 
   const mockParamsHOMEWORKID = "67a72c1867bcae42d4b2c7a8";
-  
-  console.log('params.id', params.id)
 
   useEffect(() => {
     // params.id
     getSubmissionsOfPost(mockParamsHOMEWORKID).then((data) => {
-      console.log("getSubmissionsOfPost", data);
-      const res = data.data;
-      if (res) {
-        setSubmissions(
-          res[res.length - 1].files.map((item: any) => item.webview_link)
-        );
+      if (data.data) {
+        const submissionsOfStd: IDetailSubmissionsOfPostResponseData =
+          data.data.find((item: any) => {
+            return item.submitters.find(
+              (item: any) => item.student_code === mockParamsStudentCode
+            );
+          });
+
+        setSubmissionsOfStudent(submissionsOfStd);
       }
     });
 
     Prism.highlightAll();
   }, []);
+
+  console.log("submissionsOfStudent", submissionsOfStudent);
 
   return (
     <div className="card-wrapper rounded-[10px]">
@@ -137,23 +142,26 @@ const ReportPostItem = (params: Props) => {
 
         {/* //! fake API: kh demo chọn lịch */}
         {isDA1 ? (
-          <SubmitReport
-            postId={params.id}
-            submissions={submissions ?? []}
-            score={mockSubmitExercisePost.score}
-            totalScore={mockSubmitExercisePost.totalScore}
-            feedback={mockSubmitExercisePost.feedback}
-            lateTime={mockSubmitExercisePost.lateTime}
-            lastEdited={mockSubmitExercisePost.lastEdited}
-            submission={mockSubmitExercisePost.submission}
-            review={mockSubmitExercisePost.review}
-          />
+          submissionsOfStudent ? (
+            <>
+              <SubmitReport
+                postId={params.id}
+                submissionsOfStudent={submissionsOfStudent}
+                score={mockSubmitExercisePost.score}
+                totalScore={mockSubmitExercisePost.totalScore}
+                feedback={mockSubmitExercisePost.feedback}
+                lateTime={mockSubmitExercisePost.lateTime}
+                lastEdited={mockSubmitExercisePost.lastEdited}
+                submission={mockSubmitExercisePost.submission}
+                review={mockSubmitExercisePost.review}
+              />
+              <Divider />
+            </>
+          ) : null
         ) : (
           <RegisterReportSchedule />
         )}
         {/* <RegisterReportSchedule /> */}
-
-        <Divider />
 
         {/* <div className="flex flex-col gap-4">
           {params.comments &&
