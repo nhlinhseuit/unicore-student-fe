@@ -44,8 +44,11 @@ const ReportPostItem = (params: Props) => {
   const [submissions, setSubmissions] = useState<string[]>();
 
   const mockParamsHOMEWORKID = "67a72c1867bcae42d4b2c7a8";
+  
+  console.log('params.id', params.id)
 
   useEffect(() => {
+    // params.id
     getSubmissionsOfPost(mockParamsHOMEWORKID).then((data) => {
       console.log("getSubmissionsOfPost", data);
       const res = data.data;
