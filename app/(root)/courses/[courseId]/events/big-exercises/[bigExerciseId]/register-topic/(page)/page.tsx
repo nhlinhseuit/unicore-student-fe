@@ -719,6 +719,7 @@ import { usePathname } from "next/navigation";
 import SubmitButton from "@/components/shared/Button/SubmitButton";
 import TitleDescription from "@/components/shared/TitleDescription";
 import Student from "@/services/Student";
+import { suggestTopicSendNoti } from "@/services/sendNoti";
 
 const RegisterTopic = () => {
   // Update biến: Danh sách thành viên nhóm
@@ -829,6 +830,11 @@ const RegisterTopic = () => {
 
   const [selectedTeacherSuggest, setSelectedTeacherSuggest] = useState(-1);
 
+  //!FAKE API
+  const [title, setTitle] = useState("");
+  const [titleEn, setTitleEn] = useState("");
+  const [desc, setDesc] = useState("");
+
   const selectedTopicId = sSelectedTopic.use();
 
   const getRegisterdTopicName = () => {
@@ -913,10 +919,14 @@ const RegisterTopic = () => {
       // naviate to home page
       // router.push("/");
 
-      setDescriptions((prev) => [
-        ...prev,
-        `Đề tài đã đăng ký: ${getRegisterdTopicName()}`,
-      ]);
+      if (isShowDialogSuggestTopic) {
+        setDescriptions((prev) => [...prev, `Đề tài đã đề xuất: ${title}`]);
+      } else {
+        setDescriptions((prev) => [
+          ...prev,
+          `Đề tài đã đăng ký: ${getRegisterdTopicName()}`,
+        ]);
+      }
 
       toast({
         title: isShowDialogSuggestTopic
@@ -935,6 +945,21 @@ const RegisterTopic = () => {
           description: "",
         });
         setIsShowDialogSuggestTopic(false);
+        setIsAlreadyRegisteredGroup(true);
+
+        //! Send noti
+        const params = {
+          name: "Thông báo đề xuất đề tài",
+          email: "dev.hoanglinh@gmail.com",
+          eventId: "67a6e790dcf5f232aead4372", //BTL
+          classCode: "SE121.O21.PMCL",
+          studentNames: ["Nguyễn Hoàng Linh"],
+          studentCodes: ["21522289"],
+          topicName: title,
+          topicNameEn: titleEn,
+          topicDescription: desc,
+        };
+        suggestTopicSendNoti(params);
       } else {
         console.log("setIsShowDialogRegisterTopic");
         setIsShowDialogRegisterTopic(Action.none);
@@ -995,41 +1020,75 @@ const RegisterTopic = () => {
         />
 
         <div className="w-[60%] flex items-center justify-end mb-3 gap-2">
-          <IconButton
-            text={isAlreadyRegisteredGroup ? "Chỉnh sửa" : "Đăng ký nhóm"}
-            yellow={isAlreadyRegisteredGroup ? true : false}
-            green={isAlreadyRegisteredGroup ? false : true}
-            iconLeft={
-              isAlreadyRegisteredGroup
-                ? "/assets/icons/edit.svg"
-                : "/assets/icons/add.svg"
-            }
-            iconWidth={22}
-            iconHeight={22}
-            onClick={
-              isAlreadyRegisteredGroup
-                ? () => {
-                    setIsShowDialogRegisterTopic(Action.edit);
-                  }
-                : () => {
-                    if (selectedTopicId === "") {
-                      toast({
-                        title: "Bạn chưa chọn đề tài!",
-                        variant: "error",
-                        duration: 3000,
-                      });
-                      return;
+          {isAlreadyRegisteredGroup ? (
+            <IconButton
+              text={isAlreadyRegisteredGroup ? "Chỉnh sửa" : "Đăng ký nhóm"}
+              yellow={isAlreadyRegisteredGroup ? true : false}
+              green={isAlreadyRegisteredGroup ? false : true}
+              iconLeft={
+                isAlreadyRegisteredGroup
+                  ? "/assets/icons/edit.svg"
+                  : "/assets/icons/add.svg"
+              }
+              iconWidth={22}
+              iconHeight={22}
+              onClick={
+                isAlreadyRegisteredGroup
+                  ? () => {
+                      setIsShowDialogRegisterTopic(Action.edit);
                     }
-                    setIsShowDialogRegisterTopic(Action.create);
-                  }
-            }
-          />
-          <IconButton
-            text={"Đề xuất đề tài"}
-            iconWidth={22}
-            iconHeight={22}
-            onClick={() => setIsShowDialogSuggestTopic(true)}
-          />
+                  : () => {
+                      if (selectedTopicId === "") {
+                        toast({
+                          title: "Bạn chưa chọn đề tài!",
+                          variant: "error",
+                          duration: 3000,
+                        });
+                        return;
+                      }
+                      setIsShowDialogRegisterTopic(Action.create);
+                    }
+              }
+            />
+          ) : (
+            <>
+              <IconButton
+                text={isAlreadyRegisteredGroup ? "Chỉnh sửa" : "Đăng ký nhóm"}
+                yellow={isAlreadyRegisteredGroup ? true : false}
+                green={isAlreadyRegisteredGroup ? false : true}
+                iconLeft={
+                  isAlreadyRegisteredGroup
+                    ? "/assets/icons/edit.svg"
+                    : "/assets/icons/add.svg"
+                }
+                iconWidth={22}
+                iconHeight={22}
+                onClick={
+                  isAlreadyRegisteredGroup
+                    ? () => {
+                        setIsShowDialogRegisterTopic(Action.edit);
+                      }
+                    : () => {
+                        if (selectedTopicId === "") {
+                          toast({
+                            title: "Bạn chưa chọn đề tài!",
+                            variant: "error",
+                            duration: 3000,
+                          });
+                          return;
+                        }
+                        setIsShowDialogRegisterTopic(Action.create);
+                      }
+                }
+              />
+              <IconButton
+                text={"Đề xuất đề tài"}
+                iconWidth={22}
+                iconHeight={22}
+                onClick={() => setIsShowDialogSuggestTopic(true)}
+              />
+            </>
+          )}
         </div>
       </div>
 
@@ -1064,9 +1123,9 @@ const RegisterTopic = () => {
                 {!isShowDialogSuggestTopic && isAlreadyRegisteredGroup ? (
                   <div className="flex gap-6 items-center ">
                     <label className="peer-disabled:cursor-not-allowed peer-disabled:opacity-70 dark:text-red-900 text-dark400_light800 text-[14px] font-semibold leading-[20.8px]">
-                      Đề tài đã đăng ký:
+                      Đề tài đã đăng ký / đề xuất:
                       <span className="ml-2 font-medium">
-                        {getRegisterdTopicName()}
+                        {getRegisterdTopicName() || title}
                       </span>
                     </label>
                     <IconButton
@@ -1092,12 +1151,42 @@ const RegisterTopic = () => {
                       render={({ field }) => (
                         <FormItem className="flex w-full flex-col">
                           <FormLabel className="text-dark400_light800 text-[14px] font-semibold leading-[20.8px]">
-                            Tên đề tài <span className="text-red-600">*</span>
+                            Tên đề tài tiếng Việt{" "}
+                            <span className="text-red-600">*</span>
                           </FormLabel>
                           <FormControl className="mt-3.5 ">
                             <Input
-                              {...field}
-                              placeholder="Nhập tên đề tài..."
+                              value={title}
+                              onChange={(event) => {
+                                setTitle(event.target.value);
+                              }}
+                              placeholder="Nhập tên đề tài tiếng Việt..."
+                              className="
+                                no-focus paragraph-regular background-light900_dark300 light-border-2 text-dark300_light700 min-h-[56px] border"
+                            />
+                          </FormControl>
+                          <FormMessage className="text-red-500" />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={renderForm.control}
+                      // ! Ignore: Biết chắc chắn với biến isShowDialogSuggestTopic thì đi với formSuggest
+                      // @ts-ignore
+                      name="title"
+                      render={({ field }) => (
+                        <FormItem className="flex w-full flex-col">
+                          <FormLabel className="text-dark400_light800 text-[14px] font-semibold leading-[20.8px]">
+                            Tên đề tài tiếng Anh{" "}
+                            <span className="text-red-600">*</span>
+                          </FormLabel>
+                          <FormControl className="mt-3.5 ">
+                            <Input
+                              value={titleEn}
+                              onChange={(event) => {
+                                setTitleEn(event.target.value);
+                              }}
+                              placeholder="Nhập tên đề tài tiếng Anh..."
                               className="
                                 no-focus paragraph-regular background-light900_dark300 light-border-2 text-dark300_light700 min-h-[56px] border"
                             />
@@ -1118,26 +1207,30 @@ const RegisterTopic = () => {
                           </FormLabel>
                           <FormControl className="mt-3.5 ">
                             <textarea
-                              {...field}
+                              // {...field}
+                              value={desc}
+                              onChange={(event) => {
+                                setDesc(event.target.value);
+                              }}
                               placeholder="Nhập mô tả..."
                               className="
-                          no-focus
-                          paragraph-regular
-                          background-light900_dark300
-                          light-border-2
-                          text-dark300_light700
-                          min-h-[200px]
-                          rounded-md
-                          border
-                          resize-none
-                          w-full
-                          px-3
-                          py-4
-                          focus:outline-none
-                          focus:ring-0
-                          active:outline-none
-                          focus:border-inherit
-                          text-sm"
+                                no-focus
+                                paragraph-regular
+                                background-light900_dark300
+                                light-border-2
+                                text-dark300_light700
+                                min-h-[200px]
+                                rounded-md
+                                border
+                                resize-none
+                                w-full
+                                px-3
+                                py-4
+                                focus:outline-none
+                                focus:ring-0
+                                active:outline-none
+                                focus:border-inherit
+                                text-sm"
                             />
                           </FormControl>
                           <FormMessage className="text-red-500" />
