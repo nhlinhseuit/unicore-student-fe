@@ -137,13 +137,14 @@ const NotSubmitReport = (params: Props) => {
         });
 
         submitFile(formData).then((data) => {
-          if (data.data) {
-            params.setSubmitTrue(data.data);
-          }
-
+          console.log("data.data", data.data);
           setIsLoading(false);
           setIsEditting(false);
           setIsAlreadySubmit(true);
+
+          if (data.data) {
+            params.setSubmitTrue(data.data);
+          }
         });
       }
     });

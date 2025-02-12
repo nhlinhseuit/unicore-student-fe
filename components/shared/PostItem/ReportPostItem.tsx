@@ -64,7 +64,7 @@ const ReportPostItem = (params: Props) => {
   //! mockParams: fake API
   const classCode = useAtomValue(classCodeAtom);
   // const isDA1 = true;
-  const isDA1 = classCode === "SE121.O21.PMCL";   
+  const isDA1 = classCode === "SE121.O21.PMCL";
 
   const [submissionsOfStudent, setSubmissionsOfStudent] =
     useState<IDetailSubmissionsOfPostResponseData>();
@@ -163,7 +163,7 @@ const ReportPostItem = (params: Props) => {
               postId={params.id}
               setSubmitTrue={(data: IDetailSubmissionsOfPostResponseData) => {
                 //@ts-ignore
-                submissionsOfStudent(data);
+                setSubmissionsOfStudent(data);
               }}
               score={mockSubmitExercisePost.score}
               totalScore={mockSubmitExercisePost.totalScore}
