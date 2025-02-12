@@ -920,7 +920,11 @@ const RegisterTopic = () => {
       // router.push("/");
 
       if (isShowDialogSuggestTopic) {
-        setDescriptions((prev) => [...prev, `Đề tài đã đề xuất: ${title}`]);
+        setDescriptions([
+          "Thời hạn: 01/02/2025 - 28/02/2025",
+          "Lưu ý: Nhóm trưởng điền tên đầu tiên",
+          `Đề tài đã đề xuất: ${title}`,
+        ]);
       } else {
         setDescriptions((prev) => [
           ...prev,
