@@ -41,6 +41,7 @@ import "prismjs/components/prism-sql";
 import "prismjs/components/prism-mongodb";
 import "prismjs/plugins/line-numbers/prism-line-numbers.js";
 import "prismjs/plugins/line-numbers/prism-line-numbers.css";
+import NotSubmitReport from "@/components/courses/NotSubmitReport";
 
 interface Comment {
   id: string;
@@ -62,8 +63,8 @@ interface Props {
 const ReportPostItem = (params: Props) => {
   //! mockParams: fake API
   const classCode = useAtomValue(classCodeAtom);
-  // const isDA1 = true;
-  const isDA1 = classCode === "SE121.O21.PMCL";
+  const isDA1 = true;
+  // const isDA1 = classCode === "SE121.O21.PMCL";
 
   const [submissionsOfStudent, setSubmissionsOfStudent] =
     useState<IDetailSubmissionsOfPostResponseData>();
@@ -157,7 +158,22 @@ const ReportPostItem = (params: Props) => {
               />
               <Divider />
             </>
-          ) : null
+          ) : (
+            <NotSubmitReport
+              postId={params.id}
+              setSubmitTrue={(data: IDetailSubmissionsOfPostResponseData) => {
+                //@ts-ignore
+                submissionsOfStudent(data);
+              }}
+              score={mockSubmitExercisePost.score}
+              totalScore={mockSubmitExercisePost.totalScore}
+              feedback={mockSubmitExercisePost.feedback}
+              lateTime={mockSubmitExercisePost.lateTime}
+              lastEdited={mockSubmitExercisePost.lastEdited}
+              submission={mockSubmitExercisePost.submission}
+              review={mockSubmitExercisePost.review}
+            />
+          )
         ) : (
           <RegisterReportSchedule />
         )}
@@ -173,10 +189,11 @@ const ReportPostItem = (params: Props) => {
                   comment={item.content}
                 />
                 <Divider />
-              </div>
-            ))}
-        </div> */}
+                </div>
+                ))}
+                </div> */}
 
+        <Divider />
         <MyComment textAvatar="HL" type="report" sourceId={params.id} />
       </div>
     </div>
