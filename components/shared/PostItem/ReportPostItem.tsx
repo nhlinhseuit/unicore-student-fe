@@ -70,7 +70,7 @@ const ReportPostItem = (params: Props) => {
 
   const mockParamsStudentCode = "21522289";
 
-  const mockParamsHOMEWORKID = "67a72c1867bcae42d4b2c7a8";
+  const mockParamsHOMEWORKID = "678e0290551a4b14f9d22bed";
 
   useEffect(() => {
     // params.id
