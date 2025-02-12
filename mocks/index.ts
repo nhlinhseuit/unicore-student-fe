@@ -199,34 +199,6 @@ export const mockPostData = [
       },
     ],
   },
-  {
-    id: "2",
-    creator: "Huỳnh Hồ Thị Mộng Trinh",
-    createdAt: "29/8/2024 7:23AM",
-    title: "Bài tập ngày 29/9/2024",
-    fileName: "exercise.docx",
-    comments: [
-      {
-        id: "1",
-        author: "Huỳnh Hồ Thị Mộng Trinh",
-        content: "Các em mau chóng đăng ký nhóm đúng hạn",
-      },
-    ],
-  },
-  {
-    id: "3",
-    creator: "Huỳnh Hồ Thị Mộng Trinh",
-    createdAt: "29/8/2024 7:23AM",
-    title: "Bài tập ngày 29/9/2024",
-    fileName: "exercise.docx",
-    comments: [
-      {
-        id: "1",
-        author: "Huỳnh Hồ Thị Mộng Trinh",
-        content: "Các em mau chóng đăng ký nhóm đúng hạn",
-      },
-    ],
-  },
 ];
 
 //
