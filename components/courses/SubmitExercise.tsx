@@ -64,6 +64,10 @@ const SubmitExercise = (params: Props) => {
   const [dataSubmit, setDataSubmit] =
     useState<IDetailSubmissionsOfPostResponseData>(params.submissionsOfStudent);
 
+  useEffect(() => {
+    if (dataSubmit) setIsAlreadySubmit(true);
+  }, [dataSubmit]);
+
   const getSubmissions = () => {
     return dataSubmit.files.map((item: any) => item.webview_link);
   };
@@ -283,7 +287,7 @@ const SubmitExercise = (params: Props) => {
           <p className="body-semibold text-black">Bài nộp:</p>
           <div className="max-h-[150px] overflow-y-auto border rounded-lg p-2">
             {getSubmissions().length > 0 ? (
-              getSubmissions().map((item, index) => ( 
+              getSubmissions().map((item, index) => (
                 <p
                   key={index}
                   className="text-blue-500 underline text-sm break-all"
