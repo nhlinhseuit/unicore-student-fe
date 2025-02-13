@@ -1139,6 +1139,11 @@ const RegisterTopic = () => {
                         setIsAlreadyRegisteredGroup(false);
                         setIsShowDialogRegisterTopic(Action.none);
                         sSelectedTopic.set("");
+
+                        setDescriptions([
+                          "Thời hạn: 01/02/2025 - 28/02/2025",
+                          "Lưu ý: Nhóm trưởng điền tên đầu tiên",
+                        ]);
                       }}
                     />
                   </div>
